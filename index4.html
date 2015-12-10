@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+
+<link rel="stylesheet" type="text/css" href="css/style.css">
+
+
+</head>
+<body>
+
+<canvas id     = "canvas"
+		width  = "1000"
+		height = "1000"
+		style  = "width: 1000px;
+				  height: 1000px;
+				  border: 1px solid #ccc;
+				  ">
+</canvas>
+
+<script type="text/javascript" src="js/tabletop.js"></script>
+
+
+<script type="text/javascript">
+
+
+    var data = {};
+
+
+    window.onload = function() { init() };
+
+    var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1RKekJPcE5OazkWOWatk04a34HUhOO1nRqIhVaOTtJPk/pubhtml';
+
+    function init() {
+        Tabletop.init( { key: public_spreadsheet_url,
+            callback: showInfo,
+            simpleSheet: true } )
+    }
+
+    function showInfo(content, tabletop) {
+        // window.requestAnimationFrame(draw);
+
+        console.log(content);
+
+		Object.keys(content).forEach(function(key) {
+
+			data[content[key].code] = new Object();
+			data[content[key].code]["img"] = new Image();
+			data[content[key].code]["img"]["src"] = "images/countries/" + content[key].code + ".svg";
+			data[content[key].code]["x"] = content[key]["x1"];
+			data[content[key].code]["y"] = content[key]["y1"];
+			data[content[key].code]["s"] = content[key]["s1"];
+
+		});
+
+
+
+		// Object.keys(data).forEach(function(key) {
+		// 	data[content[key].code]["x"] = "";
+		// });
+
+
+		// window.requestAnimationFrame(draw);
+
+		requestAnimationFrame(function() {
+		    draw(data,content);
+		});
+
+    }
+
+
+	var maxScale = 200;
+	var s = 100;
+    
+    function draw(data,content) {
+		var ctx = document.getElementById('canvas').getContext('2d');
+
+		ctx.clearRect(0,0,1000,1000);
+
+		// ctx.clearRect(0,0,1000,1000); // clear canvas
+
+		// console.log(content)		
+
+		Object.keys(content).forEach(function(key) {
+
+			if (data[content[key].code]["x"] < content[key]["x2"]) {
+				// console.log("x " + content[key].code + " " + data[content[key].code]["x"]);
+				data[content[key].code]["x"]++;
+			}
+			else {
+				data[content[key].code]["x"] = content[key]["x2"];
+			}
+
+			if (data[content[key].code]["y"] < content[key]["y2"]) {
+				// console.log("y " +data[content[key].code]["y"]);
+				data[content[key].code]["y"]++;
+			}
+			else {
+				data[content[key].code]["y"] = content[key]["y2"];
+				// console.log(data[content[key].code]["y"])
+			}
+			
+			// s
+			if (data[content[key].code]["s"] < content[key]["s2"]) {
+				// console.log("y " +data[content[key].code]["y"]);
+				data[content[key].code]["s"]++;
+			}
+			else {
+				data[content[key].code]["s"] = content[key]["s2"];
+				// console.log(data[content[key].code]["y"])
+			}			
+			ctx.save();
+
+
+			ctx.drawImage(data[content[key].code]["img"],data[content[key].code]["x"],data[content[key].code]["y"],data[content[key].code]["s"],data[content[key].code]["s"])
+
+		});
+
+		// window.requestAnimationFrame(draw);
+
+		requestAnimationFrame(function() {
+		    draw(data,content);
+		});
+
+    }
+
+	// Object.keys(countrynames).forEach(function(key) {
+	// 	data[key] = new Object();
+	// 	data[key]["img"] = new Image();
+	// 	data[key]["img"]["src"] = "images/countries/" + key + ".svg";
+	// 	// console.log(key, obj[key]);
+	// });
+
+
+	// window.requestAnimationFrame(draw);
+
+
+	// function init(){
+	// 	NL.src = 'images/countries/NL.svg';
+	// 	moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
+	// 	earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
+	// 	window.requestAnimationFrame(draw);
+	// // }
+
+	// var maxScale = 200;
+	// var i = 100;
+
+	// function draw() {
+	//   	var ctx = document.getElementById('canvas').getContext('2d');
+
+	//   	// ctx.globalCompositeOperation = 'destination-over';
+	//  	ctx.clearRect(0,0,500,500); // clear canvas
+
+	//  	// (i < maxScale) ? ctx.drawImage(NL,i++,100,i++,i++) : ctx.drawImage(NL,maxScale,100,maxScale,maxScale);
+
+	 	
+
+	// 	Object.keys(countrynames).forEach(function(key) {
+	// 		// countrynames[key]["img"] = new Image();
+	// 		(i < maxScale) ? ctx.drawImage(data[key]["img"],i++,100,100,100) : ctx.drawImage(data[key]["img"],maxScale,100,100,100);
+	// 		// console.log(key, obj[key]);
+	// 	});
+
+	 	
+
+
+	// 	window.requestAnimationFrame(draw);
+	// }
+
+	// init();
+</script>
+
+
+
+
+<!-- 
+<script type="text/javascript">
+	var sun = new Image();
+	var moon = new Image();
+	var earth = new Image();
+	function init(){
+		sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
+		moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
+		earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
+		window.requestAnimationFrame(draw);
+	}
+
+	function draw() {
+	  var ctx = document.getElementById('canvas').getContext('2d');
+
+	  ctx.globalCompositeOperation = 'destination-over';
+	  ctx.clearRect(0,0,300,300); // clear canvas
+
+	  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+	  ctx.strokeStyle = 'rgba(0,153,255,0.4)';
+	  ctx.save();
+	  ctx.translate(150,150);
+
+	  // Earth
+	  var time = new Date();
+	  ctx.rotate( ((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds() );
+	  ctx.translate(105,0);
+	  ctx.fillRect(0,-12,50,24); // Shadow
+	  ctx.drawImage(earth,-12,-12);
+
+	  // Moon
+	  ctx.save();
+	  ctx.rotate( ((2*Math.PI)/6)*time.getSeconds() + ((2*Math.PI)/6000)*time.getMilliseconds() );
+	  ctx.translate(0,28.5);
+	  ctx.drawImage(moon,-3.5,-3.5);
+	  ctx.restore();
+
+	  ctx.restore();
+	  
+	  ctx.beginPath();
+	  ctx.arc(150,150,105,0,Math.PI*2,false); // Earth orbit
+	  ctx.stroke();
+	 
+	  ctx.drawImage(sun,0,0,300,300);
+
+	  window.requestAnimationFrame(draw);
+	}
+
+	init();
+</script>
+
+
+ -->
+
+</body>
+</html>
