@@ -1,0 +1,655 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"li",
+				"link	Tag"
+			],
+			[
+				"h",
+				"head	Tag"
+			],
+			[
+				"f",
+				"fun	Function"
+			],
+			[
+				"va",
+				"value"
+			],
+			[
+				"c",
+				"console"
+			],
+			[
+				"mar",
+				"margin"
+			],
+			[
+				"marg",
+				"margin-left"
+			],
+			[
+				"dc",
+				"document"
+			],
+			[
+				"nex",
+				"nextFriday"
+			],
+			[
+				"key",
+				"keydate"
+			],
+			[
+				"pad",
+				"padding"
+			],
+			[
+				"ma",
+				"margin-right"
+			],
+			[
+				"bo",
+				"border-bottom"
+			],
+			[
+				"r",
+				"right"
+			],
+			[
+				"m",
+				"margin"
+			],
+			[
+				"pa",
+				"padding-right"
+			],
+			[
+				"s",
+				"saveDirectChilderenInnerHTML"
+			],
+			[
+				"ba",
+				"background-color"
+			],
+			[
+				"bord",
+				"border-top"
+			],
+			[
+				"l",
+				"length"
+			],
+			[
+				"bor",
+				"border-bottom"
+			],
+			[
+				"bac",
+				"background-image"
+			],
+			[
+				"log",
+				"logo"
+			],
+			[
+				"b",
+				"backgroundImage"
+			],
+			[
+				"d",
+				"display"
+			],
+			[
+				"di",
+				"directChilderen"
+			],
+			[
+				"t",
+				"top"
+			],
+			[
+				"te",
+				"text-align"
+			],
+			[
+				"p",
+				"padding"
+			],
+			[
+				"tex",
+				"text-align"
+			],
+			[
+				"cate",
+				"categories"
+			],
+			[
+				"i",
+				"images"
+			],
+			[
+				"ima",
+				"images"
+			],
+			[
+				"v",
+				"vertical-align"
+			],
+			[
+				"padd",
+				"padding-bottom"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"wrap",
+				"wrapper"
+			],
+			[
+				"for",
+				"for	for (…) {…}"
+			],
+			[
+				"page",
+				"page_item"
+			],
+			[
+				"inl",
+				"inline-block"
+			],
+			[
+				"pos",
+				"post_slug"
+			],
+			[
+				"lo",
+				"localhost"
+			],
+			[
+				"Call",
+				"callbackURL"
+			],
+			[
+				"he",
+				"health"
+			],
+			[
+				"user",
+				"userid"
+			],
+			[
+				"data",
+				"database"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
+				"g",
+				"getElementById"
+			],
+			[
+				"lat",
+				"latitude"
+			],
+			[
+				"fu",
+				"fun	Function"
+			],
+			[
+				"fo",
+				"for	for (…) {…}"
+			],
+			[
+				"ar",
+				"article	Tag"
+			],
+			[
+				"el",
+				"else"
+			],
+			[
+				"n",
+				"pointer"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"prin",
+				"print_r"
+			],
+			[
+				"Child",
+				"childElementWidth"
+			],
+			[
+				"q",
+				"querySelectorAll"
+			],
+			[
+				"inn",
+				"innerWidth"
+			],
+			[
+				"wi",
+				"width"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"cla",
+				"className"
+			],
+			[
+				"get",
+				"getElementById"
+			],
+			[
+				"co",
+				"color"
+			],
+			[
+				"w",
+				"width"
+			],
+			[
+				"end",
+				"endif"
+			],
+			[
+				"cat",
+				"categories"
+			],
+			[
+				"pri",
+				"print_r"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 6158,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Volumes/Data/git/changing-world/index2.html",
+		"/Volumes/Data/git/changing-world/index3.html",
+		"/Volumes/Data/git/changing-world/css/style.css",
+		"/Volumes/Data/git/changing-world/eu.topojson",
+		"/Volumes/Data/git/changing-world/9000-server",
+		"/Volumes/Data/git/changing-world/population.csv",
+		"/Volumes/Data/git/changing-world/index.html",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/js/vendor/vminpoly.js",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/css/legacy.css",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/header.php",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/20151122db.sql",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/footer.php",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/category.php",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/author.php",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/404.php",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/page.php",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/single.php",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/index.php",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/loop.php",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/js/tabletop.js",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/archive.php",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/languages/nl_NL.po",
+		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/blog.php",
+		"/Users/Dion/Documents/Arduino/libraries/Adafruit-WS2801-Library/library.properties",
+		"/Users/Dion/Desktop/test/package.json",
+		"/Users/Dion/Desktop/test/views/index.ejs",
+		"/Users/Dion/Desktop/test/server.js",
+		"/Users/Dion/Desktop/test/views/index.html",
+		"/Users/Dion/Desktop/test.js",
+		"/Volumes/seagate/fileshare-win32/ext4 windows/serial free.txt",
+		"/Volumes/Data/git/cbs-werk-datavisualisatie/css/style.css",
+		"/Volumes/Data/git/qdraw.github.io/stefandion/css/style.css",
+		"/Volumes/Data/git/qdraw.github.io/stefandion/contact.html",
+		"/Volumes/Data/git/qdraw.github.io/stefandion/dion.html",
+		"/Volumes/Data/git/qdraw.github.io/stefandion/stefan.html",
+		"/Volumes/Data/git/qdraw.github.io/stefandion/werk.html",
+		"/Volumes/Data/git/qdraw.github.io/stefandion/werk/vitaal-platteland.html",
+		"/Volumes/Data/git/qdraw.github.io/stefandion/index.html",
+		"/Volumes/Data/git/qdraw.github.io/stefandion/stefandion.sublime-project",
+		"/Users/Dion/Desktop/Naamloos-1.svg",
+		"/Volumes/Data/git/avans-individueel-verdieping-blok11-12/avans11-12.sublime-project",
+		"/Volumes/Data/git/avans-individueel-verdieping-blok11-12/database.js",
+		"/Volumes/Data/git/avans-individueel-verdieping-blok11-12/dblite.js",
+		"/Volumes/Data/git/avans-individueel-verdieping-blok11-12/js/mapio.js",
+		"/Volumes/Data/git/avans-individueel-verdieping-blok11-12/js/userid.js",
+		"/data/web/qdraw.github.io/blog-thema/page.php",
+		"/data/web/qdraw.github.io/blog-thema/index.php",
+		"/data/web/qdraw.github.io/blog-thema/css/style.css",
+		"/Users/dion/Desktop/test node/app.js",
+		"/Users/dion/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/dion/Desktop/iets verwijnd > geeft ruimte voor iets nieuws",
+		"/data/web/qdraw.github.io/blog-thema/archive.php",
+		"/data/web/qdraw.github.io/blog-thema/category-page.php",
+		"/data/web/qdraw.github.io/blog-thema/search-page.php",
+		"/data/web/qdraw.github.io/blog-thema/category.php",
+		"/data/web/qdraw.github.io/blog-thema/js/scrollmenu.js",
+		"/data/web/qdraw-blog/wp-config.php",
+		"/data/web/qdraw.github.io/.htaccess",
+		"/data/web/qdraw.github.io/blog-thema/footer.php",
+		"/data/web/qdraw.github.io/blog-thema/404.php",
+		"/data/web/qdraw.github.io/blog-thema/js/imagegallery.js",
+		"/data/web/qdraw.github.io/blog-thema/js/imagereplacer.jq.js",
+		"/data/web/qdraw.github.io/blog-thema/tag.php",
+		"/data/web/qdraw.github.io/blog-thema/tag-page.php",
+		"/data/web/qdraw.github.io/blog-thema/single.php",
+		"/data/web/qdraw.github.io/blog-thema/search.php",
+		"/data/web/qdraw.github.io/pages/index.php",
+		"/data/web/qdraw.github.io/blog-thema/author.php",
+		"/Users/dion/Downloads/Extensis.Suitcase.Fusion.6.v17.0.0.MacOSX.Incl.Keymaker-CORE/cr-tg2g0/CORE.NFO",
+		"/Users/dion/Dropbox/DE MONSTERS/temp/Profiles-avanspass/4sf4bgx3.default-1418216507500/bookmarkbackups/bookmarks-2015-01-29_739_5l9r-bmmNoM1eQtzFRxnzg==.jsonlz4",
+		"/Users/dion/Desktop/Wordpress vs statische website/Wordpress vs statische website.nfo",
+		"/private/var/folders/yw/m7d6hmj10kx926kqkbt2sflh0000gn/T/01190964-ffbf-4396-91ef-ed571da55a78/domains/qdraw.nl/public_html/blog/.htaccess",
+		"/data/web/qdraw.github.io/css/style.css",
+		"/data/web/qdraw.github.io/blog-thema/header.php",
+		"/data/web/qdraw.github.io/blog-thema/loop.php",
+		"/Users/dion/.profile",
+		"/Users/dion/.wakeup"
+	],
+	"find":
+	{
+		"height": 38.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"fill",
+			".id",
+			"is_single",
+			"smiley",
+			"wp_head",
+			"console",
+			"showContent",
+			"content",
+			"data",
+			"table",
+			"Month",
+			"table",
+			"menu",
+			"40%",
+			".twoteaser table,",
+			"article {\n		width: 40%;",
+			".home art",
+			"article",
+			".home",
+			"section",
+			".section",
+			".twoteaser:nth-of-type(3n)",
+			"z-index",
+			"!im",
+			"69px",
+			"400px",
+			"white",
+			"@media",
+			"border",
+			".menu li .children a {",
+			"black",
+			"red",
+			"#",
+			"logo",
+			"logo-",
+			"90vw",
+			": -",
+			"hamburger",
+			".hamb",
+			".logo",
+			"150",
+			".menu",
+			"menu",
+			"5",
+			"two",
+			"margin: calc",
+			"und",
+			"undife",
+			"thumbnail",
+			"pagination",
+			"order-radius: 9px 9px 0px 0px;",
+			"cat_",
+			"categor",
+			"menu",
+			"view-article",
+			"button",
+			"Article",
+			".image",
+			"has_post_thumbnail",
+			"is_singular",
+			"logo",
+			"Home",
+			"h1",
+			"break",
+			"margin-top",
+			"?>",
+			"</strong></li></ul>",
+			"?>",
+			"bread",
+			"height",
+			"line-h",
+			"line-height",
+			"75",
+			".page_item_has_children > .children > .page_item",
+			".current_page_item > .children > .page_item",
+			"current",
+			"menu",
+			"array(",
+			"navigationf",
+			"language",
+			"language_attributes",
+			"header",
+			"variablesButton",
+			".content",
+			"content",
+			"variablesButton",
+			"intro",
+			"../",
+			".content",
+			"head",
+			"head.svg",
+			"-image",
+			"margin",
+			"margin-",
+			"head",
+			"if",
+			"\"score\"",
+			"isNaN",
+			"readScore (",
+			"readScore ()",
+			"Interval",
+			"updatePoints",
+			"readScore(",
+			"readScore",
+			"global[\"score\"]",
+			"score",
+			"You",
+			"event",
+			"Event",
+			"EventL",
+			"panto",
+			".src",
+			"data",
+			"requestAnimationFrame",
+			"h1",
+			"article h1",
+			"article",
+			"none",
+			"hide",
+			"meta",
+			"Redirect",
+			"canonical",
+			"ch",
+			"xmlrpc",
+			"grey",
+			"greyscale",
+			"dataset",
+			"dataset.counter"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 6158,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								38,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"replace":
+	{
+		"height": 67.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 384.0,
+	"status_bar_visible": true
+}
