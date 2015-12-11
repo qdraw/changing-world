@@ -9,7 +9,7 @@ body {
 
 #canvas > div {
 	position: absolute;
-	background-position: center;
+	background-position: left center;
 	background-size:contain;
 	background-repeat: no-repeat;
 }

@@ -51,6 +51,9 @@
 				xhr.onreadystatechange = function() {
 				    if (xhr.readyState == 4) {
 						var response = xhr.responseText;
+						
+						console.log(response);
+
 						var response = response.replaceAll('#CCCCCC', '#c62c2c');
 
 						var encoded = window.btoa(response);
@@ -114,7 +117,7 @@
 
 
 			document.getElementById(content[key].code).style.width = data[content[key].code]["s"] + "vw";
-			document.getElementById(content[key].code).style.height = data[content[key].code]["s"] + "vw";
+			document.getElementById(content[key].code).style.height = data[content[key].code]["s"] + "vh";
 
 
 
