@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-
+<link rel="stylesheet" type="text/css" href="css/reset.css">
 <link rel="stylesheet" type="text/css" href="css/style.css">
 
 
@@ -11,6 +11,12 @@
 
 
 <div id="canvas"></div>
+<div class="content">
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id quam volutpat, finibus nibh ac, commodo ipsum. Curabitur at ligula nisl. Etiam consectetur tincidunt libero vitae suscipit. Nulla mollis rutrum fermentum. Sed vel pellentesque urna, et blandit nunc. Pellentesque turpis nunc, bibendum ut ligula id, efficitur tincidunt odio. Nam eu orci dignissim, varius sem eu, lobortis libero. Fusce ipsum leo, congue id nibh at, porttitor consectetur ante. Vivamus sed arcu vitae justo viverra rutrum et sit amet ex. Phasellus elementum eleifend odio, tempus maximus nibh dictum eget. Proin venenatis ultrices dolor, sit amet efficitur lacus convallis interdum. Praesent nulla nulla, tincidunt quis varius a, hendrerit sed nunc. Suspendisse in velit ut sapien accumsan tristique nec laoreet velit.
+
+	Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras ac ultricies velit, in malesuada enim. Nam eget varius turpis, eget interdum tortor. Fusce quis lacus a lectus congue facilisis sit amet eget libero. Nulla facilisi. Donec ultrices purus nec molestie accumsan. Aliquam vitae est volutpat, ornare enim ac, viverra nisi. Quisque vitae eros sodales, interdum mauris eget, tempus lorem. Curabitur condimentum sodales magna, id dapibus ex efficitur id. Pellentesque mattis sed tellus sed efficitur. Nullam in efficitur erat. Nulla dictum malesuada odio vulputate lacinia. Sed et dolor sit amet purus molestie maximus in ac elit. Maecenas sed lacinia mi, a ornare augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus vel massa id mi auctor rhoncus. 
+
+</div>
 
 <script type="text/javascript" src="js/tabletop.js"></script>
 
@@ -52,7 +58,28 @@
 				    if (xhr.readyState == 4) {
 						var response = xhr.responseText;
 						
-						console.log(response);
+
+						var svgWidth = response.match(/(width=["'])[0-9]*.px+(["'])/g)
+						var svgHeight = response.match(/(height=["'])[0-9]*.px+(["'])/g)
+
+						if (svgWidth != null || svgHeight != null) {
+							svgWidth = svgWidth[0].replaceAll('width="', "");
+							svgWidth = Number(svgWidth.replaceAll('px"', ""));
+							console.log(svgWidth);
+
+							svgHeight = svgHeight[0].replaceAll('height="', "");
+							svgHeight = Number(svgHeight.replaceAll('px"', ""));
+							console.log(svgHeight);
+
+							var ratio = svgWidth / svgHeight;
+							data[content[key].code]["r"] = ratio;
+
+						}
+
+
+
+						
+
 
 						var response = response.replaceAll('#CCCCCC', '#c62c2c');
 
@@ -112,11 +139,11 @@
 			else {
 				data[content[key].code]["s"] = content[key]["s2"];
 				// console.log(data[content[key].code]["y"])
-			}			
+			}
 
 
 
-			document.getElementById(content[key].code).style.width = data[content[key].code]["s"] + "vw";
+			document.getElementById(content[key].code).style.width = (data[content[key].code]["s"] * data[content[key].code]["r"]) + "vh";
 			document.getElementById(content[key].code).style.height = data[content[key].code]["s"] + "vh";
 
 
@@ -142,6 +169,10 @@
 		    draw(data,content);
 		});
 
+    }
+
+    function map( x,  in_min,  in_max,  out_min,  out_max){
+    	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
 
 	String.prototype.replaceAll = function( token, newToken, ignoreCase ) {

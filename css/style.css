@@ -5,6 +5,9 @@ body {
 
 #canvas {
 	position: relative;
+	width: 98vw;
+	height: 100vh;
+	background-color: #ccc;
 }
 
 #canvas > div {
@@ -16,4 +19,12 @@ body {
 
 #canvas > div:hover {
 	opacity: 0.8;
+}
+
+
+.content {
+	position: relative;
+	width: 98vw;
+	height: 50vh;
+	background-color: #888;
 }
