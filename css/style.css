@@ -2,31 +2,14 @@
 body {
 	background-color: white;
 }
-fill{
-	z-index: 0;
-	display: none;
+
+#canvas {
+	position: relative;
 }
 
-#NLD {
-	display: block;
-		fill:#848484;
-		 /* doesn't work in IE */
-		/*transform: translate(295px, 115px);*/
-		/*transform: rotate(45deg);*/
-		/*transform: translate(30,40);*/
-		transform: scale(2);
-	transform-origin: right bottom; 
-		z-index: 9999;
-}
-
-
-#NL {
-	transform: scale(2);
-	animation-name: example;
-	animation-duration: 4s;
-}
-
-@keyframes example {
-    from {fill: #000;}
-    to {fill: #FFF; transform: scale(3);}
+#canvas > div {
+	position: absolute;
+	background-position: center;
+	background-size:contain;
+	background-repeat: no-repeat;
 }
