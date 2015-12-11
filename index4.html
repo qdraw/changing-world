@@ -48,6 +48,16 @@
 			// data[content[key].code]["img"] = new Image();
 			// data[content[key].code]["img"]["src"] = "images/countries/" + content[key].code + ".svg";
 
+
+			// There really is no patch for human stupidity
+			if (isNaN(content[key]["x1"])) {alert(content[key].code + " x1==NaN")}
+			if (isNaN(content[key]["x2"])) {alert(content[key].code + " x2==NaN")}
+			if (isNaN(content[key]["y1"])) {alert(content[key].code + " y1==NaN")}
+			if (isNaN(content[key]["y2"])) {alert(content[key].code + " y2==NaN")}
+			if (isNaN(content[key]["s1"])) {alert(content[key].code + " s1==NaN")}
+			if (isNaN(content[key]["s2"])) {alert(content[key].code + " s2==NaN")}
+
+
 			var image = document.createElement("div");
 			// image.setAttribute("src", "images/countries/" + content[key].code + ".svg");
 			image.setAttribute("id", content[key].code);
@@ -94,10 +104,10 @@
 			
 			document.getElementById("canvas").appendChild(image);
 
+			data[content[key].code]["x"] = Number(content[key]["x1"]);
+			data[content[key].code]["y"] = Number(content[key]["y1"]);
+			data[content[key].code]["s"] = Number(content[key]["s1"]);
 
-			data[content[key].code]["x"] = content[key]["x1"];
-			data[content[key].code]["y"] = content[key]["y1"];
-			data[content[key].code]["s"] = content[key]["s1"];
 
 		});
 
