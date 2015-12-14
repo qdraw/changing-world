@@ -1,0 +1,19 @@
+/* main.css*/
+
+path {
+	fill: #E5F5F9;
+	stroke: #2CA25F;
+	stroke-width: 0.5;
+	transition: 5s ease-in-out;
+	-webkit-transition-delay: 1s; /* Safari */
+    transition-delay: 1s;
+}
+
+.q {
+	fill: #E5F009;
+}
+
+#axes {
+	stroke: #BDBDBD;
+	stroke-width: 0.5;
+}
