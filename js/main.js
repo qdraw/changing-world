@@ -1,12 +1,14 @@
 // main.js
 
 
-var width = Number(window.innerWidth-50),
-	height = 400,
-	projection = d3.geo.mercator(),
+var width = 960,
+	height = 500,
+	projection = d3.geo.mercator();
+	projection.center([156,8]);
+
 	path = d3.geo.path().projection(projection);
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("body").append("aside").append("svg")
 	.attr("width", width)
 	.attr("height", height);
 
@@ -21,8 +23,13 @@ d3.json("/data/europe.geo.json", function(error, json) {
 		.append("path")
 		.attr("d", path)
 		.attr('class', "l")
-		.attr('transform', "translate(-" + 500 + ",100) scale(2)")
-		.attr("id", function(d) { return d.properties.name; });
+		.attr("id", function(d) {
+			if (d.properties.name == "IS") {
+				var object = document.getElementById(d["properties"]["name"]);
+			}
+			return d.properties.name; 
+		})
+		.attr('transform', "scale(2)");
 	redraw();
 });
 
@@ -45,10 +52,15 @@ function animate () {
 	    .transition()
 		.attr("transform", function(d) { 
 			if (d["properties"]["name"] == "DE" || d["properties"]["name"] == "NL") {
-				return "translate(-" + 900 + ",0) scale(3)";
+				
+				posX = getPositionX(document.getElementById(d["properties"]["name"]));
+				posY = getPositionY(document.getElementById(d["properties"]["name"]));
+				var scale = 3;
+
+				return "translate(-" + Number(posX-(posX/scale)) + ",-" + Number(posY-(posY/scale)) + ") scale(" + scale + ")";
 			}
 			else {
-				return "translate(-" + 500 + ",100) scale(2)";
+				// return "translate(-" + 500 + ",100) scale(2)";
 			}
 
 		});
@@ -56,5 +68,14 @@ function animate () {
 
 
 
+function getPositionX (id) {
+	svgId = id.getAttribute('d');
+	svgArray = svgId.match(/([0-9]*(\..[0-9]))/ig);	
+	return svgArray[0];
+}
 
-
+function getPositionY (id) {
+	svgId = id.getAttribute('d');
+	svgArray = svgId.match(/([0-9]*(\..[0-9]))/ig);	
+	return svgArray[1];
+}
