@@ -4,16 +4,28 @@
 		"selected_items":
 		[
 			[
+				"sv",
+				"svgArray"
+			],
+			[
+				"get",
+				"getPosition"
+			],
+			[
+				"j",
+				"j"
+			],
+			[
+				"f",
+				"for	for (…) {…}"
+			],
+			[
 				"li",
 				"link	Tag"
 			],
 			[
 				"h",
 				"head	Tag"
-			],
-			[
-				"f",
-				"fun	Function"
 			],
 			[
 				"va",
@@ -256,10 +268,6 @@
 				"className"
 			],
 			[
-				"get",
-				"getElementById"
-			],
-			[
 				"co",
 				"color"
 			],
@@ -287,7 +295,31 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 6158,
+				"buffer_size": 1755,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "index8.html",
+			"settings":
+			{
+				"buffer_size": 885,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/TileLayer.d3_geoJSON.js",
+			"settings":
+			{
+				"buffer_size": 994,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/jquery.js",
+			"settings":
+			{
+				"buffer_size": 247597,
 				"line_ending": "Unix"
 			}
 		}
@@ -316,13 +348,30 @@
 	},
 	"file_history":
 	[
+		"/Volumes/Data/git/changing-world/js/three-main.js",
+		"/Volumes/Data/git/changing-world/data/countries_states.geo.json",
+		"/Volumes/Data/git/changing-world/js/threegeojson.js",
+		"/Volumes/Data/git/changing-world/js/trackballcontrols.js",
+		"/Volumes/Data/git/changing-world/js/main.js",
+		"/Volumes/Data/git/changing-world/js/three.js",
+		"/Volumes/Data/git/changing-world/js/useless-script.js",
+		"/Volumes/Data/git/changing-world/changing-world.sublime-project",
+		"/Volumes/Data/git/changing-world/9000-server-py3",
+		"/Volumes/Data/git/changing-world/css/main.css",
+		"/Volumes/Data/git/changing-world/images/countries/AL.svg",
+		"/Volumes/Data/git/changing-world/images/countries/europe.svg",
+		"/Volumes/Data/git/changing-world/index.html",
+		"/Volumes/Data/git/changing-world/data/europe.geo.json",
+		"/Volumes/Data/git/changing-world/index7.html",
+		"/Volumes/Data/git/changing-world/css/style.css",
+		"/Volumes/Data/git/changing-world/js/main-1.js",
+		"/Volumes/Data/git/changing-world/js/d3.js",
+		"/Volumes/Data/git/changing-world/index4.html",
 		"/Volumes/Data/git/changing-world/index2.html",
 		"/Volumes/Data/git/changing-world/index3.html",
-		"/Volumes/Data/git/changing-world/css/style.css",
 		"/Volumes/Data/git/changing-world/eu.topojson",
 		"/Volumes/Data/git/changing-world/9000-server",
 		"/Volumes/Data/git/changing-world/population.csv",
-		"/Volumes/Data/git/changing-world/index.html",
 		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/js/vendor/vminpoly.js",
 		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/css/legacy.css",
 		"/Volumes/Data/web/wordpress/wp-content/themes/proteus-website/header.php",
@@ -410,6 +459,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"container",
+			"scale",
 			"fill",
 			".id",
 			"is_single",
@@ -535,9 +586,7 @@
 			"ch",
 			"xmlrpc",
 			"grey",
-			"greyscale",
-			"dataset",
-			"dataset.counter"
+			"greyscale"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -556,7 +605,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -564,21 +613,106 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 6158,
+						"buffer_size": 1755,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								38,
-								0
+								1047,
+								1047
+							],
+							[
+								1169,
+								1170
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/HTML/HTML.tmLanguage",
 							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "index8.html",
+					"settings":
+					{
+						"buffer_size": 885,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								584,
+								584
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "js/TileLayer.d3_geoJSON.js",
+					"settings":
+					{
+						"buffer_size": 994,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								994,
+								994
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "js/jquery.js",
+					"settings":
+					{
+						"buffer_size": 247597,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								97,
+								105
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,

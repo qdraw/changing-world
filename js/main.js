@@ -88,7 +88,7 @@ setTimeout("drawData('CH')",2000);
 //}
 
 function animate() {
-	loadData("NL");
+	//loadData("NL");
 	/*
 	d3.select("body svg")
 		.selectAll("path")
