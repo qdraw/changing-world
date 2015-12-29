@@ -159,13 +159,24 @@ var variablesExplain = {
 
 // #sidebar #menu
 for (var i = 0; i < variables.length; i++) {
-	document.querySelector("#sidebar #menu").innerHTML += "<li onclick='setVariable(\"" + variables[i]  + "\")' class='" + variables[i]+ "' style='background-image:url(images/" + variables[i] + ".svg)'> </li>";
+	document.querySelector("#sidebar #menu").innerHTML += "<label><input type='checkbox' id='" + variables[i] +"' name='checkbox' value='" + variables[i] +"'>" + variablesUI[i] + "</label>";
+	// document.querySelector("#sidebar #menu").innerHTML += "<li onclick='setVariable(\"" + variables[i]  + "\")' class='" + variables[i]+ "'> " + variablesUI[i] + "</li>";
 }
 
-// // Display all options in 1 div #metro .content
-// for (var i = 0; i < variables.length; i++) {
-// 	document.querySelector("#metro .content").innerHTML += "<li onclick='setVariable(\"" + variables[i]  + "\")' class='" + variables[i]+ "'> <img src='images/"  + variables[i] + ".svg' /><span>" + variablesUI[i] +"</span> </li>";
-// }
+for (var i = 0; i < variables.length; i++) {
+	document.querySelector('#sidebar #menu #' + variables[i] ).addEventListener("click", function(e){ var those = this; test(those) }, false);
+}
+// setVariable(variables[i])
+
+function test (those) {
+	// var y = (x == 2 ? "yes" : "no");
+	those.state = (those.state == true ? false : true);
+
+
+	setVariable(those.id)
+}
+
+
 
 
 
@@ -293,18 +304,14 @@ function joinData(data, layer) {
 function legenda (name) {
 
 	// reset html
-	document.querySelector("#sidebar #legenda").innerHTML = " <span class='close'></span>		<span class='pointer'></span>";
+	document.querySelector("#sidebar #legenda").innerHTML = " <a class='close' onclick='toggleHamburger()'></a>		<span class='pointer'></span>";
 
-	
+
 	for (var i = 0; i < hues.length-2; i++) {
 		// console.log(hues[i])
 		$( "#sidebar #legenda" ).append( "  <div style='background-color:" + hues[i] +"'></div>" );
 	};
 
-	// if (variablesIsHighToLow[name]) {
-	// }
-	// else {
-	// }
 }
 
 
@@ -313,6 +320,8 @@ function legenda (name) {
 // The input is a string 'name', which specifies which column
 // of the imported JSON file is used to color the map.
 function setVariable(name) {
+
+
 	var scale = ranges[name];
 	euLayer.eachLayer(function(layer) {
 		// Decide the color for each state by finding its
@@ -734,12 +743,10 @@ function mouseout(e) {
 
 
 
-toggleHamburgerButton ();
-function toggleHamburgerButton () {
-	document.querySelector("#sidebar .hamburger").addEventListener("click", function(e){ var those = this; toggleHamburger(e,those) }, false);
-}
+
 var isHamburgerMenuOn = true;
-function toggleHamburger (e,those) {
+function toggleHamburger () {
+	console.log("re")
 	if (isHamburgerMenuOn) {
 		$("#sidebar").css("backgroundColor", "rgba(0,0,0,0)")
 		$("#sidebar #menu").css("display", "none")
