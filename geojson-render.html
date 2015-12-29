@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>D3 GeoJSON in Leaflet</title>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+	L.TileLayer.d3_geoJSON =  L.TileLayer.extend({
+  onAdd : function(map) {
+    L.TileLayer.prototype.onAdd.call(this,map);
+    this.g = d3.select(map._container).select("svg").append("g");
+    this._path = d3.geo.path().projection(function(d) {
+      var point = map.latLngToLayerPoint(new L.LatLng(d[1],d[0]));
+      return [point.x,point.y];
+    });
+    this.on("tileunload",function(d) {
+      if (d.tile.xhr) d.tile.xhr.abort();
+      if (d.tile.nodes) d.tile.nodes.remove();
+      d.tile.nodes = null;
+      d.tile.xhr = null;
+    });
+  },
+  _loadTile : function(tile,tilePoint) {
+    var self = this;
+    this._adjustTilePoint(tilePoint);
+
+    if (!tile.nodes && !tile.xhr) {
+      tile.nodes = d3.select();
+      tile.xhr = d3.json(this.getTileUrl(tilePoint),function(d) {
+        tile.xhr = null;
+        tile.nodes = self.g.append("path")
+          .datum(d)
+          .attr("d",self._path)
+          .attr("class",self.options.class);
+      });
+    }
+  }
+});
+
+</script>
+<style>
+html, body, #map { height: 100%;width:100%;}
+body { padding: 0; margin: 0; }
+.road { stroke : black; fill : none; }
+.water { fill:#888; }
+</style>
+<body>
+<div id="map"></div>
+<script>
+map = L.map(map).setView([40.74, 3], 3);
+map._initPathRoot();
+new L.TileLayer.d3_geoJSON('http://{s}.tile.openstreetmap.us/vectiles-highroad/{z}/{x}/{y}.json',{class:"road"})
+  .addTo(map);
+new L.TileLayer.d3_geoJSON('http://{s}.tile.openstreetmap.us/vectiles-water-areas/{z}/{x}/{y}.json',{class:"water"})
+  .addTo(map);
+</script>
+</body>
