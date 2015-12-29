@@ -20,7 +20,7 @@ var style = {
 };
 
 
-var geojsonURL = 'http://{s}.tile.openstreetmap.us/vectiles-water-areas/{z}/{x}/{y}.json';
+var geojsonURL = 'https://{s}.tile.openstreetmap.us/vectiles-water-areas/{z}/{x}/{y}.json';
 var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, {
         clipTiles: true,
         unique: function (feature) {
