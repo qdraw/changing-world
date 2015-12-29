@@ -22,8 +22,8 @@ body {
     top:48%; 
     left:48%; 
     z-index:100;
-    filter: invert(100%);
-    -webkit-filter: invert(100%);
+/*    filter: invert(100%);
+    -webkit-filter: invert(100%);*/
 
 }
 
@@ -444,47 +444,64 @@ path {
 
 #sidebar #legenda {
     position: absolute;
-    bottom: 5px;
-    padding-left: 45px;
-/*    border-top: 1px solid #ccc;
-*/
+    top: 5vh;
+    right: 0px;
+    width: 2.75vw;
 }
+
+
 
 #sidebar #legenda div {
     width: 2.75vw;
     margin-left: 0px;
-    height: 20px;
+    height: 11.875vh;
     display: inline-block;
     float: left;
 }
+#sidebar #legenda .close {
+    width: 2.75vw;
+    height: 5vh;
+    position: absolute;
+    top: -5vh;
+    left: 0px;
+    background-color: black;
 
-@media (max-width: 1360px) {
-    #sidebar #legenda div {
-        width: 35px;
-    }
-}
-
-@media (max-width: 350px) {
-    #sidebar #legenda div {
-        width: 30px;
-    }
 }
 
+#sidebar #legenda .pointer {
+    position: absolute;
+    top: 0px;
+    left: 4.1vw;
+    width: 150px;
+    height: 5vh;
+    background-color: #ccc;
+    transition: all 1s ease;
+}
 
-#sidebar #legenda span {
-    width: 42%;
-    margin-right: 18px;
+#sidebar #legenda .pointer:after, 
+#sidebar #legenda .pointer:before {
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
 }
-#sidebar #menu {
-    margin-left: auto;
-    margin-right: auto;
-    width: 350px;
+#sidebar #legenda .pointer:after {
+    border-right-color: #ccc;
+    border-width: 2.5vh;
+    margin-top: -2.5vh;
 }
-@media (max-width: 350px){
-    #sidebar #menu {
-        width: 100%;
-    }   
+
+#sidebar #legenda .pointer:before {
+    width: 3.6vw;
+    top: calc( 2.5vh - 3.5px );
+    background-color: #ccc;
 }
+
+
 
 #sidebar #menu li{
     cursor: pointer;
@@ -501,11 +518,6 @@ path {
     background-color: #64738C!important;
 }
 
-@media (max-width: 350px){
-    #sidebar #menu li {
-        width: 42.857142857px;
-    }   
-}
 
 /*.leaflet-popup-content-wrapper,
 leaflet-popup-content {

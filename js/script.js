@@ -1,15 +1,3 @@
-
-// L.mapbox.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ';
-// Replace 'mapbox.streets' with your map id.
-// var mapboxTiles = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-base/{z}/{x}/{y}.png' , {
-// 	minZoom: 2,
-// 	maxZoom: 19,
-// 	subdomains: '0123',
-// 	opacity: 0.3,
-// 	attribution: '<a class="sourcelink" href="sources.html" target="_blank">Bronvermelding</a>'
-// });
-
-
 var style = {
     "clickable": false,
     "color": "#00D",
@@ -21,7 +9,8 @@ var style = {
 
 
 var geojsonURL = 'data/vectiles-water-areas/{z}/{x}/{y}.json';
-var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, {
+var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, 
+	{
         clipTiles: true,
         unique: function (feature) {
             return feature.id; 
@@ -69,14 +58,14 @@ var popup = new L.Popup({ autoPan: false });
 
 
 var hues = [
-	'#64738C', // green green
-	'#889EBB',
-	'#B6D2DE',
-	'#D4EAF2',
-	'#EBC2D0', // light rood
-	'#D994AB',
-	'#E679A3',
-	'#C0537A',
+	'#648966', // green green
+	'#87B786',
+	'#AFCDAE',
+	'#CEE7CF',
+	'#E9CECE', // light rood
+	'#D59393',
+	'#E27979',
+	'#BF5555',
 
 	'#e4e8e7', // selected color
 	'#CCCCCC' // NaN
@@ -252,7 +241,6 @@ function joinData(data, layer) {
 			ranges[n].min = Math.min(data[i][n], ranges[n].min);
 			ranges[n].max = Math.max(data[i][n], ranges[n].max);
 
-
 			// Min / Max Name for example 'NL'
 			if (data[i][n] != NaNescaper) {
 				if (data[i][n] === ranges[n].min) {
@@ -304,7 +292,10 @@ function joinData(data, layer) {
 
 function legenda (name) {
 
-	document.querySelector("#sidebar #legenda").innerHTML = "   <h2> Legenda </h2>   <span style='float:left'>Beter</span>        <span style='float:left; text-align:right'>Slechter</span>";
+	// reset html
+	document.querySelector("#sidebar #legenda").innerHTML = " <span class='close'></span>		<span class='pointer'></span>";
+
+	
 	for (var i = 0; i < hues.length-2; i++) {
 		// console.log(hues[i])
 		$( "#sidebar #legenda" ).append( "  <div style='background-color:" + hues[i] +"'></div>" );
@@ -592,10 +583,7 @@ function filterCountry(e,those,name) {
 	// Call for this scale in ranges
 	var scale = ranges[name];
 
-	// Yeah here we go again http://eelslap.com/
-	function map(value, low1, high1, low2, high2) {
-		return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
-	}
+
 
 	// Loop though all layers in the leaflet map
 	// filter for countries who are better, the same or worse
@@ -613,7 +601,7 @@ function filterCountry(e,those,name) {
 				var outMax = 0;
 
 				var division = Math.floor(
-					map( layer.feature.properties[name],  scale.max+1,  scale.min-1,  outMax, outMin  )
+					mmap( layer.feature.properties[name],  scale.max+1,  scale.min-1,  outMax, outMin  )
 					);
 
 				var color = badHues[division]
@@ -626,7 +614,7 @@ function filterCountry(e,those,name) {
 				var outMax = goodHues.length;
 
 				var division = Math.floor(
-					map( layer.feature.properties[name],  scale.max+1,  scale.min-1,  outMax, outMin  )
+					mmap( layer.feature.properties[name],  scale.max+1,  scale.min-1,  outMax, outMin  )
 					);
 
 				var color = goodHues[division]
@@ -657,7 +645,7 @@ function filterCountry(e,those,name) {
 				var outMax = 0
 
 				var division = Math.floor(
-					map( layer.feature.properties[name],  scale.max+1,  scale.min-1,  outMax, outMin  )
+					mmap( layer.feature.properties[name],  scale.max+1,  scale.min-1,  outMax, outMin  )
 					);
 
 				var color = goodHues[division]
@@ -668,7 +656,7 @@ function filterCountry(e,those,name) {
 				var outMax = 0;
 
 				var division = Math.floor(
-					map( layer.feature.properties[name],  scale.min-1,  scale.max+1,  outMin, outMax  )
+					mmap( layer.feature.properties[name],  scale.min-1,  scale.max+1,  outMin, outMax  )
 					);
 
 				var color = badHues[division]
@@ -691,7 +679,6 @@ function filterCountry(e,those,name) {
 }
 
 
-
 // The popup feature
 
 var closeTooltip;
@@ -699,80 +686,37 @@ var closeTooltip;
 function mousemove(e,those,name) {
 	// https://www.mapbox.com/mapbox.js/example/v1.0.0/choropleth/
 
-	var layer = e.target;
-
-
-
-	// layer.setStyle({
-	//     weight: 4,
-	//     color: '#FF6000',
-	//     dashArray: '',
-	//     fillOpacity: 0.7
-	// });
-
-
-
-
-	var newpos = {
-		lat: (e.latlng.lat+1),        
-		lng: (e.latlng.lng),        
-	}
-
-	popup.setLatLng(newpos);
-
-
 	var content = e.target.feature.properties[name];
 	content = Math.round(content);
 
 
-	if (e.target.feature.properties[name] == NaNescaper) {
-		content = "geen data"
-	};
-
-	content = content.toLocaleString()
-	// https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
-
-	 content = "<b>" +countrynames[e.target.feature.properties["name"]] + "</b> <br />" +  filterReplace (variablesScale[name],content,countrynames[e.target.feature.properties["name"]])
 
 
+	/* Calculate the position */
+	var top = mmap(content,ranges[name].min,ranges[name].max,0,100);
 
-	// filterReplace (legendascoreExport,value,fullcountryname)
-
-
+	if (top < 2) {
+		top = 2;
+	}
+	if (top > 95) {
+		top = 95;
+	}
+	document.querySelector("#sidebar #legenda .pointer").style.top = "calc( " + top + "vh" + " - 20px )";
 
 
 
 
 
-	// var content = countrynames[e.target.feature.properties["name"]] + "<br />";
-
-	// for (var i = 0; i < variables.length; i++) {
-	//     // console.log(variables[i]);
-
-	//     var value = e.target.feature.properties[variables[i]];
-	//     value = Math.floor(value);
-	//     content += value + variablesScale[variables[i]] + "<br />";
-
-	// };
-
-	// timer = window.setTimeout(function() {
-	// 	popup.setContent(content);
-
-	// 	if (!popup._map) popup.openOn(map);
-
-	// }, 200);
 
 
-	
-	closeTooltip = window.setTimeout(function() {
-		popup.setContent(content);
-		if (!popup._map) popup.openOn(map);
-	}, 100);
-
+	 content = "<b>" +countrynames[e.target.feature.properties["name"]] + "</b> <br />" + "score " + content;
+	 // filterReplace (variablesScale[name],content,countrynames[e.target.feature.properties["name"]]) 
+	 document.querySelector("#sidebar #legenda .pointer").innerHTML = content;
 }
 
 
 function mouseout(e) {
+
 
 
 	closeTooltip = window.setTimeout(function() {
@@ -816,6 +760,12 @@ function toggleHamburger (e,those) {
 		isHamburgerMenuOn = true;
 	}
 
+}
+
+
+// Yeah here we go again http://eelslap.com/
+function mmap(value, low1, high1, low2, high2) {
+	return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }
 
 
