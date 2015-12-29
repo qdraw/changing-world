@@ -20,13 +20,14 @@ var style = {
 };
 
 
-var geojsonURL = 'https://{s}.tile.openstreetmap.us/vectiles-water-areas/{z}/{x}/{y}.json';
+var geojsonURL = 'data/vectiles-water-areas/{z}/{x}/{y}.json';
 var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, {
         clipTiles: true,
         unique: function (feature) {
             return feature.id; 
         }
-    }, {
+    }, 
+    {
         style: style,
         onEachFeature: function (feature, layer) {
             if (feature.properties) {
@@ -45,7 +46,7 @@ var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, {
 var map = L.map('map',{ 
 	zoomControl:false,
 	minZoom: 3,
-	maxZoom: 10 
+	maxZoom: 7 
 	})
 	.addLayer(geojsonTileLayer)
 	.setView([55, 0], 4);
