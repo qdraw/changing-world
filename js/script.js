@@ -25,6 +25,8 @@ var hues = [
 	'#87B786',
 	'#AFCDAE',
 	'#CEE7CF',
+	'#FFFFFF',
+	'#CCCCCC',
 	'#E9CECE', // light rood
 	'#D59393',
 	'#E27979',
@@ -172,101 +174,125 @@ function joinData(data, layer) {
 // The input is a string 'name', which specifies which column
 // of the imported JSON file is used to color the map.
 
+window.divisions = {};
 
 
 function setVariable(name) {
 
 	if (typeof(name) == "string") {
-		var scale = window.ranges[name];
-		euLayer.eachLayer(function(layer) {
+		// var scale = window.ranges[name];
+		// euLayer.eachLayer(function(layer) {
 
 
-			// Decide the color for each state by finding its
-			// place between min & max, and choosing a particular
-			// color as index.
-			// This is like the arduino map feature
-			var division = Math.floor(
-				(hues.length - 1) *
-				((layer.feature.properties[name] - scale.min) /
-				(scale.max - scale.min)));
+		// 	// Decide the color for each state by finding its
+		// 	// place between min & max, and choosing a particular
+		// 	// color as index.
+		// 	// This is like the arduino map feature
+		// 	var division = Math.floor(
+		// 		(hues.length - 1) *
+		// 		((layer.feature.properties[name] - scale.min) /
+		// 		(scale.max - scale.min)));
 			
-			var index =	window.subject.indexOf(name);
-			var ishightolow = (window.ishightolow[index] == "TRUE" ? true : false);
+		// 	var index =	window.subject.indexOf(name);
+		// 	var ishightolow = (window.ishightolow[index] == "TRUE" ? true : false);
 
-			if (ishightolow) {
-				// higher is beter
-				var divisionNeg = division * -1;
-				division = (hues.length) + divisionNeg;
-			}
+		// 	if (ishightolow) {
+		// 		// higher is beter
+		// 		var divisionNeg = division * -1;
+		// 		division = (hues.length) + divisionNeg;
+		// 	}
 
+		// 	window.divisions[layer.feature.properties.name] = division;
 
-			// See full path options at
-			// http://leafletjs.com/reference.html#path
-			layer.setStyle({
-				fillColor: hues[division],
-				fillOpacity: 0.8,
-				color: '#666',
-				weight: 0.5
-			});
+		// 	// See full path options at
+		// 	// http://leafletjs.com/reference.html#path
+		// 	layer.setStyle({
+		// 		fillColor: hues[division],
+		// 		fillOpacity: 0.8,
+		// 		color: '#666',
+		// 		weight: 0.5
+		// 	});
 
-			// YEAH, eventListeners
-			// layer.addEventListener("mouseover", function(e){ var those = this; mousemove(e,those,name) }, false);
-			// layer.addEventListener("mouseout", function(e){ var those = this; mouseout(e,those) }, false);
-			// layer.addEventListener("click", function(e){ var those = this; filterCountry(e,those,name) }, false);
+		// 	// // YEAH, eventListeners
+		// 	layer.addEventListener("mouseover", function(e){ var those = this; mousemove(e,those,name) }, false);
+		// 	layer.addEventListener("click", function(e){ var those = this; filterCountry(e,those,name) }, false);
 
-		});
+		// });
 	}
 	else {
 
-		var divisions = {};
+		if (name.length >= 1) {
 
-		for (var i = 0; i < name.length; i++) {
-			console.log(window.ranges[name[i]].min);	
-			console.log(window.ranges[name[i]].max);
-			
-			euLayer.eachLayer(function(layer) {
+			for (var i = 0; i < name.length; i++) {
+				console.log(window.ranges[name[i]].min);	
+				console.log(window.ranges[name[i]].max);
 				
-				var division = Math.floor(
-				(hues.length - 1) *
-				((layer.feature.properties[name[i]] - window.ranges[name[i]].min) /
-				(window.ranges[name[i]].max - window.ranges[name[i]].min)));
+				window.divisions.arraylength = name.length;
 
-				if (divisions[layer.feature.properties.name] != undefined) {
-					if (!isNaN(divisions[layer.feature.properties.name])) {
-						divisions[layer.feature.properties.name] += division;
+				euLayer.eachLayer(function(layer) {
+					
+					var division = Math.floor(
+					(hues.length - 1) *
+					((layer.feature.properties[name[i]] - window.ranges[name[i]].min) /
+					(window.ranges[name[i]].max - window.ranges[name[i]].min)));
+
+					if (divisions[layer.feature.properties.name] != undefined) {
+						if (!isNaN(divisions[layer.feature.properties.name])) {
+							window.divisions[layer.feature.properties.name] += division;
+						}
 					}
+					else {
+						window.divisions[layer.feature.properties.name] = division;
+					}
+
+				});
+
+			}
+
+			euLayer.eachLayer(function(layer) {
+				// See full path options at
+				// http://leafletjs.com/reference.html#path
+
+				var division = (divisions[layer.feature.properties.name] / name.length);
+				division = Math.floor(division);
+				if (division > hues.length) {
+					console.log("division")
+					division = hues.length-1;
 				}
-				else {
-					divisions[layer.feature.properties.name] = division;
-				}
+
+
+				layer.setStyle({
+					fillColor: hues[division],
+					fillOpacity: 0.8,
+					color: '#666',
+					weight: 0.5
+				});
+
+				// // YEAH, eventListeners
+				layer.addEventListener("mouseover", function(e){ var those = this; mousemove(e,those,name) }, false);
+				layer.addEventListener("click", function(e){ var those = this; filterCountry(e,those,name) }, false);
 
 			});
 
 		}
+		else {
 
-		euLayer.eachLayer(function(layer) {
-			// See full path options at
-			// http://leafletjs.com/reference.html#path
+			euLayer.eachLayer(function(layer) {
 
-			var division = (divisions[layer.feature.properties.name] / name.length);
-			division = Math.floor(division);
-
-			layer.setStyle({
-				fillColor: hues[division],
-				fillOpacity: 0.8,
-				color: '#666',
-				weight: 0.5
+				layer.setStyle({
+					fillColor: "#CCC",
+					fillOpacity: 0.8,
+					color: '#666',
+					weight: 0.5
+				});
 			});
-		});
-
-		console.log(divisions);
 
 
-
+		}
 	}	
 
 
-	// legenda (name)
+	legenda (name)
 
 	// bestCountry (name)
 	// setActiveMenu (name)
@@ -322,6 +348,66 @@ function readVariable (those) {
 }
 
 
+function legenda (name) {
+
+	// reset html
+	document.querySelector("#sidebar #legenda").innerHTML = " <a class='close' onclick='toggleHamburger()'></a>		<span class='pointer'></span>";
+
+
+	for (var i = 0; i < hues.length; i++) {
+		// console.log(hues[i])
+		$( "#sidebar #legenda" ).append( "  <div style='background-color:" + hues[i] + "'></div>" );
+	};
+
+}
+
+
+// The popup feature
+
+var closeTooltip;
+
+function mousemove(e,those,name) {
+	// https://www.mapbox.com/mapbox.js/example/v1.0.0/choropleth/
+
+
+
+	var division = (window.divisions[e.target.feature.properties.name] / window.divisions.arraylength);
+
+
+	var vhdivi = mmap(division,0,10,0,100);
+
+	if (vhdivi < 2) {
+		vhdivi = 2;
+	}
+	if (vhdivi > 90) {
+		vhdivi = 90;
+	}
+
+
+	division = Math.floor(division);
+
+	console.log(e.target.feature.properties.name);
+
+	console.log("division " + division);
+
+
+
+
+
+	if (document.querySelectorAll("#sidebar #legenda .pointer").length > 0) {
+		document.querySelector("#sidebar #legenda .pointer").style.top = "calc( " + vhdivi + "vh" + " - 20px )";
+		
+		 var content = "<b>" + e.target.feature.properties["nl_name"]  + "</b> <br />" + "score " + division;
+		 // filterReplace (variablesScale[name],content,countrynames[e.target.feature.properties["name"]]) 
+	 	document.querySelector("#sidebar #legenda .pointer").innerHTML = content;
+	}
+
+}
+
+// Yeah here we go again http://eelslap.com/
+function mmap(value, low1, high1, low2, high2) {
+	return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+}
 
 
 
@@ -330,28 +416,6 @@ function readVariable (those) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-// function legenda (name) {
-
-// 	// reset html
-// 	document.querySelector("#sidebar #legenda").innerHTML = " <a class='close' onclick='toggleHamburger()'></a>		<span class='pointer'></span>";
-
-
-// 	for (var i = 0; i < hues.length-2; i++) {
-// 		// console.log(hues[i])
-// 		$( "#sidebar #legenda" ).append( "  <div style='background-color:" + hues[i] + "'></div>" );
-// 	};
-
-// }
 
 
 
@@ -809,37 +873,6 @@ function readVariable (those) {
 // }
 
 
-// // The popup feature
-
-// var closeTooltip;
-
-// function mousemove(e,those,name) {
-// 	// https://www.mapbox.com/mapbox.js/example/v1.0.0/choropleth/
-
-// 	var content = e.target.feature.properties[name];
-// 	content = Math.round(content);
-
-
-
-
-// 	/* Calculate the position */
-// 	var top = mmap(content,ranges[name].min,ranges[name].max,0,100);
-
-// 	if (top < 2) {
-// 		top = 2;
-// 	}
-// 	if (top > 95) {
-// 		top = 95;
-// 	}
-
-// 	if (document.querySelectorAll("#sidebar #legenda .pointer").length > 0) {
-// 		document.querySelector("#sidebar #legenda .pointer").style.top = "calc( " + top + "vh" + " - 20px )";
-// 		 content = "<b>" +countrynames[e.target.feature.properties["name"]] + "</b> <br />" + "score " + content;
-// 		 // filterReplace (variablesScale[name],content,countrynames[e.target.feature.properties["name"]]) 
-// 	 	document.querySelector("#sidebar #legenda .pointer").innerHTML = content;
-// 	}
-
-// }
 
 
 // function mouseout(e) {
@@ -888,10 +921,7 @@ function readVariable (those) {
 // }
 
 
-// // Yeah here we go again http://eelslap.com/
-// function mmap(value, low1, high1, low2, high2) {
-// 	return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
-// }
+
 
 
 // function pageFail (e) {

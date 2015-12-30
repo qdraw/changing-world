@@ -454,7 +454,8 @@ path {
 #sidebar #legenda div {
     width: 2.75vw;
     margin-left: 0px;
-    height: 11.875vh;
+    /*height: 11.875vh;*/
+    height: 9.5vh;
     display: inline-block;
     float: left;
 }
