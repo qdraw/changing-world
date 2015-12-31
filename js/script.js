@@ -120,6 +120,7 @@ window.subjectui = [];
 window.ishightolow = [];
 window.sidebarheader = [];
 window.helpdata = [];
+window.introdata = [];
 window.countrydescription = {};
 
 function loadData () {
@@ -135,6 +136,7 @@ function processData (data, tabletop) {
 		window.subjectui.push(data.datatableoptions.elements[key].subjectui);
 		window.ishightolow.push(data.datatableoptions.elements[key].ishightolow);
 		window.sidebarheader.push(data.datatableoptions.elements[key].sidebarheader);
+		window.introdata.push(data.datatableoptions.elements[key].introdata);
 		window.helpdata.push(data.datatableoptions.elements[key].helpdata);
 	});
 
@@ -280,6 +282,26 @@ function setVariable(selectedVar) {
 	}//e/fi
 	else {
 
+
+		document.querySelector("#introdata").style.zIndex = "1";
+		document.querySelector("#introdata").addEventListener("click", hideLightbox, false);
+
+
+		document.querySelector("#introdata .container").innerHTML = "<div class='close'></div>";
+
+		for (var i = 0; i <  window.introdata.length; i++) {
+
+			if (i === 0) {
+				document.querySelector("#introdata .container").innerHTML += "<h2>" + window.introdata[i] + "</h2>";
+			}
+			if (window.helpdata[i] !== ""  && i !== 0) {
+				document.querySelector("#introdata .container").innerHTML += "<p>" + window.introdata[i] + "</p>";
+			} 
+		}
+
+
+		// document.querySelector("#introdata").style.zIndex = "-1";
+
 		euLayer.eachLayer(function(layer) {
 			layer.setStyle({
 				fillColor: "#d6d6d6",
@@ -406,7 +428,7 @@ function mousemove(e,those) {
 
 				var top = mmap(window.combinedScore[e.target.feature.properties.name],0,window.combinedScore[window.filterCountryName],0,50);
 				top = 100 - top;
-				console.log("lower" + e.target.feature.properties.name + top + " `" + window.combinedScore[window.filterCountryName]);
+				// console.log("lower" + e.target.feature.properties.name + top + " `" + window.combinedScore[window.filterCountryName]);
 
 			}
 			// euLayer.eachLayer(function(layer) {
@@ -483,6 +505,7 @@ function help () {
 
 function hideLightbox () {
 	document.querySelector("#lightbox").style.zIndex = "-1";
+	document.querySelector("#introdata").style.zIndex = "-1";
 }
 
 

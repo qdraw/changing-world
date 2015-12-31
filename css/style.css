@@ -620,7 +620,7 @@ leaflet-popup-content {
 
 
 
-
+#introdata,
 #lightbox {
 	width: 100vw;
 	height: 100vh;
@@ -630,6 +630,8 @@ leaflet-popup-content {
 	left: 0px;
 	background-color: rgba(0,0,0,0.3);
 }
+
+#introdata .close,
 #lightbox .close {
 	position: absolute;
 	top: 0px;
@@ -642,6 +644,7 @@ leaflet-popup-content {
 	height: 35px;
 	text-align: right;
 }
+#introdata .container,
 #lightbox .container {
 	position: relative;
 	background-color: white;
@@ -664,6 +667,20 @@ leaflet-popup-content {
 	line-height: 1.5;
 
 }
+#introdata {
+	background-color: transparent;
+}
+
+#introdata .container {
+	margin-left: 35vw;
+	width: 50vw;
+	-webkit-column-count: 1; /* Chrome, Safari, Opera */
+	-moz-column-count: 1; /* Firefox */
+	column-count: 1;
+}
+
+
+
 
 
 
