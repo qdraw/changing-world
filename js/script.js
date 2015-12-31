@@ -1,3 +1,28 @@
+
+/*
+	STOP READING CODE, GIVE ME A+ ;)
+
+
+	                      ,                                  
+	                     ,:                                  
+	      ,:==++=~,      :~                                  
+	    ,=+=:::::+?~     ~=                 ,,                  
+	   ~+~:~==++=,,~,    ~=                :==:   ,=~,       ,   
+	  ==,~      :~,      ~~       ~??~     :~ =:   :I=      ,,        
+	 ~~=,        ==,    ,~II    :?$+=?=:      ?,   ++:     ;;  
+	,==~~      ,,,   ,?Z$7ZI:  ,I$,  ~?:   +$$=,  ,+?,+= ,:;  
+	 =+:     ,,,:  ,7Z: ,~=,   =I?~,+7   ,=$~,=I~   +I~77 ~:,  
+	,=~:,   :==~::  ?I~  ,~=,  ,?$Z7$?:  +7:  ~I~   +$I==I=:   
+	,=~:~:,:~=++,  ,I?:  ,=?:  :I7+~~:  ,?7:,~++,   =$I :I+,   
+	 ,==::::::+?=~  ~II,,=II,  ,??: :~~  +?=++I$+   ~7? ,++:   
+	   :~::~:, :+?+:  ?II+~:  ,:+~   ,~~  ==~::::,  :+,  :=:   
+	            ,=II+:        ,:,    ,~=:                    
+	              :=~==                ~=,                   
+	                  ,                ,::                            
+*/		
+
+
+
 //loops
 
 	// Object.keys(data.datatable).forEach(function(key) {
@@ -10,7 +35,7 @@
 	// };
 
 
-
+//d6d6d6
 var style = {
     "clickable": false,
     "color": "#00D",
@@ -25,7 +50,7 @@ var hues = [
 	'#87B786',
 	'#AFCDAE',
 	'#CEE7CF',
-	'#FFFFFF',
+	'#d6d6d6',
 	'#CCCCCC',
 	'#E9CECE', // light rood
 	'#D59393',
@@ -79,13 +104,13 @@ var euLayer = L.mapbox.featureLayer()
 window.subject = [];
 window.subjectui = [];
 window.ishightolow = [];
-
+window.sidebarheader = [];
 
 function loadData () {
 	var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1v9Dsd5LwlLrSd5jzO7_QfTECU3TEtnlK44omvdYCJ8E/pubhtml';
 	Tabletop.init( { key: public_spreadsheet_url,
 	                callback: processData,
-	                simpleSheet: false } )
+	                simpleSheet: false } );
 }
 
 function processData (data, tabletop) {
@@ -93,6 +118,7 @@ function processData (data, tabletop) {
 		window.subject.push(data.datatableoptions.elements[key].subject);
 		window.subjectui.push(data.datatableoptions.elements[key].subjectui);
 		window.ishightolow.push(data.datatableoptions.elements[key].ishightolow);
+		window.sidebarheader.push(data.datatableoptions.elements[key].sidebarheader);
 	});
 
 	for (var i = 0; i < window.subject.length; i++) {
@@ -100,6 +126,7 @@ function processData (data, tabletop) {
 	}
 
 	joinData(data.datatable.elements, euLayer);
+
 }
 
 
@@ -124,6 +151,23 @@ function joinData(data, layer) {
 
 
 
+
+
+	for (var j = 0; j < window.subject.length; j++) {
+
+		for (i = 0; i < data.length; i++) {
+
+			data[i][window.subject[j]] = data[i][window.subject[j]].replace(/,/i, "."); 
+			data[i][window.subject[j]] = Number(data[i][window.subject[j]]);
+			var jName = window.subject[j];
+			var value = data[i][window.subject[j]];
+
+			window.ranges[jName].min = Math.min(value, window.ranges[jName].min);
+			window.ranges[jName].max = Math.max(value, window.ranges[jName].max);
+
+		}	
+	}
+
 	for (i = 0; i < data.length; i++) {
 
 		// Match the GeoJSON data (byState) with the tabular data
@@ -136,21 +180,6 @@ function joinData(data, layer) {
 
 	}
 
-	for (var j = 0; j < window.subject.length; j++) {
-
-		for (i = 0; i < data.length; i++) {
-
-			data[i][window.subject[j]] = data[i][window.subject[j]].replace(/,/i, "."); 
-			data[i][window.subject[j]] = Number(data[i][window.subject[j]])
-			var jName = window.subject[j];
-			var value = data[i][window.subject[j]];
-
-			window.ranges[jName].min = Math.min(value, window.ranges[jName].min);
-			window.ranges[jName].max = Math.max(value, window.ranges[jName].max);
-
-		}	
-	};
-
 
 	// Create a new GeoJSON array of features and set it
 	// as the new usLayer content.
@@ -161,10 +190,12 @@ function joinData(data, layer) {
 	euLayer.setGeoJSON(newFeatures);
 
 
+	setVariable([]);
 
-	// Kick off by filtering on an attribute.
-	setVariable(window.subject[0]);
 	buildMenu();
+	buildSidebarHeader();
+	
+
 }
 
 
@@ -174,140 +205,88 @@ function joinData(data, layer) {
 // The input is a string 'name', which specifies which column
 // of the imported JSON file is used to color the map.
 
-window.divisions = {};
+
+window.combinedScore = {};
+
+function setVariable(selectedVar) {
 
 
-function setVariable(name) {
+	if (selectedVar.length > 0) {
+		console.log("selectedVar");
+		console.log(selectedVar);
 
-	if (typeof(name) == "string") {
-		// var scale = window.ranges[name];
-		// euLayer.eachLayer(function(layer) {
+		var combinedScore = {};
 
-
-		// 	// Decide the color for each state by finding its
-		// 	// place between min & max, and choosing a particular
-		// 	// color as index.
-		// 	// This is like the arduino map feature
-		// 	var division = Math.floor(
-		// 		(hues.length - 1) *
-		// 		((layer.feature.properties[name] - scale.min) /
-		// 		(scale.max - scale.min)));
+		euLayer.eachLayer(function(layer) {
 			
-		// 	var index =	window.subject.indexOf(name);
-		// 	var ishightolow = (window.ishightolow[index] == "TRUE" ? true : false);
+			
+			for (var i = 0; i < selectedVar.length; i++) {
 
-		// 	if (ishightolow) {
-		// 		// higher is beter
-		// 		var divisionNeg = division * -1;
-		// 		division = (hues.length) + divisionNeg;
-		// 	}
 
-		// 	window.divisions[layer.feature.properties.name] = division;
-
-		// 	// See full path options at
-		// 	// http://leafletjs.com/reference.html#path
-		// 	layer.setStyle({
-		// 		fillColor: hues[division],
-		// 		fillOpacity: 0.8,
-		// 		color: '#666',
-		// 		weight: 0.5
-		// 	});
-
-		// 	// // YEAH, eventListeners
-		// 	layer.addEventListener("mouseover", function(e){ var those = this; mousemove(e,those,name) }, false);
-		// 	layer.addEventListener("click", function(e){ var those = this; filterCountry(e,those,name) }, false);
-
-		// });
-	}
-	else {
-
-		if (name.length >= 1) {
-
-			for (var i = 0; i < name.length; i++) {
-				console.log(window.ranges[name[i]].min);	
-				console.log(window.ranges[name[i]].max);
-				
-				window.divisions.arraylength = name.length;
-
-				euLayer.eachLayer(function(layer) {
-					
-					var division = Math.floor(
-					(hues.length - 1) *
-					((layer.feature.properties[name[i]] - window.ranges[name[i]].min) /
-					(window.ranges[name[i]].max - window.ranges[name[i]].min)));
-
-					if (divisions[layer.feature.properties.name] != undefined) {
-						if (!isNaN(divisions[layer.feature.properties.name])) {
-							window.divisions[layer.feature.properties.name] += division;
-						}
-					}
-					else {
-						window.divisions[layer.feature.properties.name] = division;
-					}
-
-				});
-
-			}
-
-			euLayer.eachLayer(function(layer) {
-				// See full path options at
-				// http://leafletjs.com/reference.html#path
-
-				var division = (divisions[layer.feature.properties.name] / name.length);
-				division = Math.floor(division);
-				if (division > hues.length) {
-					console.log("division")
-					division = hues.length-1;
+				if (combinedScore[layer.feature.properties.name] !== undefined) {
+					combinedScore[layer.feature.properties.name] += layer.feature.properties[selectedVar[i]];
+				}
+				else {
+					combinedScore[layer.feature.properties.name] = layer.feature.properties[selectedVar[i]];
 				}
 
+				// console.log()
+				// console.log(selectedVar[i]);
+			}
+			
+			if (selectedVar.length !== 0) {
+				combinedScore[layer.feature.properties.name] = Number(combinedScore[layer.feature.properties.name] / selectedVar.length);
+				window.combinedScore = combinedScore;
+			}
 
-				layer.setStyle({
-					fillColor: hues[division],
-					fillOpacity: 0.8,
-					color: '#666',
-					weight: 0.5
-				});
 
-				// // YEAH, eventListeners
-				layer.addEventListener("mouseover", function(e){ var those = this; mousemove(e,those,name) }, false);
-				layer.addEventListener("click", function(e){ var those = this; filterCountry(e,those,name) }, false);
+			var colorindex = hues.length + (Math.floor(combinedScore[layer.feature.properties.name]) * -1);
 
+
+			layer.setStyle({
+				fillColor: hues[colorindex],
+				fillOpacity: 0.8,
+				color: '#666',
+				weight: 0.25
 			});
 
-		}
-		else {
+			// 	// // YEAH, eventListeners
+			layer.addEventListener("mouseover", function(e){ var those = this; mousemove(e,those); }, false);
+			layer.addEventListener("click", function(e){ var those = this; filterCountry(e,those); }, false);
 
-			euLayer.eachLayer(function(layer) {
 
-				layer.setStyle({
-					fillColor: "#CCC",
-					fillOpacity: 0.8,
-					color: '#666',
-					weight: 0.5
-				});
+		});
+
+	}//e/fi
+	else {
+
+		euLayer.eachLayer(function(layer) {
+			layer.setStyle({
+				fillColor: "#d6d6d6",
+				fillOpacity: 1,
+				color: '#666',
+				weight: 0.25
 			});
+		});
+
+		console.log("welcome");
+	}
 
 
-		}
-	}	
+	legenda();
+	hidePreloader();
 
-
-	legenda (name)
 
 	// bestCountry (name)
 	// setActiveMenu (name)
 	// displayCurrentType (name)
-	hidePreloader()
 }
+
 
 
 function hidePreloader () {
 	document.querySelector(".preloader").style.zIndex = "-1";
 }
-
-
-
-
 
 
 
@@ -319,32 +298,47 @@ function buildMenu () {
 
 	// #sidebar #menu
 	for (var i = 0; i <  window.subject.length; i++) {
-		document.querySelector("#sidebar #menu").innerHTML += "<label><input type='checkbox' id='" + window.subject[i] +"' name='checkbox' value='" + window.subject[i] +"'>" + window.subjectui[i] + "</label>";
+		document.querySelector("#sidebar #menu").innerHTML += "<label><input type='checkbox' id='" + window.subject[i] +"' name='checkbox' value='" + window.subject[i] +"'>" + window.subjectui[i] + "<span class='i' style='background-image: url(images/" + window.subject[i] + ".svg)'></span></label>";
 	}
 
-	for (var i = 0; i <  window.subject.length; i++) {
-		document.querySelector('#sidebar #menu #' + window.subject[i] ).addEventListener("click", function(e){ var those = this; readVariable(those) }, false);
+	for (i = 0; i <  window.subject.length; i++) {
+		document.querySelector('#sidebar #menu #' + window.subject[i] ).addEventListener("click", function(e){ var those = this; readVariable(those); }, false);
+		// line 305, col 151, Don't make functions within a loop.
 	}
+
+	document.querySelector('#sidebar #menu #help');
+
 }
 
 
-var storeActiveVar = [];
+function buildSidebarHeader () {
+	for (var i = 0; i <  window.sidebarheader.length; i++) {
+		if (i === 0) {
+			document.querySelector("#sidebar #header").innerHTML = "<h2>" + window.sidebarheader[i] + "</h2>";
+		}
+		else if (window.sidebarheader[i] !== "") {
+			document.querySelector("#sidebar #header").innerHTML += "<p>" + window.sidebarheader[i] + "</p>";
+		} 
+	}
+}
+
+var selectedVar = [];
+
 function readVariable (those) {
 	// var y = (x == 2 ? "yes" : "no");
-	those.state = (those.state == true ? false : true);
+	those.state = (those.state === true ? false : true);
 	
 	if (those.state) {
-		storeActiveVar.push(those.id)
+		selectedVar.push(those.id);
 	}
 	else {
-		var index = storeActiveVar.indexOf(those.id);
+		var index = selectedVar.indexOf(those.id);
 		// delete storeActiveVar[index];
-		storeActiveVar.splice( index, 1 )
+		selectedVar.splice( index, 1 );
 	}
 	
-	console.log(storeActiveVar);
-
-	setVariable(storeActiveVar)
+	console.log(selectedVar);
+	setVariable(selectedVar);
 }
 
 
@@ -357,49 +351,36 @@ function legenda (name) {
 	for (var i = 0; i < hues.length; i++) {
 		// console.log(hues[i])
 		$( "#sidebar #legenda" ).append( "  <div style='background-color:" + hues[i] + "'></div>" );
-	};
+	}
 
 }
 
 
-// The popup feature
 
-var closeTooltip;
-
-function mousemove(e,those,name) {
+function mousemove(e,those) {
 	// https://www.mapbox.com/mapbox.js/example/v1.0.0/choropleth/
 
+	if (selectedVar.length > 0) {
+		var top = mmap(window.combinedScore[e.target.feature.properties.name],0,10,0,100);
+		top = (100 + (top * -1) + 8 );
 
-
-	var division = (window.divisions[e.target.feature.properties.name] / window.divisions.arraylength);
-
-
-	var vhdivi = mmap(division,0,10,0,100);
-
-	if (vhdivi < 2) {
-		vhdivi = 2;
-	}
-	if (vhdivi > 90) {
-		vhdivi = 90;
-	}
-
-
-	division = Math.floor(division);
-
-	console.log(e.target.feature.properties.name);
-
-	console.log("division " + division);
+		if (top < 6) {
+			top = 6;
+		}
+		if (top > 90) {
+			top = 90;
+		}
 
 
 
 
-
-	if (document.querySelectorAll("#sidebar #legenda .pointer").length > 0) {
-		document.querySelector("#sidebar #legenda .pointer").style.top = "calc( " + vhdivi + "vh" + " - 20px )";
-		
-		 var content = "<b>" + e.target.feature.properties["nl_name"]  + "</b> <br />" + "score " + division;
-		 // filterReplace (variablesScale[name],content,countrynames[e.target.feature.properties["name"]]) 
-	 	document.querySelector("#sidebar #legenda .pointer").innerHTML = content;
+		if (document.querySelectorAll("#sidebar #legenda .pointer").length > 0) {
+			document.querySelector("#sidebar #legenda .pointer").style.top = "calc( " + top + "vh" + " - 20px )";
+			
+			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + window.combinedScore[e.target.feature.properties.name];
+			 // filterReplace (variablesScale[name],content,countrynames[e.target.feature.properties["name"]]) 
+		 	document.querySelector("#sidebar #legenda .pointer").innerHTML = content;
+		}
 	}
 
 }
@@ -408,9 +389,6 @@ function mousemove(e,those,name) {
 function mmap(value, low1, high1, low2, high2) {
 	return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }
-
-
-
 
 
 

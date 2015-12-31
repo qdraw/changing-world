@@ -338,17 +338,20 @@ path {
     position:absolute; 
     top:0px; 
     left:0; 
-    background-color: yellow;
-    width: 27vw;
+    background-color: #eeeeee;
+    width: 22vw;
     height: 100vh;
     font-size: 13px;
     line-height: 1.4;
+    padding-left: 2.75vw;
+    padding-right: 8.25vw;
+
 }
 
 
 @media (max-width: 1325px){
     #sidebar {
-        width: 350px;
+        width: 330px;
     }   
 }
 @media (max-width: 350px){
@@ -358,38 +361,11 @@ path {
 }
 
 #sidebar #header {
-    margin-top: 65px;
-    margin-top: calc( 22vh + 70px );
-    margin-left: 45px;
-    margin-right: 45px;
-}
-
-@media (max-width: 1270px) {
-    #sidebar #header {
-        margin-top: 100px;
-    }
-}
-
-@media (max-height: 700px) and (min-width: 1270px){
-    #sidebar #header {
-        margin-top: 90px;
-    }
-}
-@media (max-width: 1360px){
-    #sidebar #header {
-        margin-top: 90px;
-    }
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 
-
-
-#sidebar #content {
-    margin-top: 35px;
-    padding-left: 45px;
-    padding-right: 45px;
-    border-top: 1px solid #ccc;
-}
 
 #sidebar #content h2 {
     margin-top: 10px;
@@ -507,10 +483,20 @@ path {
 #sidebar #menu label{
     cursor: pointer;
     list-style: none;
-    float: left;
-    width: 100%;
+    width: 90%;
+    display: inline-block;
+    line-height: 2.5;
+    background-color: #ccc;
+    margin-bottom: 3px;
 }
-
+#sidebar #menu label .i {
+    height: 33px;
+    width: 33px;
+    float: right;
+    background-image: url("../images/gemiddeld-ink.svg");
+    background-size: cover;
+    display: inline-block;
+}
 
 /*.leaflet-popup-content-wrapper,
 leaflet-popup-content {
