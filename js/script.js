@@ -293,7 +293,7 @@ function setVariable(selectedVar) {
 	}
 
 
-	legenda();
+	legenda(hues);
 	hidePreloader();
 
 
@@ -349,6 +349,8 @@ function readVariable (those) {
 	// var y = (x == 2 ? "yes" : "no");
 	those.state = (those.state === true ? false : true);
 	
+	isFilterCountryActive = false;
+
 	if (those.state) {
 		selectedVar.push(those.id);
 	}
@@ -363,7 +365,7 @@ function readVariable (those) {
 }
 
 
-function legenda (name) {
+function legenda (hues) {
 
 	// reset html
 	document.querySelector("#sidebar #legenda").innerHTML = " <a class='close' onclick='toggleHamburger()'></a>		<span class='pointer'></span>";
@@ -381,9 +383,41 @@ function legenda (name) {
 function mousemove(e,those) {
 	// https://www.mapbox.com/mapbox.js/example/v1.0.0/choropleth/
 
+
+
 	if (selectedVar.length > 0) {
-		var top = mmap(window.combinedScore[e.target.feature.properties.name],0,10,0,100);
-		top = (100 + (top * -1) + 8 );
+
+		if (!isFilterCountryActive) {
+			var top = mmap(window.combinedScore[e.target.feature.properties.name],0,10,0,100);
+			top = (100 + (top * -1) + 8 /*fix*/ );
+		} 
+		else{
+			// // isFilterCountryActive = true;
+			
+			if (window.combinedScore[e.target.feature.properties.name] > window.combinedScore[window.filterCountryName]) {
+				// Countries who perform better! :D :D :D
+
+				var top = mmap(window.combinedScore[e.target.feature.properties.name],window.combinedScore[window.filterCountryName],10,0,50);
+				top = 50 - top;
+				// console.log("higher" + e.target.feature.properties.name + top + " `" + window.combinedScore[window.filterCountryName]);
+
+			}
+			else {
+
+				var top = mmap(window.combinedScore[e.target.feature.properties.name],0,window.combinedScore[window.filterCountryName],0,50);
+				top = 100 - top;
+				console.log("lower" + e.target.feature.properties.name + top + " `" + window.combinedScore[window.filterCountryName]);
+
+			}
+			// euLayer.eachLayer(function(layer) {
+			// 	if (window.combinedScore[layer.feature.properties.name] > window.combinedScore[window.filterCountryName]) {
+				
+			// 	}
+			// });
+			
+
+
+		}
 
 		if (top < 6) {
 			top = 6;
@@ -454,10 +488,12 @@ function hideLightbox () {
 
 
 
-
+var isFilterCountryActive = false;
 function filterCountry(e,those) {
+	isFilterCountryActive = true;
 
 	var countryname = e.target.feature.properties.name;
+	window.filterCountryName = countryname;
 
 	// var combinedScoreArrayOrderByNames = Object.keys(window.combinedScore).sort(function(a,b){return window.combinedScore[a]-window.combinedScore[b]})
 
@@ -525,6 +561,10 @@ function filterCountry(e,those) {
 		});
 
 	});
+
+	legenda(fHues);
+
+
 }
 
 
