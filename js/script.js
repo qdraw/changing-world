@@ -59,6 +59,20 @@ var hues = [
 	];
 
 
+var fHues = [
+	'#3b503c', // green green
+	'#4c654d',
+	'#608161',
+	'#CEE7CF',
+	'#d6d6d6',
+	'#cbf3f5',
+	'#a1bdbf', // light rood
+	'#88a0a2',
+	'#708586',
+	'#5f6869'
+	];
+
+
 var geojsonURL = 'data/vectiles-water-areas/{z}/{x}/{y}.json';
 var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, 
 	{
@@ -106,6 +120,7 @@ window.subjectui = [];
 window.ishightolow = [];
 window.sidebarheader = [];
 window.helpdata = [];
+window.countrydescription = {};
 
 function loadData () {
 	var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1v9Dsd5LwlLrSd5jzO7_QfTECU3TEtnlK44omvdYCJ8E/pubhtml';
@@ -121,8 +136,9 @@ function processData (data, tabletop) {
 		window.ishightolow.push(data.datatableoptions.elements[key].ishightolow);
 		window.sidebarheader.push(data.datatableoptions.elements[key].sidebarheader);
 		window.helpdata.push(data.datatableoptions.elements[key].helpdata);
-
 	});
+
+	window.countrydescription = data.countrydescription.elements;
 
 	for (var i = 0; i < window.subject.length; i++) {
 		window.ranges[window.subject[i]] = { min: Infinity, max: -Infinity };
@@ -149,6 +165,7 @@ function joinData(data, layer) {
 		
 		byState[euGeoJSON.features[i].properties.name] =
 			euGeoJSON.features[i];
+
 	}
 
 
@@ -280,9 +297,9 @@ function setVariable(selectedVar) {
 	hidePreloader();
 
 
-	// bestCountry (name)
-	// setActiveMenu (name)
-	// displayCurrentType (name)
+	// bestCountry (name);
+	// setActiveMenu (name);
+	// displayCurrentType (name);
 }
 
 
@@ -354,7 +371,7 @@ function legenda (name) {
 
 	for (var i = 0; i < hues.length; i++) {
 		// console.log(hues[i])
-		$( "#sidebar #legenda" ).append( "  <div style='background-color:" + hues[i] + "'></div>" );
+		document.querySelector("#sidebar #legenda").innerHTML +=  "  <div style='background-color:" + hues[i] + "'></div>";
 	}
 
 }
@@ -375,13 +392,12 @@ function mousemove(e,those) {
 			top = 90;
 		}
 
-
-
-
 		if (document.querySelectorAll("#sidebar #legenda .pointer").length > 0) {
 			document.querySelector("#sidebar #legenda .pointer").style.top = "calc( " + top + "vh" + " - 20px )";
 			
-			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + window.combinedScore[e.target.feature.properties.name];
+			var score = Math.round(window.combinedScore[e.target.feature.properties.name] * 10)/10;
+
+			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + score;
 			 // filterReplace (variablesScale[name],content,countrynames[e.target.feature.properties["name"]]) 
 		 	document.querySelector("#sidebar #legenda .pointer").innerHTML = content;
 		}
@@ -413,8 +429,6 @@ function help () {
 			document.querySelector("#lightbox .container").innerHTML += "<h2>" + window.helpdata[i] + "</h2>";
 		}
 		if (window.helpdata[i] !== ""  && i !== 0) {
-			console.log(window.helpdata[i])
-
 			document.querySelector("#lightbox .container").innerHTML += "<p>" + window.helpdata[i] + "</p>";
 		} 
 	}
@@ -438,504 +452,82 @@ function hideLightbox () {
 }
 
 
-// // Be nice and credit our data source, Census Reporter.
-// // map.attributionControl.addAttribution('Data from ' +
-// //   '<a href="http://censusreporter.org/data/map/?table=B06011&geo_ids=040%7C01000US#">' +
-// //   'Census Reporter</a>');
 
-// // By the way, thanks: https://www.mapbox.com/mapbox.js/example/v1.0.0/choropleth-joined-data-multiple-variables/ for letting me copy paste this example
 
 
+function filterCountry(e,those) {
 
-// // Choropleth colors from http://colorbrewer2.org/
-// // You can choose your own range (or different number of colors)
-// // and the code will compensate.
-// // Didn't use anyway ;)
+	var countryname = e.target.feature.properties.name;
 
+	// var combinedScoreArrayOrderByNames = Object.keys(window.combinedScore).sort(function(a,b){return window.combinedScore[a]-window.combinedScore[b]})
 
+	// function sortObject(obj) {
+	//     var arr = [];
+	//     for (var prop in obj) {
+	//         if (obj.hasOwnProperty(prop)) {
+	//             arr.push({
+	//                 'key': prop,
+	//                 'value': obj[prop]
+	//             });
+	//         }
+	//     }
+	//     arr.sort(function(a, b) { return a.value - b.value; });
+	//     //arr.sort(function(a, b) { a.value.toLowerCase().localeCompare(b.value.toLowerCase()); }); //use this to sort as strings
+	//     return arr; // returns array
+	// }
+	// var sortCombinedScore = sortObject(window.combinedScore);
+	// console.log(sortCombinedScore);
 
-// // Positive Hues for filter feature
-// var goodHues = [
-// 	'#64738C', // green green
-// 	'#889EBB',
-// 	'#B6D2DE',
-// 	'#D4EAF2'] // light green
 
-// // Negative Hues for filter feature
-// var badHues = [
-// 	'#EBC2D0', // light rood
-// 	'#D994AB',
-// 	'#E679A3',
-// 	'#C0537A'] // red red
 
+	var color = "#DDD";
+	var borderwidth = 0.5;
 
+	euLayer.eachLayer(function(layer) {
 
-// // NaN escaper feature in data set, if you use NaN the app will crash
-// var NaNescaper  = -9;
+		if (window.combinedScore[layer.feature.properties.name] > window.combinedScore[countryname]) {
+			// Countries who perform better! :D :D :D
 
+			var cindex = mmap(window.combinedScore[layer.feature.properties.name],window.combinedScore[countryname],10,5,0);
+			color = fHues[Math.floor(cindex)];
+			borderwidth = 0.5;
 
-// // The names of variables that we'll show in the UI for
-// // styling. These need to match exactly.
+			//mmap(this,min,max,outmin,outmax)
 
-// // Those names are used in the ./data/data.json
 
-// var variables = [
-// 	'gini',
-// 	'freedom',
-// 	'gemiddeld-ink',
-// 	'jobs-avail',
-// 	'werkloosheid',
-// 	'discrimi',
-// 	'corruption'
-// 	];
+		}
+		else if (window.combinedScore[layer.feature.properties.name] === window.combinedScore[countryname]){
+			color = fHues[Math.round(fHues.length/2)];
+			console.log(Math.round(fHues.length/2));
+			borderwidth = 0.5;
 
-// // UI-names for variables, use the same order
-// var variablesUI = [
-// 	'Gelijkheid in inkomen en welvaart',
-// 	'Vrijheid en gelijke rechten',
-// 	'Een hoog inkomen',
-// 	'Veel werkgelegenheid',
-// 	'Een lage werkloosheid',
-// 	'Geen discriminatie',
-// 	"Een eerlijke overheid"
-// 	];
 
-// // Using High to low or reverse
-// var variablesIsHighToLow = {
-// 	"gini": false,
-// 	'freedom': false,
-// 	'gemiddeld-ink': true,
-// 	'jobs-avail': true,
-// 	'werkloosheid': false,
-// 	'discrimi': true,
-// 	'corruption': true
-// 	};
+			// The selected country
+			if (layer.feature.properties["name"] === e.target.feature.properties["name"]) {
+				 color = "#e4e8e7"; // blue
+				 borderwidth = 2;
+			}
+		}
+		else {
+			color = "red";
+			var cindex = mmap(window.combinedScore[layer.feature.properties.name],0,window.combinedScore[countryname],9,5);
+			color = fHues[Math.floor(cindex)];
+			borderwidth = 0.5;
 
-// // The scale of the variable
-// var variablesScale = {
-// 	"gini": "De rijke inwoners hebben [VALUE]x meer koopkracht dan gemiddelde inwoners",
-// 	'freedom': "[VALUE]/100 onderdrukking vrijheid en inspraak",
-// 	'gemiddeld-ink': "&euro;[VALUE] gemiddeld aan inkomen",
-// 	'jobs-avail': "[VALUE]/4 kans op een baan",
-// 	'werkloosheid': "[VALUE]% van de inwoners zijn werkloos",
-// 	'discrimi': "[VALUE]/100 anti-discriminatie",
-// 	'corruption': "[VALUE]/100 eerlijkheid van de overheid"
-// 	};
+		}
 
-// var variablesExplain = {
-// 	"gini": "Hoeveel mate verschil ligt er tussen de inkomsten van de burgers binnen een land? Hoeveel verdient de groep met het minste inkomen in vergelijking tot de groep met het hoogste inkomen? Kortom: Hoe eerlijk is het totale inkomen van een land verdeeld over zijn volk? ",
-// 	'freedom': "Vrijheid is niet overal een recht. Heb jij als burger inspraak in belangrijkste beslissingen welke door een land worden gemaakt? Of ligt al deze macht bij een select groepje? Ook het recht op een eigen mening en het uitten van je normen en waarden zijn een belangrijk aspect wat een land kan bieden.",
-// 	'gemiddeld-ink': "Is geld voor jou het belangrijkste wat een land kan bieden? Speciaal voor de goudzoekers onder ons hebben wij hebben vastgesteld hoeveel geld je gemiddeld verdient binnen elk land. Let wel op! Dit wil natuurlijk niet zeggen dat je ook daadwerkelijk direct deze hoeveelheid gaat verdienen.",
-// 	'jobs-avail': "Het zou jammer zijn om na zo'n lange reis zonder werk te zitten. Welk land biedt de grootste kans op werk? Waar moeten de handen uit de mouwen worden gestoken en is direct werk te vinden? Wij hebben het uitgezocht!",
-// 	'werkloosheid': "Welke land heeft het minst te kampen met werkloosheid? Waar is de kans het grootst dat jij tijdens de crisis je baan kunt behouden? Spoilers: Vermeid Griekenland, die doen het niet zo goed op dit moment. Maar de rest van West Europa blijft goed stand houden!",
-// 	'discrimi': "Doordat we steeds meer culturen, normen en waardes hebben op de wereld, botsen deze nogal eens met elkaar. Welk land staat juist open voor andere culturen en is openminded? Hier zie je een overzicht van de landen waar je als immigrant het snelst geaccepteerd zal worden door de burgers.",
-// 	'corruption': "Hoe eerlijk is een land? Als je het belangrijk vind dat de regels worden nageleefd en mensen hun afspraken nakomen, dan ben je zeker tegen corruptie. Welke landen knijpen een oogje dicht wanneer jij een briefje van €100 in het borstzakje laat glippen? In welke land kom je weg met moord als je een hoog geplaatst persoon bent?"
-// 	};
+		// And finaly arange all the colours from all countries
+		layer.setStyle({
+			fillColor: color,
+			fillOpacity: 0.8,
+			color: '#666',
+			weight: borderwidth
+		});
 
+	});
+}
 
 
-
-
-
-
-
-
-
-
-
-// // Collect the range of each variable over the full set, so
-// // we know what to color the brightest or darkest.
-// 
-
-// var $select = $('<select></select>')
-// 	.appendTo($('#variables'))
-// 	.on('change', function() {
-// 		setVariable($(this).val());
-// 	});
-
-// 	// Simultaneously, build the UI for selecting different
-// 	// ranges
-// 	$('<option></option>')
-// 		.text(variables[i])
-// 		.attr('value', variables[i])
-// 		.appendTo($select);
-
-
-// // Create a layer of state features, and when it's done
-// // loading, run loadData
-// var euLayer = L.mapbox.featureLayer()
-// 	.loadURL('data/europe.geo.json')
-// 	.addTo(map)
-// 	.on('ready', loadData);
-
-// // Grab the spreadsheet of data as JSON. If you have CSV
-// // data, you should convert it to JSON with
-// // http://shancarter.github.io/mr-data-converter/
-// function loadData() {
-// 	$.getJSON('data/data.json')
-// 		.done(function(data) {
-
-// 			joinData(data, euLayer);
-// 		});
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-// function bestCountry (name) {
-// 	// Show in the div the best country
-
-
-// 	if (variablesIsHighToLow[name]) {
-// 		// max is best
-// 		// document.querySelector("#sidebar #content").innerHTML = "<h2>" +  + "</h2>" + "<div class='image' style='background-image:url(images/" + ranges[name].maxname + ".jpg)'></div> " +  "ranges == " +  + "De Gini-coëfficiënt is berekend als een ratio van gebieden in de Lorenz-curve-grafiek. De Lorenz-curve tekent de proportie van het totale inkomen van een populatie (y-as) ten opzichte van de cumulatieve inkomsten van de onderste x% van de bevolking.";
-
-// 		var legendascoreExport = filterSearch ("best",name);
-// 		legendascoreExport = filterReplace (legendascoreExport,ranges[name].max,countrynames[ranges[name].maxname])
-
-// 		document.querySelector("#sidebar #content").innerHTML = "<h2>" + countrynames[ranges[name].maxname] + "</h2>" + "<div class='image' style='background-image:url(images/" + ranges[name].maxname + ".jpg)'></div> " +  legendascoreExport;
-
-
-// 		euLayer.eachLayer(function(layer) {
-// 			if (layer.feature.properties.name === ranges[name].maxname) {
-// 				// console.log(ranges[name].maxname)
-
-// 				layer.setStyle({
-// 					weight: 4,
-// 					color: '#666'
-// 				});
-			
-// 			};
-// 		});
-
-
-// 	}
-// 	else {
-// 		// min is best
-// 		var legendascoreExport = filterSearch ("best",name);
-// 		legendascoreExport = filterReplace (legendascoreExport,ranges[name].min,countrynames[ranges[name].minname])
-
-// 		document.querySelector("#sidebar #content").innerHTML = "<h2>" + countrynames[ranges[name].minname] + "</h2>" + "<div class='image' style='background-image:url(images/" + ranges[name].minname + ".jpg)'></div> " +  legendascoreExport;
-
-// 		euLayer.eachLayer(function(layer) {
-// 			if (layer.feature.properties.name === ranges[name].minname) {
-
-// 				layer.setStyle({
-// 					weight: 4,
-// 					color: '#666'
-// 				});
-// 				// console.log(ranges[name].minname)
-// 			};
-// 		});
-// 	}
-
-// }
-
-
-
-
-
-// // Display the current type (for example gino)
-// function displayCurrentType (name) {
-
-// 	var name_pos = variables.indexOf(name); 
-// 	document.querySelector("#header").innerHTML = "<h1>" + variablesUI[name_pos] + "</h1>" + "<br />" + variablesExplain[name];
-
-// }
-
-
-
-// // In the #sidebar #menu interface
-// function setActiveMenu (name) {
-
-// 	$('#sidebar #menu').children('li').each(function () {
-// 		$( this ).css( "backgroundColor", "white" );
-// 		// alert(this.value); // "this" is the current element in the loop
-// 	});
-
-// 	$( "#sidebar #menu " + " ." + name).css("backgroundColor", "#64738C" ); //blue
-// }
-
-
-
-// // Caled by the eventlistener mouseout
-// function resetHighlight(e,those) {
-
-// 		var layer = e.target;
-
-// 		layer.setStyle({
-// 			weight: 0.5,
-// 			color: '#666',
-// 			dashArray: '',
-// 			fillOpacity: 0.7
-// 		});
-
-// }
-
-
-// function filterSearch (searchfor,name) {
-	
-// 	var legendascoreExport;
-
-// 	Object.keys(legendascore).forEach(function(key) {
-// 		if (legendascore[key]["legendascore"] === searchfor) {
-// 			legendascoreExport = legendascore[key][name];
-
-// 		};
-// 	});
-// 	return legendascoreExport;    
-// }
-
-// String.prototype.replaceAll = function (find, replace) {
-// 	var str = this;
-// 	return str.replace(new RegExp(find.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), replace);
-// };
-
-// function filterReplace (legendascoreExport,value,fullcountryname) {
-
-// 	var legendascoreExport = legendascoreExport.replaceAll('[LAND]', fullcountryname);
-// 	var legendascoreExport = legendascoreExport.replaceAll('[VALUE]', value);
-
-// 	return legendascoreExport;
-// }
-
-// function filterCountryInfo (e,those,name) {
-
-// 	var value = e.target.feature.properties[name];
-// 	value = Math.round(value);
-
-// 	if (e.target.feature.properties[name] == NaNescaper) {
-// 		value = "geen data"
-// 	};
-
-// 	// document.querySelector("#sidebar #content").innerHTML = e.target.feature.properties["nl_name"] + " " + value ;
-
-// 	var countryname = e.target.feature.properties["name"];
-
-
-
-// 	var legendascoreExport;
-
-// 	// And again the higer is better            
-// 	if (variablesIsHighToLow[name]) {
-// 		if (ranges[name].max/2 < e.target.feature.properties[name]) {
-// 			var legendascoreExport = filterSearch ("good",name);
-// 		}
-// 		else if (ranges[name].max/2 > e.target.feature.properties[name]) {
-// 			var legendascoreExport = filterSearch ("bad",name);
-// 		}
-// 		else {
-// 			var legendascoreExport = filterSearch ("eq",name);
-// 		}
-
-// 		if (ranges[name].maxname === countryname) {
-// 			var legendascoreExport = filterSearch ("best",name);
-// 		};
-
-// 		if (ranges[name].minname === countryname) {
-// 			var legendascoreExport = filterSearch ("worst",name);
-// 		};
-	
-// 	}
-
-// 	// Lower is better            
-// 	else {
-// 		if (ranges[name].max/2 > e.target.feature.properties[name]) {
-// 			var legendascoreExport = filterSearch ("good",name);
-// 		}
-// 		else if (ranges[name].max/2 < e.target.feature.properties[name]) {
-// 			var legendascoreExport = filterSearch ("bad",name);
-// 		}
-// 		else {
-// 			var legendascoreExport = filterSearch ("eq",name);
-// 		}
-
-// 		if (ranges[name].maxname === countryname) {
-// 			var legendascoreExport = filterSearch ("worst",name);
-// 		};
-
-// 		if (ranges[name].minname === countryname) {
-// 			var legendascoreExport = filterSearch ("best",name);
-// 		};
-
-// 	}    
-
-// 	legendascoreExport = filterReplace (legendascoreExport,value,countrynames[countryname])
-
-
-// 	document.querySelector("#sidebar #content").innerHTML = "<h2>" + countrynames[countryname] + "</h2>" + "<div class='image' style='background-image:url(images/" + countryname + ".jpg)'></div> " +  legendascoreExport
-
-// }
-
-
-
-// function filterCountry(e,those,name) {
-
-// 	filterCountryInfo(e,those,name)
-
-
-// 	var thisCountryScore = e.target.feature.properties[name];
-
-// 	// Create an array of all scores of this type
-// 	var scoreList = [];
-// 	euLayer.eachLayer(function(layer) {
-// 		scoreList.push(layer.feature.properties[name]);
-// 	});
-
-
-// 	// Call for this scale in ranges
-// 	var scale = ranges[name];
-
-
-
-// 	// Loop though all layers in the leaflet map
-// 	// filter for countries who are better, the same or worse
-// 	euLayer.eachLayer(function(layer) {
-
-// 		var borderwidth = 0.5;
-
-// 		if (layer.feature.properties[name] < thisCountryScore) {
-// 			// Countries who perform better! :D :D :D
-
-// 			// And again the higer is better            
-// 			if (variablesIsHighToLow[name]) {
-// 				// console.log("High")
-// 				var outMin = badHues.length;
-// 				var outMax = 0;
-
-// 				var division = Math.floor(
-// 					mmap( layer.feature.properties[name],  scale.max+1,  scale.min-1,  outMax, outMin  )
-// 					);
-
-// 				var color = badHues[division]
-
-// 		   }
-
-// 			// Lower is better            
-// 			else {
-// 				var outMin = 0;
-// 				var outMax = goodHues.length;
-
-// 				var division = Math.floor(
-// 					mmap( layer.feature.properties[name],  scale.max+1,  scale.min-1,  outMax, outMin  )
-// 					);
-
-// 				var color = goodHues[division]
-// 			}
-
-
-// 		}
-// 		// Countries have the same value
-// 		else if  (layer.feature.properties[name] === thisCountryScore) {
-// 			// Some green
-// 			var color = "#D4EAF2";
-
-// 			// The selected country
-// 			if (layer.feature.properties["name"] === e.target.feature.properties["name"]) {
-// 				 var color = "#e4e8e7"; // blue
-// 				 borderwidth = 5;
-// 			};
-// 		}
-// 		// Countries who are worse :( :( :( :( :(
-// 		else {
-
-// 			// And again the higer is better            
-			
-// 			if (variablesIsHighToLow[name]) {
-// 				// console.log("High")
-
-// 				var outMin = goodHues.length;
-// 				var outMax = 0
-
-// 				var division = Math.floor(
-// 					mmap( layer.feature.properties[name],  scale.max+1,  scale.min-1,  outMax, outMin  )
-// 					);
-
-// 				var color = goodHues[division]
-// 			}
-// 			// Lower is better            
-// 			else {
-// 				var outMin = goodHues.length;
-// 				var outMax = 0;
-
-// 				var division = Math.floor(
-// 					mmap( layer.feature.properties[name],  scale.min-1,  scale.max+1,  outMin, outMax  )
-// 					);
-
-// 				var color = badHues[division]
-
-// 			}
-				
-
-
-// 		}
-
-// 		// And finaly arange all the colours from all countries
-// 		layer.setStyle({
-// 			fillColor: color,
-// 			fillOpacity: 0.8,
-// 			color: '#666',
-// 			weight: borderwidth
-// 		});
-
-// 	});
-// }
-
-
-
-
-// function mouseout(e) {
-
-
-
-// 	closeTooltip = window.setTimeout(function() {
-// 		map.closePopup();
-// 	}, 100);
-
-
-// 	var layer = e.target;
-
-// 	layer.setStyle({
-// 		fillOpacity: 0.8,
-// 		color: '#666'
-// 	});
-// }
-
-
-
-
-// var isHamburgerMenuOn = true;
-// function toggleHamburger () {
-// 	console.log("re")
-// 	if (isHamburgerMenuOn) {
-// 		$("#sidebar").css("backgroundColor", "rgba(0,0,0,0)")
-// 		$("#sidebar #menu").css("display", "none")
-// 		$("#sidebar .container").css("display", "none")
-// 		$("#sidebar #legenda").css("display", "none")
-
-// 		$( "#sidebar").css("height", "50px" );
-
-// 		isHamburgerMenuOn = false;
-// 	}
-// 	else {
-// 		$("#sidebar").css("backgroundColor", "white")
-// 		$("#sidebar #menu").css("display", "block")
-// 		$("#sidebar .container").css("display", "block")
-// 		$("#sidebar #legenda").css("display", "block")
-// 		$( "#sidebar").css("height", "100vh" );
-
-// 		isHamburgerMenuOn = true;
-// 	}
-
-// }
 
 
 
