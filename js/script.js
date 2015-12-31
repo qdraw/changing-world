@@ -105,6 +105,7 @@ window.subject = [];
 window.subjectui = [];
 window.ishightolow = [];
 window.sidebarheader = [];
+window.helpdata = [];
 
 function loadData () {
 	var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1v9Dsd5LwlLrSd5jzO7_QfTECU3TEtnlK44omvdYCJ8E/pubhtml';
@@ -119,6 +120,8 @@ function processData (data, tabletop) {
 		window.subjectui.push(data.datatableoptions.elements[key].subjectui);
 		window.ishightolow.push(data.datatableoptions.elements[key].ishightolow);
 		window.sidebarheader.push(data.datatableoptions.elements[key].sidebarheader);
+		window.helpdata.push(data.datatableoptions.elements[key].helpdata);
+
 	});
 
 	for (var i = 0; i < window.subject.length; i++) {
@@ -306,9 +309,10 @@ function buildMenu () {
 		// line 305, col 151, Don't make functions within a loop.
 	}
 
-	document.querySelector('#sidebar #menu #help');
+	document.querySelector('#sidebar .help').addEventListener("click", function(e){ var those = this; help(those); }, false);
 
 }
+
 
 
 function buildSidebarHeader () {
@@ -394,9 +398,44 @@ function mmap(value, low1, high1, low2, high2) {
 
 
 
+function help () {
+
+	
+	document.querySelector("#lightbox").style.zIndex = "1";
+	document.querySelector("#lightbox").addEventListener("click", hideLightbox, false);
 
 
+	document.querySelector("#lightbox .container").innerHTML = "<div class='close'></div>";
 
+	for (var i = 0; i <  window.helpdata.length; i++) {
+
+		if (i === 0) {
+			document.querySelector("#lightbox .container").innerHTML += "<h2>" + window.helpdata[i] + "</h2>";
+		}
+		if (window.helpdata[i] !== ""  && i !== 0) {
+			console.log(window.helpdata[i])
+
+			document.querySelector("#lightbox .container").innerHTML += "<p>" + window.helpdata[i] + "</p>";
+		} 
+	}
+
+
+	// add facepalm css
+    var head  = document.getElementsByTagName('head')[0];
+    var link  = document.createElement('link');
+    link.id   = "cssId";
+    link.rel  = 'stylesheet';
+    link.type = 'text/css';
+    link.href = 'css/facepalm.css';
+    link.media = 'all';
+    head.appendChild(link);
+    // end facepalm css
+
+}
+
+function hideLightbox () {
+	document.querySelector("#lightbox").style.zIndex = "-1";
+}
 
 
 // // Be nice and credit our data source, Census Reporter.
