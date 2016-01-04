@@ -46,30 +46,30 @@ var style = {
 };
 
 var hues = [
-	'#64738b', // green green
-	'#92b1d3',
-	'#92b1d3',
-	'#d3e9f1',
-	'#d3e9f1',
-	'#ebc1cf',
-	'#ebc1cf', // light rood
-	'#e578a2',
-	'#e578a2',
-	'#cc618e'
+	'#289846', // green green
+	'#289846',
+	'#289846',
+	'#6cbd57',
+	'#a9d957',
+	'#dbef7d',
+	'#fee17f', // light rood
+	'#fcaf54',
+	'#f27139',
+	'#d43720'
 	];
 
 
 var fHues = [
-	'#3b503c', // green green
-	'#4c654d',
-	'#608161',
-	'#CEE7CF',
-	'#d6d6d6',
-	'#cbf3f5',
-	'#a1bdbf', // light rood
-	'#88a0a2',
-	'#708586',
-	'#5f6869'
+	'#3489bd', // green green
+	'#3489bd',
+	'#9ad093',
+	'#e5eb9a',
+	'#fbf7c1', // selected
+	'#fddf8b',
+	'#fddf8b', // light rood
+	'#f86d5c',
+	'#f86d5c',
+	'#d53f50'
 	];
 
 
@@ -409,9 +409,12 @@ function mousemove(e,those) {
 
 	if (selectedVar.length > 0) {
 
+
 		if (!isFilterCountryActive) {
+
 			var top = mmap(window.combinedScore[e.target.feature.properties.name],0,10,0,100);
 			top = (100 + (top * -1) + 8 /*fix*/ );
+
 		} 
 		else{
 			// // isFilterCountryActive = true;
