@@ -39,23 +39,23 @@
 var style = {
     "clickable": false,
     "color": "#00D",
-    "fillColor": "#FFF",
+    "fillColor": "#414143",
     "weight": 0,
     "opacity": 1,
     "fillOpacity": 1
 };
 
 var hues = [
-	'#648966', // green green
-	'#87B786',
-	'#AFCDAE',
-	'#CEE7CF',
-	'#d6d6d6',
-	'#CCCCCC',
-	'#E9CECE', // light rood
-	'#D59393',
-	'#E27979',
-	'#BF5555'
+	'#64738b', // green green
+	'#92b1d3',
+	'#92b1d3',
+	'#d3e9f1',
+	'#d3e9f1',
+	'#ebc1cf',
+	'#ebc1cf', // light rood
+	'#e578a2',
+	'#e578a2',
+	'#cc618e'
 	];
 
 
@@ -268,7 +268,7 @@ function setVariable(selectedVar) {
 			layer.setStyle({
 				fillColor: hues[colorindex],
 				fillOpacity: 0.8,
-				color: '#666',
+				color: '#fff',
 				weight: 0.25
 			});
 
@@ -306,7 +306,7 @@ function setVariable(selectedVar) {
 			layer.setStyle({
 				fillColor: "#d6d6d6",
 				fillOpacity: 1,
-				color: '#666',
+				color: '#fff',
 				weight: 0.25
 			});
 		});
@@ -579,7 +579,7 @@ function filterCountry(e,those) {
 		layer.setStyle({
 			fillColor: color,
 			fillOpacity: 0.8,
-			color: '#666',
+			color: '#fff',
 			weight: borderwidth
 		});
 
