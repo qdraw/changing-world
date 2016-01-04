@@ -46,30 +46,32 @@ var style = {
 };
 
 var hues = [
-	'#289846', // green green
-	'#289846',
-	'#289846',
-	'#6cbd57',
-	'#a9d957',
-	'#dbef7d',
-	'#fee17f', // light rood
-	'#fcaf54',
-	'#f27139',
-	'#d43720'
+	'hsl(120,50%,50%)', // green green
+	'hsl(120,60%,60%)',
+	'hsl(120,70%,70%)',
+	'hsl(120,80%,80%)',
+	'hsl(120,95%,95%)', // light groen
+	'hsl(0,95%,95%)',
+	'hsl(0,80%,80%)', // light rood
+	'hsl(0,70%,70%)',
+	'hsl(0,60%,60%)',
+	'hsl(0,50%,50%)', //donker rood
 	];
+	// 'hsl(120,20%,70%)', // light groen
+	// 'hsl(0,20%,70%)',
 
 
 var fHues = [
-	'#3489bd', // green green
-	'#3489bd',
-	'#9ad093',
-	'#e5eb9a',
-	'#fbf7c1', // selected
-	'#fddf8b',
-	'#fddf8b', // light rood
-	'#f86d5c',
-	'#f86d5c',
-	'#d53f50'
+	'hsl(220,50%,50%)', // green green
+	'hsl(220,60%,60%)',
+	'hsl(220,70%,70%)',
+	'hsl(220,80%,80%)',
+	'hsl(220,95%,95%)', // light groen
+	'hsl(330,95%,95%)', 
+	'hsl(330,80%,80%)', // light rood
+	'hsl(330,70%,70%)',
+	'hsl(330,60%,60%)',
+	'hsl(330,50%,50%)', //donker rood
 	];
 
 
@@ -262,7 +264,7 @@ function setVariable(selectedVar) {
 			}
 
 
-			var colorindex = hues.length + (Math.floor(combinedScore[layer.feature.properties.name]) * -1);
+			var colorindex = hues.length + (Math.round(combinedScore[layer.feature.properties.name]) * -1);
 
 
 			layer.setStyle({
@@ -413,7 +415,7 @@ function mousemove(e,those) {
 		if (!isFilterCountryActive) {
 
 			var top = mmap(window.combinedScore[e.target.feature.properties.name],0,10,0,100);
-			top = (100 + (top * -1) + 8 /*fix*/ );
+			top = (100 + (top * -1) + 0 /*fix*/ );
 
 		} 
 		else{
@@ -444,17 +446,17 @@ function mousemove(e,those) {
 
 		}
 
-		if (top < 6) {
-			top = 6;
+		if (top < 3) {
+			top = 3;
 		}
-		if (top > 90) {
-			top = 90;
+		if (top > 92) {
+			top = 92;
 		}
 
 		if (document.querySelectorAll("#sidebar #legenda .pointer").length > 0) {
 			document.querySelector("#sidebar #legenda .pointer").style.top = "calc( " + top + "vh" + " - 20px )";
 			
-			var score = Math.round(window.combinedScore[e.target.feature.properties.name] * 10)/10;
+			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
 
 			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + score;
 			 // filterReplace (variablesScale[name],content,countrynames[e.target.feature.properties["name"]]) 
@@ -566,7 +568,7 @@ function filterCountry(e,those) {
 
 			// The selected country
 			if (layer.feature.properties["name"] === e.target.feature.properties["name"]) {
-				 color = "#e4e8e7"; // blue
+				 color = "white"; // blue // selected country
 				 borderwidth = 2;
 			}
 		}
