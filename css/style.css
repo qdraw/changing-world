@@ -12,7 +12,7 @@
   font-family: 'Arimo';
   font-style: bold;
   font-weight: 700;
-  src: local('Arimo Bold'), local('Arimo-Bold'), url(fonts/bold.woff) format('woff2');
+  src: local('Arimo Bold'), local('Arimo-Bold'), url(fonts/bold.woff2) format('woff2');
 }
 
 

@@ -649,8 +649,6 @@ function selectedCountry (e) {
 
 			var content = replaceKeys(e,window.subjectintro_selectie2ofmeer[0]);
 		
-			var index = window.subject.indexOf(selectedVar[0])
-
 			document.querySelector("#sidebar #content").innerHTML += content; 
 
 			for (var i = 0; i < selectedVar.length; i++) {
@@ -667,17 +665,11 @@ function selectedCountry (e) {
 				}
 			}
 
-
-
 		}
 		else {
-			window.subjectintro_selectie2ofmeer
-
+			var content = replaceKeys(e,window.subjectintro_selectie2ofmeer[1]);
+			document.querySelector("#sidebar #content").innerHTML += content;
 		}
-
-
-		// [LAND] scoort een [SCORE] op basis van het gemiddelde voor 
-
 	}
 
 		// alle landen
