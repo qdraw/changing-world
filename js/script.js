@@ -121,6 +121,7 @@ var euLayer = L.mapbox.featureLayer()
 window.subject = [];
 window.subjectui = [];
 window.subjectintro = [];
+window.subjectintro_selectie2ofmeer = [];
 window.ishightolow = [];
 window.sidebarheader = [];
 window.helpdata = [];
@@ -139,6 +140,7 @@ function processData (data, tabletop) {
 		window.subject.push(data.datatableoptions.elements[key].subject);
 		window.subjectui.push(data.datatableoptions.elements[key].subjectui);
 		window.subjectintro.push(data.datatableoptions.elements[key].subjectintro);
+		window.subjectintro_selectie2ofmeer.push(data.datatableoptions.elements[key].subjectintro_selectie2ofmeer);
 		window.ishightolow.push(data.datatableoptions.elements[key].ishightolow);
 		window.sidebarheader.push(data.datatableoptions.elements[key].sidebarheader);
 		window.introdata.push(data.datatableoptions.elements[key].introdata);
@@ -635,23 +637,48 @@ function selectedCountry (e) {
 
 		var index = window.subject.indexOf(selectedVar[0])
 		var content = window.subjectintro[index];
+		content = replaceKeys(e,content);
+
+		document.querySelector("#sidebar #content").innerHTML += "<p>" + content + "</p>";
+
+	}
+	else {
+
+
+		if (selectedVar.length <= 4) {
+
+			var content = replaceKeys(e,window.subjectintro_selectie2ofmeer[0]);
+		
+			var index = window.subject.indexOf(selectedVar[0])
+
+			document.querySelector("#sidebar #content").innerHTML += content; 
+
+			for (var i = 0; i < selectedVar.length; i++) {
+				var index = window.subject.indexOf(selectedVar[i]);
+				
+				if (i === selectedVar.length-2) {
+					document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + " en ";
+				}
+				else if(i === selectedVar.length-1) {
+					document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index]+ " (" + e.target.feature.properties[window.subject[index]] + ")";
+				}
+				else {
+					document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + ", ";
+				}
+			}
 
 
 
-
-
-
-		var replaceKeys = [];
-		Object.keys(e.target.feature.properties).forEach(function(key) {
-			// console.log(e.target.feature.properties[key]);
-			replaceKeys.push(key);
-			// console.log(key)
-		});
-
-		for (var i = 0; i < replaceKeys.length; i++) {
-			var re = new RegExp("{" + replaceKeys[i] + "}","ig");
-			content = content.replace(re, e.target.feature.properties[replaceKeys[i]]);
 		}
+		else {
+			window.subjectintro_selectie2ofmeer
+
+		}
+
+
+		// [LAND] scoort een [SCORE] op basis van het gemiddelde voor 
+
+	}
 
 		// alle landen
 		// console.log(euLayer.getGeoJSON());
@@ -666,16 +693,30 @@ function selectedCountry (e) {
 		// }
 
 
-		document.querySelector("#sidebar #content").innerHTML += "<p>" + content + "</p>";
-
-	}
-
-
-
 
 	var link = "\"" + e.target.feature.properties.name + "\",\"" + e.target.feature.properties.nl_name + "\"";
 	document.querySelector("#sidebar #content").innerHTML += "<a href='javascript:country(" + link + ")'>Lees meer..</a>";
 
+}
+
+
+function replaceKeys (e,content) {
+	// search and replace items in text
+	var replaceKeys = [];
+	Object.keys(e.target.feature.properties).forEach(function(key) {
+		replaceKeys.push(key);
+	});
+
+	for (var i = 0; i < replaceKeys.length; i++) {
+		var re = new RegExp("{" + replaceKeys[i] + "}","ig");
+		content = content.replace(re, e.target.feature.properties[replaceKeys[i]]);
+	}
+
+	// score pointer feature
+	content = content.replace(/\{_score_\}/ig, Math.round(window.combinedScore[e.target.feature.properties.name]*2)/2);
+
+
+	return content;
 }
 
 function country (name,nl_name) {

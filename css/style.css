@@ -4,9 +4,16 @@
 	font-family: 'Arimo';
 	font-style: normal;
 	font-weight: 400;
-	src: url(fonts/normal.woff) format("woff"),
+	src: local('Arimo'), url(fonts/normal.woff2) format("woff2"), url(fonts/normal.woff) format("woff"),
 	 url(fonts/normal.ttf) format("truetype");
 	}
+
+@font-face {
+  font-family: 'Arimo';
+  font-style: bold;
+  font-weight: 700;
+  src: local('Arimo Bold'), local('Arimo-Bold'), url(fonts/bold.woff) format('woff2');
+}
 
 
 /* typografie */
