@@ -39,7 +39,7 @@
 var style = {
     "clickable": false,
     "color": "#00D",
-    "fillColor": "#27233e",
+    "fillColor": "rgb(18,19,20)",
     "weight": 0,
     "opacity": 1,
     "fillOpacity": 1
@@ -62,11 +62,11 @@ var hues = [
 
 
 var fHues = [
-	'hsl(220,50%,50%)', // green green
-	'hsl(220,60%,60%)',
-	'hsl(220,70%,70%)',
-	'hsl(220,80%,80%)',
-	'hsl(220,95%,95%)', // light groen
+	'rgb(72,101,19)', // green green
+	'rgb(102,144,27)',
+	'rgb(133,187,35)',
+	'rgb(160,218,55)',
+	'rgb(193,227,100)', // light groen
 	'hsl(330,95%,95%)', 
 	'hsl(330,80%,80%)', // light rood
 	'hsl(330,70%,70%)',
@@ -106,6 +106,7 @@ var map = L.map('map',{
 	})
 	.addLayer(geojsonTileLayer)
 	.setView([55, 0], 4);
+
 
 var popup = new L.Popup({ autoPan: false });
 
@@ -633,11 +634,12 @@ function selectedCountry (e) {
 	if (selectedVar.length === 1) {
 
 		var index = window.subject.indexOf(selectedVar[0])
+		var content = window.subjectintro[index];
 
-		console.log(window.subjectintro[index])
 
 
 		content = content.replace(/\[LAND\]/ig, e.target.feature.properties.nl_name);
+
 		content = content.replace(/\[SCORE\]/ig, window.combinedScore[e.target.feature.properties.name]);
 
 		// for (var i = 0; i <  window.subject.length; i++) {
