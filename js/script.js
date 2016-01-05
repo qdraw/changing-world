@@ -46,16 +46,16 @@ var style = {
 };
 
 var hues = [
-	'hsl(120,50%,50%)', // green green
-	'hsl(120,60%,60%)',
-	'hsl(120,70%,70%)',
-	'hsl(120,80%,80%)',
-	'hsl(120,95%,95%)', // light groen
-	'hsl(0,95%,95%)',
-	'hsl(0,80%,80%)', // light rood
-	'hsl(0,70%,70%)',
-	'hsl(0,60%,60%)',
-	'hsl(0,50%,50%)', //donker rood
+	'#0eb223', // green green
+	'#26cb2a',
+	'#5ade46',
+	'#96f566',
+	'#b9ff82', // light groen
+	'#ff8383',
+	'#f46767', // light rood
+	'#dd4747',
+	'#c92727',
+	'#af1010', //donker rood
 	];
 	// 'hsl(120,20%,70%)', // light groen
 	// 'hsl(0,20%,70%)',
@@ -99,10 +99,16 @@ var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL,
     }
 );
 
+
+var southWest = L.latLng(3.337953961416485, -118.47656249),
+    northEast = L.latLng(81.17449100425956, 112.8515625),
+    bounds = L.latLngBounds(southWest, northEast);
+
 var map = L.map('map',{ 
 	zoomControl:false,
-	minZoom: 3,
-	maxZoom: 7 
+    maxBounds: bounds,
+	minZoom: 4,
+	maxZoom: 5 
 	})
 	.addLayer(geojsonTileLayer)
 	.setView([55, 0], 4);
@@ -219,7 +225,9 @@ function joinData(data, layer) {
 	euLayer.setGeoJSON(newFeatures);
 
 
-	setVariable([]);
+	var buildURLout = buildURL();
+	setVariable(buildURLout[0]);
+	// or [];
 
 	buildMenu();
 	buildSidebarHeader();
@@ -241,6 +249,11 @@ function setVariable(selectedVar) {
 
 
 	if (selectedVar.length > 0) {
+
+		if (document.querySelectorAll("#introdata").length > 0) {
+			document.querySelector("#introdata").style.zIndex = "-1";
+		}
+
 		console.log("selectedVar");
 		console.log(selectedVar);
 
@@ -274,7 +287,7 @@ function setVariable(selectedVar) {
 
 			layer.setStyle({
 				fillColor: hues[colorindex],
-				fillOpacity: 0.8,
+				fillOpacity: 1,
 				color: '#fff',
 				weight: 0.25
 			});
@@ -289,23 +302,23 @@ function setVariable(selectedVar) {
 	}//e/fi
 	else {
 
+		if (document.querySelectorAll("#introdata").length > 0) {
 
-		document.querySelector("#introdata").style.zIndex = "1";
-		document.querySelector("#introdata").addEventListener("click", hideLightbox, false);
+			document.querySelector("#introdata").style.zIndex = "1";
 
 
-		document.querySelector("#introdata .container").innerHTML = "<div class='close'></div>";
+			document.querySelector("#introdata .container").innerHTML = "<div class='close'></div>";
 
-		for (var i = 0; i <  window.introdata.length; i++) {
+			for (var i = 0; i <  window.introdata.length; i++) {
 
-			if (i === 0) {
-				document.querySelector("#introdata .container").innerHTML += "<h2>" + window.introdata[i] + "</h2>";
+				if (i === 0) {
+					document.querySelector("#introdata .container").innerHTML += "<h2>" + window.introdata[i] + "</h2>";
+				}
+				if (window.helpdata[i] !== ""  && i !== 0) {
+					document.querySelector("#introdata .container").innerHTML += "<p>" + window.introdata[i] + "</p>";
+				} 
 			}
-			if (window.helpdata[i] !== ""  && i !== 0) {
-				document.querySelector("#introdata .container").innerHTML += "<p>" + window.introdata[i] + "</p>";
-			} 
 		}
-
 
 		// document.querySelector("#introdata").style.zIndex = "-1";
 
@@ -356,6 +369,7 @@ function buildMenu () {
 	}
 
 	document.querySelector('#sidebar .help').addEventListener("click", function(e){ var those = this; help(those); }, false);
+	document.querySelector('#sidebar .resetAll').addEventListener("click", function(e){ var those = this; resetAll(those); }, false);
 
 }
 
@@ -370,6 +384,55 @@ function buildSidebarHeader () {
 			document.querySelector("#sidebar #header").innerHTML += "<p>" + window.sidebarheader[i] + "</p>";
 		} 
 	}
+}
+
+function buildURL() {
+	// #subject=gini_score,freedom_score&country=DE
+	// #subject=gini_score,freedom_score
+
+	if (location.hash.length > 0) {
+
+		var urlsubject = [];
+		var urlcountry;
+
+		if (location.hash.search("&") > 0) {
+			var hash = location.hash.split("&");
+			for (var i = 0; i < hash.length; i++) {
+				if (hash[i].search("#subject=") !== -1) {
+					var urlsubject = hash[i].replace("#subject=","");
+					urlsubject = urlsubject.split(",");
+				}
+				if (hash[i].search("country=") !== -1) {
+					var urlcountry = hash[i].replace("country=","");
+				}
+			}
+
+		}
+		else {
+
+			if (location.hash.search("#subject=") !== -1) {
+				var urlsubject = location.hash.replace("#subject=","");
+				urlsubject = urlsubject.split(",");
+			}
+
+		}
+
+		// controle;
+		for (var i = 0; i < urlsubject.length; i++) {
+			if (window.subject.indexOf(urlsubject[i]) === -1) {
+				var index = urlsubject.indexOf(urlsubject[i]);
+				urlsubject.splice( index, 1 );
+			}
+		}
+
+		return [urlsubject,urlcountry];
+
+	}
+	else {
+		return [];
+	}
+
+	// console.log(hash)
 }
 
 var selectedVar = [];
@@ -468,6 +531,8 @@ function mousemove(e,those) {
 		}
 
 		if (document.querySelectorAll("#sidebar #legenda .pointer").length > 0) {
+
+			document.querySelector("#sidebar #legenda .pointer").style.display = "block";
 			document.querySelector("#sidebar #legenda .pointer").style.top = "calc( " + top + "vh" + " - 20px )";
 			
 			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
@@ -522,6 +587,20 @@ function help () {
 
 }
 
+function resetAll () {
+	setVariable([]);
+
+	isFilterCountryActive = false;
+
+	for (var i = 0; i < window.subject.length; i++) {
+		document.querySelector("#menu #label_" + window.subject[i] + " .checkbox").style.backgroundImage = "none";
+	}
+
+	selectedVar = [];
+
+}
+
+
 function hideLightbox () {
 	document.querySelector("#lightbox").style.zIndex = "-1";
 	document.querySelector("#introdata").style.zIndex = "-1";
@@ -534,81 +613,80 @@ var isFilterCountryActive = false;
 function filterCountry(e,those) {
 	isFilterCountryActive = true;
 
-	var countryname = e.target.feature.properties.name;
-	window.filterCountryName = countryname;
 
-	// var combinedScoreArrayOrderByNames = Object.keys(window.combinedScore).sort(function(a,b){return window.combinedScore[a]-window.combinedScore[b]})
+	if (selectedVar.length > 0) {
+		var countryname = e.target.feature.properties.name;
+		window.filterCountryName = countryname;
 
-	// function sortObject(obj) {
-	//     var arr = [];
-	//     for (var prop in obj) {
-	//         if (obj.hasOwnProperty(prop)) {
-	//             arr.push({
-	//                 'key': prop,
-	//                 'value': obj[prop]
-	//             });
-	//         }
-	//     }
-	//     arr.sort(function(a, b) { return a.value - b.value; });
-	//     //arr.sort(function(a, b) { a.value.toLowerCase().localeCompare(b.value.toLowerCase()); }); //use this to sort as strings
-	//     return arr; // returns array
-	// }
-	// var sortCombinedScore = sortObject(window.combinedScore);
-	// console.log(sortCombinedScore);
+		// var combinedScoreArrayOrderByNames = Object.keys(window.combinedScore).sort(function(a,b){return window.combinedScore[a]-window.combinedScore[b]})
 
+		// function sortObject(obj) {
+		//     var arr = [];
+		//     for (var prop in obj) {
+		//         if (obj.hasOwnProperty(prop)) {
+		//             arr.push({
+		//                 'key': prop,
+		//                 'value': obj[prop]
+		//             });
+		//         }
+		//     }
+		//     arr.sort(function(a, b) { return a.value - b.value; });
+		//     //arr.sort(function(a, b) { a.value.toLowerCase().localeCompare(b.value.toLowerCase()); }); //use this to sort as strings
+		//     return arr; // returns array
+		// }
+		// var sortCombinedScore = sortObject(window.combinedScore);
+		// console.log(sortCombinedScore);
 
+		var color = "#DDD";
+		var borderwidth = 0.25;
+		var fillOpacity = 1;
 
-	var color = "#DDD";
-	var borderwidth = 0.5;
-	var fillOpacity = 0.8;
+		euLayer.eachLayer(function(layer) {
 
-	euLayer.eachLayer(function(layer) {
+			if (window.combinedScore[layer.feature.properties.name] > window.combinedScore[countryname]) {
+				// Countries who perform better! :D :D :D
 
-		if (window.combinedScore[layer.feature.properties.name] > window.combinedScore[countryname]) {
-			// Countries who perform better! :D :D :D
+				var cindex = mmap(window.combinedScore[layer.feature.properties.name],window.combinedScore[countryname],10,5,0);
+				color = fHues[Math.floor(cindex)];
+				borderwidth = 0.5;
 
-			var cindex = mmap(window.combinedScore[layer.feature.properties.name],window.combinedScore[countryname],10,5,0);
-			color = fHues[Math.floor(cindex)];
-			borderwidth = 0.5;
-
-			//mmap(this,min,max,outmin,outmax)
-
-
-		}
-		else if (window.combinedScore[layer.feature.properties.name] === window.combinedScore[countryname]){
-			color = fHues[Math.round(fHues.length/2)];
-			console.log(Math.round(fHues.length/2));
-			borderwidth = 0.5;
+				//mmap(this,min,max,outmin,outmax)
 
 
-			// The selected country
-			if (layer.feature.properties["name"] === e.target.feature.properties["name"]) {
-				 color = "white"; // blue // selected country
-				 borderwidth = 2;
-				 fillOpacity = 1;
 			}
-		}
-		else {
-			color = "red";
-			var cindex = mmap(window.combinedScore[layer.feature.properties.name],0,window.combinedScore[countryname],9,5);
-			color = fHues[Math.floor(cindex)];
-			borderwidth = 0.5;
+			else if (window.combinedScore[layer.feature.properties.name] === window.combinedScore[countryname]){
+				color = fHues[Math.round(fHues.length/2)];
+				console.log(Math.round(fHues.length/2));
+				borderwidth = 0.5;
 
-		}
 
-		// And finaly arange all the colours from all countries
-		layer.setStyle({
-			fillColor: color,
-			fillOpacity: fillOpacity,
-			color: '#fff',
-			weight: borderwidth
+				// The selected country
+				if (layer.feature.properties["name"] === e.target.feature.properties["name"]) {
+					 color = "white"; // blue // selected country
+					 borderwidth = 2;
+				}
+			}
+			else {
+				color = "red";
+				var cindex = mmap(window.combinedScore[layer.feature.properties.name],0,window.combinedScore[countryname],9,5);
+				color = fHues[Math.floor(cindex)];
+				borderwidth = 0.5;
+
+			}
+
+			// And finaly arange all the colours from all countries
+			layer.setStyle({
+				fillColor: color,
+				fillOpacity: fillOpacity,
+				color: '#fff',
+				weight: borderwidth
+			});
+
 		});
 
-	});
-
-	legenda(fHues);
-	selectedCountry(e);
-
+		legenda(fHues);
+		selectedCountry(e);
+	}
 
 }
 
@@ -705,7 +783,8 @@ function replaceKeys (e,content) {
 	}
 
 	// score pointer feature
-	content = content.replace(/\{_score_\}/ig, Math.round(window.combinedScore[e.target.feature.properties.name]*2)/2);
+	var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
+	content = content.replace(/\{_score_\}/ig, score);
 
 
 	return content;
@@ -738,7 +817,6 @@ function country (name,nl_name) {
 
 
 }
-
 
 
 

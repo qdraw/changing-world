@@ -120,6 +120,7 @@ h3{
 	background-color: rgb(41,42,42);
 }
 
+
 .sources {
 	max-width: 960px;
 	margin-left: auto;
@@ -356,17 +357,21 @@ path {
 
 }
 
-
 @media (max-width: 1325px){
 	#sidebar {
-		width: 300px;
-	}   
+		width: 310px;
+	}
+	#sidebar .container{
+		width: 270px;
+	}
 }
 @media (max-width: 350px){
-	#sidebar {
+	#sidebar .container {
 		width: 100%;
 	}   
 }
+
+
 
 #sidebar #header {
 	margin-top: 15px;
@@ -379,28 +384,7 @@ path {
 	margin-top: 50px;
 }
 
-#sidebar #content .image {
-	display: block;
-	height: 22vh;
-	width: 25vw;
-	width: calc( 27vw - 0px );
-	background-size: cover;
-	background-position: center;
-	top: 50px;
-	left: 0px;
-	position: absolute;
-}
 
-@media (max-height: 750px) and (min-width: 1270px){
-	#sidebar #content .image {
-		display: none;
-	}
-}
-@media (max-width: 1360px){
-	#sidebar #content .image {
-		display: none;
-	}
-}
 
 @media (max-height: 550px) {
 	#sidebar #header {
@@ -409,22 +393,12 @@ path {
 
 	#sidebar .container{
 		overflow-y: scroll;
-		height: 80vh;
-		height: calc( 100vh - 0px );
+		height: 100vh;
 		width: 27vw;
 	}
 }
 
-@media (max-width: 1325px){
-	#sidebar .container{
-		width: 290px;
-	}
-}
-@media (max-width: 350px){
-	#sidebar .container {
-		width: 100%;
-	}   
-}
+
 
 #sidebar #legenda {
 	position: absolute;
@@ -454,6 +428,7 @@ path {
 }
 
 #sidebar #legenda .pointer {
+	display: none;
 	position: absolute;
 	top: 0px;
 	left: 4.1vw;
@@ -494,7 +469,7 @@ path {
 #sidebar #menu label{
 	cursor: pointer;
 	list-style: none;
-	width: 90%;
+	width: 100%;
 	display: inline-block;
 	height: 33px;
 	background-color: #d6d6d6;
@@ -524,7 +499,7 @@ path {
 	margin-right: 15px;
 }
 
-
+#sidebar .resetAll,
 #sidebar .help,
 #sidebar #menu label .i {
 	height: 33px;
@@ -538,18 +513,22 @@ path {
 	display: inline-block;
 	cursor: pointer;
 }
+
+#sidebar .resetAll,
 #sidebar .help {
 	height: 22px;
-	width: 50px;	
 	background-size: contain;
 	background-image: url("../images/question-neg.svg");
-	width: 60px;
+	width: 90px;
 	line-height: 22px;
 	margin-top: 10px;
 	text-align: right;
 }
 
-
+#sidebar .resetAll {
+	width: 160px;
+	background-image: url("../images/close-neg.svg");
+}
 /*.leaflet-popup-content-wrapper,
 leaflet-popup-content {
 	font-family: 'Arimo', "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -606,33 +585,6 @@ leaflet-popup-content {
 	background-size: cover; 
 }
 
-@media (max-height: 680px) and (max-width: 620px){
-
-
-
-	#sidebar .hamburger {
-		width: 50px;
-		height: 50px;
-		display: inline-block;
-		background-image: url("../images/hamburger.svg");
-		background-size: cover;
-		background-position: center;
-	}
-
-	#sidebar .container{
-
-		height: calc( 100vh - 177px );
-
-	}
-
-	#metro .l2{
-		left: 0px;
-		width: 100%;
-	}
-	.leaflet-control-attribution {
-		display: none !important;
-	}
-}
 
 
 @media (min-height: 680px) and (min-width: 680px){
@@ -660,7 +612,7 @@ leaflet-popup-content {
 
 
 
-#introdata,
+
 #lightbox {
 	width: 100vw;
 	height: 100vh;
@@ -671,7 +623,6 @@ leaflet-popup-content {
 	background-color: rgba(0,0,0,0.3);
 }
 
-#introdata .close,
 #lightbox .close {
 	position: absolute;
 	top: 0px;
@@ -684,7 +635,7 @@ leaflet-popup-content {
 	height: 35px;
 	text-align: right;
 }
-#introdata .container,
+
 #lightbox .container {
 	position: relative;
 	background-color: white;
@@ -707,20 +658,22 @@ leaflet-popup-content {
 	line-height: 1.5;
 
 }
+
+	
+
 #introdata {
-	background-color: transparent;
+	position: absolute;
+	top: 15vh;
+	left: 22vw;
+	background-color: white;
+	padding: 10px;
+	max-width: 300px;
 }
 
-#introdata .container {
-	margin-left: 35vw;
-	width: 50vw;
-	-webkit-column-count: 1; /* Chrome, Safari, Opera */
-	-moz-column-count: 1; /* Firefox */
-	column-count: 1;
+@media (max-width: 1325px){
+	#introdata {
+		left: 400px;
+	}
 }
-
-
-
-
 
 
