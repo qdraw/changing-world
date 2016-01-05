@@ -39,7 +39,7 @@
 var style = {
     "clickable": false,
     "color": "#00D",
-    "fillColor": "#414143",
+    "fillColor": "#27233e",
     "weight": 0,
     "opacity": 1,
     "fillOpacity": 1
@@ -628,7 +628,7 @@ function selectedCountry (e) {
 	console.log(window.subjectintro);
 	console.log(selectedVar);
 
-	
+
 
 	if (selectedVar.length === 1) {
 
