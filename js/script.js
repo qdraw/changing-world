@@ -225,8 +225,12 @@ function joinData(data, layer) {
 	euLayer.setGeoJSON(newFeatures);
 
 
-	var buildURLout = buildURL();
-	setVariable(buildURLout[0]);
+	buildURLout = buildURL();
+	if (buildURLout.length != 0) {
+		selectedVar = buildURLout[0];
+	}	
+
+	setVariable();
 	// or [];
 
 	buildMenu();
@@ -245,7 +249,7 @@ function joinData(data, layer) {
 
 window.combinedScore = {};
 
-function setVariable(selectedVar) {
+function setVariable() {
 
 
 	if (selectedVar.length > 0) {
@@ -357,7 +361,6 @@ function buildMenu () {
 	
 	document.querySelector("#sidebar #menu").innerHTML = "";
 
-
 	// #sidebar #menu
 	for (var i = 0; i <  window.subject.length; i++) {
 		document.querySelector("#sidebar #menu").innerHTML += "<label id='label_" + window.subject[i] +"'><input type='checkbox' id='" + window.subject[i] +"' name='checkbox' value='" + window.subject[i] +"'><span class='checkbox'></span><span class='txt'>" + window.subjectui[i] + "</span><span class='i' style='background-image: url(images/" + window.subject[i] + ".svg)'></span></label>";
@@ -367,6 +370,13 @@ function buildMenu () {
 		document.querySelector('#sidebar #menu #' + window.subject[i] ).addEventListener("click", function(e){ var those = this; readVariable(those); }, false);
 		// line 305, col 151, Don't make functions within a loop.
 	}
+
+	if (selectedVar.length > 0) {
+		for (var i = 0; i < selectedVar.length; i++) {
+			readVariable(undefined);
+		}
+	}
+
 
 	document.querySelector('#sidebar .help').addEventListener("click", function(e){ var those = this; help(those); }, false);
 	document.querySelector('#sidebar .resetAll').addEventListener("click", function(e){ var those = this; resetAll(those); }, false);
@@ -425,6 +435,7 @@ function buildURL() {
 			}
 		}
 
+
 		return [urlsubject,urlcountry];
 
 	}
@@ -435,31 +446,75 @@ function buildURL() {
 	// console.log(hash)
 }
 
+
+function constructURL() {
+
+	var url = "#subject=";
+	for (var i = 0; i < selectedVar.length; i++) {
+		
+		if (i === selectedVar.length-1) {
+			url += selectedVar[i];
+		}
+		else {
+			url += selectedVar[i] + ",";
+		}
+	}
+
+	if (selectedVar.length === 0) {
+		url = "#";
+	}
+
+	var stateObj = { object: "~" };
+	history.pushState(stateObj, "Qdraw", url);
+
+
+
+}
+
+
 var selectedVar = [];
 
-function readVariable (those) {
-	// var y = (x == 2 ? "yes" : "no");
-	those.state = (those.state === true ? false : true);
-	
-	isFilterCountryActive = false;
 
-	if (those.state) {
-		selectedVar.push(those.id);
+function readVariable (those) {
+	
+
+	// var y = (x == 2 ? "yes" : "no");
+	// those.state = (those.state === true ? false : true);
+	
+	// isFilterCountryActive = false;
+
+	
+	if (those !== undefined) {
+		
+		if ( selectedVar.indexOf(those.id) === -1 ) {
+			console.log(those.id)
+			selectedVar.push(those.id);
+		}
+		else {
+			console.log(selectedVar.indexOf(those.id) + "~")
+
+			var index = selectedVar.indexOf(those.id);
+			// delete storeActiveVar[index];
+			selectedVar.splice( index, 1 );
+		}
+
+		for (var i = 0; i < window.subject.length; i++) {
+			document.querySelector("#menu #label_" + window.subject[i] + " .checkbox").style.backgroundImage = "none";
+		}
+
+		for (var i = 0; i < selectedVar.length; i++) {
+			document.querySelector("#menu #label_" + selectedVar[i] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
+		}
 	}
 	else {
-		var index = selectedVar.indexOf(those.id);
-		// delete storeActiveVar[index];
-		selectedVar.splice( index, 1 );
-	}
-
-	for (var i = 0; i < window.subject.length; i++) {
-		document.querySelector("#menu #label_" + window.subject[i] + " .checkbox").style.backgroundImage = "none";
-	}
-
-	for (var i = 0; i < selectedVar.length; i++) {
-		document.querySelector("#menu #label_" + selectedVar[i] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
+		// direct input
+		for (var i = 0; i < selectedVar.length; i++) {
+			document.querySelector("#menu #label_" + selectedVar[i] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
+		}		
 	}
 	
+	constructURL();
+
 	console.log(selectedVar);
 
 	setVariable(selectedVar);
@@ -588,15 +643,18 @@ function help () {
 }
 
 function resetAll () {
-	setVariable([]);
+	selectedVar = [];
+
+	setVariable();
+	buildMenu ();
+
+	var stateObj = { object: "~" };
+	history.pushState(stateObj, "Qdraw", "#");
 
 	isFilterCountryActive = false;
 
-	for (var i = 0; i < window.subject.length; i++) {
-		document.querySelector("#menu #label_" + window.subject[i] + " .checkbox").style.backgroundImage = "none";
-	}
 
-	selectedVar = [];
+
 
 }
 
