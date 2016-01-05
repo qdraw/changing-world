@@ -452,7 +452,7 @@ path {
 	left: 4.1vw;
 	width: 150px;
 	height: 5vh;
-	background-color: #ccc;
+	background-color: #fff;
 	transition: all 1s ease;
 }
 
@@ -468,7 +468,7 @@ path {
 	pointer-events: none;
 }
 #sidebar #legenda .pointer:after {
-	border-right-color: #ccc;
+	border-right-color: #fff;
 	border-width: 2.5vh;
 	margin-top: -2.5vh;
 }
@@ -476,11 +476,11 @@ path {
 #sidebar #legenda .pointer:before {
 	width: 3.6vw;
 	top: calc( 2.5vh - 3.5px );
-	background-color: #ccc;
+	background-color: #fff;
 }
 
 #sidebar #menu input {
-	display: inline-block;
+	display: none;
 }
 
 
@@ -521,18 +521,20 @@ path {
 #sidebar .help,
 #sidebar #menu label .i {
 	height: 33px;
-	width: 50px;
+	/*width: 50px;*/
+	width: 33px;
 	float: right;
 	background-image: url("../images/gemiddeld-ink.svg");
-	background-size: contain;
+	background-size: cover;
 	background-repeat: no-repeat;
-	background-position: left; center;
+	background-position: center;
 	display: inline-block;
 	cursor: pointer;
 }
 #sidebar .help {
 	height: 22px;
-	width: 10px;	
+	width: 50px;	
+	background-size: contain;
 	background-image: url("../images/question-neg.svg");
 	width: 60px;
 	line-height: 22px;

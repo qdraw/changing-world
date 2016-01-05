@@ -119,6 +119,7 @@ var euLayer = L.mapbox.featureLayer()
 
 window.subject = [];
 window.subjectui = [];
+window.subjectintro = [];
 window.ishightolow = [];
 window.sidebarheader = [];
 window.helpdata = [];
@@ -136,6 +137,7 @@ function processData (data, tabletop) {
 	Object.keys(data.datatableoptions.elements).forEach(function(key) {
 		window.subject.push(data.datatableoptions.elements[key].subject);
 		window.subjectui.push(data.datatableoptions.elements[key].subjectui);
+		window.subjectintro.push(data.datatableoptions.elements[key].subjectintro);
 		window.ishightolow.push(data.datatableoptions.elements[key].ishightolow);
 		window.sidebarheader.push(data.datatableoptions.elements[key].sidebarheader);
 		window.introdata.push(data.datatableoptions.elements[key].introdata);
@@ -342,7 +344,7 @@ function buildMenu () {
 
 	// #sidebar #menu
 	for (var i = 0; i <  window.subject.length; i++) {
-		document.querySelector("#sidebar #menu").innerHTML += "<label><input type='checkbox' id='" + window.subject[i] +"' name='checkbox' value='" + window.subject[i] +"'>" + window.subjectui[i] + "<span class='i' style='background-image: url(images/" + window.subject[i] + ".svg)'></span></label>";
+		document.querySelector("#sidebar #menu").innerHTML += "<label id='label_" + window.subject[i] +"'><input type='checkbox' id='" + window.subject[i] +"' name='checkbox' value='" + window.subject[i] +"'><span class='checkbox'></span><span class='txt'>" + window.subjectui[i] + "</span><span class='i' style='background-image: url(images/" + window.subject[i] + ".svg)'></span></label>";
 	}
 
 	for (i = 0; i <  window.subject.length; i++) {
@@ -383,8 +385,17 @@ function readVariable (those) {
 		// delete storeActiveVar[index];
 		selectedVar.splice( index, 1 );
 	}
+
+	for (var i = 0; i < window.subject.length; i++) {
+		document.querySelector("#menu #label_" + window.subject[i] + " .checkbox").style.backgroundImage = "none";
+	}
+
+	for (var i = 0; i < selectedVar.length; i++) {
+		document.querySelector("#menu #label_" + selectedVar[i] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
+	}
 	
 	console.log(selectedVar);
+
 	setVariable(selectedVar);
 }
 
@@ -546,6 +557,7 @@ function filterCountry(e,those) {
 
 	var color = "#DDD";
 	var borderwidth = 0.5;
+	var fillOpacity = 0.8;
 
 	euLayer.eachLayer(function(layer) {
 
@@ -570,6 +582,7 @@ function filterCountry(e,those) {
 			if (layer.feature.properties["name"] === e.target.feature.properties["name"]) {
 				 color = "white"; // blue // selected country
 				 borderwidth = 2;
+				 fillOpacity = 1;
 			}
 		}
 		else {
@@ -583,7 +596,7 @@ function filterCountry(e,those) {
 		// And finaly arange all the colours from all countries
 		layer.setStyle({
 			fillColor: color,
-			fillOpacity: 0.8,
+			fillOpacity: fillOpacity,
 			color: '#fff',
 			weight: borderwidth
 		});
@@ -607,6 +620,37 @@ function selectedCountry (e) {
 	// });
 
 	document.querySelector("#sidebar #content").innerHTML = "<h2>" +  e.target.feature.properties.nl_name + "</h2>"
+
+
+
+	console.log(window.subject);
+
+	console.log(window.subjectintro);
+	console.log(selectedVar);
+
+	
+
+	if (selectedVar.length === 1) {
+
+		var index = window.subject.indexOf(selectedVar[0])
+
+		console.log(window.subjectintro[index])
+
+
+		content = content.replace(/\[LAND\]/ig, e.target.feature.properties.nl_name);
+		content = content.replace(/\[SCORE\]/ig, window.combinedScore[e.target.feature.properties.name]);
+
+		// for (var i = 0; i <  window.subject.length; i++) {
+		// 	content = content.replace("/\[" SCORE"\]/ig", window.combinedScore[e.target.feature.properties.name]);
+		// }
+
+
+		document.querySelector("#sidebar #content").innerHTML += "<p>" + content + "</p>";
+
+	}
+
+
+
 
 	var link = "\"" + e.target.feature.properties.name + "\",\"" + e.target.feature.properties.nl_name + "\"";
 	document.querySelector("#sidebar #content").innerHTML += "<a href='javascript:country(" + link + ")'>Lees meer..</a>";
