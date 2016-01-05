@@ -41,8 +41,8 @@ h6,
 .h5,
 .h6 {
   font-family: 'Arimo', "Helvetica Neue", Helvetica, Arial, sans-serif;
-  line-height: 1.1;
-  color: inherit;
+  line-height: 1.2;
+  color: #2d2d2d;
 }
 
 b {
@@ -339,20 +339,20 @@ path {
 	position:absolute; 
 	top:0px; 
 	left:0; 
-	background-color: #eeeeee;
+	background-color: white;
 	width: 22vw;
 	height: 100vh;
 	font-size: 13px;
 	line-height: 1.4;
 	padding-left: 2.75vw;
-	padding-right: 8.25vw;
+	padding-right: 2.75vw;
 
 }
 
 
 @media (max-width: 1325px){
 	#sidebar {
-		width: 330px;
+		width: 300px;
 	}   
 }
 @media (max-width: 350px){
@@ -403,14 +403,14 @@ path {
 	#sidebar .container{
 		overflow-y: scroll;
 		height: 80vh;
-		height: calc( 100vh - 127px );
+		height: calc( 100vh - 0px );
 		width: 27vw;
 	}
 }
 
 @media (max-width: 1325px){
 	#sidebar .container{
-		width: 350px;
+		width: 290px;
 	}
 }
 @media (max-width: 350px){
@@ -479,6 +479,9 @@ path {
 	background-color: #ccc;
 }
 
+#sidebar #menu input {
+	display: inline-block;
+}
 
 
 #sidebar #menu label{
@@ -486,14 +489,39 @@ path {
 	list-style: none;
 	width: 90%;
 	display: inline-block;
-	line-height: 2.5;
-	background-color: #ccc;
+	height: 33px;
+	background-color: #d6d6d6;
+	color: inherit;
+	background-color: rgba(214,214,214,0.3);
 	margin-bottom: 3px;
 }
+
+#sidebar #menu .txt {
+	display: inline-block;
+	line-height: 33px;
+	float: left;
+}
+
+#sidebar #menu .checkbox {
+	float: left;
+	height: 33px;
+	width: 33px;
+	background-color: #ccc;
+	background-color: rgba(137,135,123,0.3);
+	/*background-image: url("../images/checkbox.svg");*/
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: left; center;
+	display: inline-block;
+	cursor: pointer;	
+	margin-right: 15px;
+}
+
+
 #sidebar .help,
 #sidebar #menu label .i {
 	height: 33px;
-	width: 33px;
+	width: 50px;
 	float: right;
 	background-image: url("../images/gemiddeld-ink.svg");
 	background-size: contain;
@@ -503,9 +531,11 @@ path {
 	cursor: pointer;
 }
 #sidebar .help {
-	background-image: url("../images/question.svg");
+	height: 22px;
+	width: 10px;	
+	background-image: url("../images/question-neg.svg");
 	width: 60px;
-	line-height: 2.5;
+	line-height: 22px;
 	margin-top: 10px;
 	text-align: right;
 }

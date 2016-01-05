@@ -601,13 +601,12 @@ function selectedCountry (e) {
 	console.log(window.filterCountryName);
 
 
-	var content = [];
-	Object.keys(window.countrydescription).forEach(function(key) {
-		content.push(window.countrydescription[key][window.filterCountryName])
-	});
+	// var content = [];
+	// Object.keys(window.countrydescription).forEach(function(key) {
+	// 	content.push(window.countrydescription[key][window.filterCountryName])
+	// });
 
 	document.querySelector("#sidebar #content").innerHTML = "<h2>" +  e.target.feature.properties.nl_name + "</h2>"
-	document.querySelector("#sidebar #content").innerHTML += content[1];
 
 	var link = "\"" + e.target.feature.properties.name + "\",\"" + e.target.feature.properties.nl_name + "\"";
 	document.querySelector("#sidebar #content").innerHTML += "<a href='javascript:country(" + link + ")'>Lees meer..</a>";
