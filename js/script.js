@@ -638,9 +638,28 @@ function selectedCountry (e) {
 
 
 
-		content = content.replace(/\[LAND\]/ig, e.target.feature.properties.nl_name);
 
-		content = content.replace(/\[SCORE\]/ig, window.combinedScore[e.target.feature.properties.name]);
+
+
+		var replaceKeys = [];
+		Object.keys(e.target.feature.properties).forEach(function(key) {
+			// console.log(e.target.feature.properties[key]);
+			replaceKeys.push(key);
+			// console.log(key)
+		});
+
+		for (var i = 0; i < replaceKeys.length; i++) {
+			var re = new RegExp("{" + replaceKeys[i] + "}","ig");
+			content = content.replace(re, e.target.feature.properties[replaceKeys[i]]);
+		}
+
+		// alle landen
+		// console.log(euLayer.getGeoJSON());
+		// Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
+		// 	if (e.target.feature.properties.name === euLayer.getGeoJSON()[key].properties.name) {
+
+		// 	}
+		// });
 
 		// for (var i = 0; i <  window.subject.length; i++) {
 		// 	content = content.replace("/\[" SCORE"\]/ig", window.combinedScore[e.target.feature.properties.name]);
