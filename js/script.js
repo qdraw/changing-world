@@ -33,9 +33,15 @@
 		
 	// 	console.log(data.datatable.elements[i])
 	// };
+		// alle landen
+		// console.log(euLayer.getGeoJSON());
+		// Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
+		// 	if (e.target.feature.properties.name === euLayer.getGeoJSON()[key].properties.name) {
+
+		// 	}
+		// });
 
 
-//d6d6d6
 var style = {
     "clickable": false,
     "color": "#00D",
@@ -313,7 +319,7 @@ function setVariable() {
 	}//e/fi
 	else {
 		// Welcome screen
-		
+
 		// reset content screen
 		if (document.querySelectorAll("#sidebar #content").length > 0) {
 			document.querySelector("#sidebar #content").innerHTML = "";
@@ -975,20 +981,6 @@ function selectedCountry(e) { // the text
 		}
 	}
 
-		// alle landen
-		// console.log(euLayer.getGeoJSON());
-		// Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
-		// 	if (e.target.feature.properties.name === euLayer.getGeoJSON()[key].properties.name) {
-
-		// 	}
-		// });
-
-		// for (var i = 0; i <  window.subject.length; i++) {
-		// 	content = content.replace("/\[" SCORE"\]/ig", window.combinedScore[e.target.feature.properties.name]);
-		// }
-
-
-
 	var link = "\"" + e.target.feature.properties.name + "\",\"" + e.target.feature.properties.nl_name + "\"";
 	document.querySelector("#sidebar #content").innerHTML += "<a href='javascript:country(" + link + ")'>Lees meer..</a>";
 
@@ -1068,21 +1060,19 @@ function facepalm () {
 	// end facepalm css
 }
 
-// function pageFail (e) {
-
-// 	var para = document.createElement("div");
-// 	para.id = "warning"
-// 	var node = document.createTextNode(" ");
-// 	para.appendChild(node);
-
-// 	document.body.appendChild(para);
-  	
-//   	document.getElementById("warning").innerHTML = '<h2 style="color:black;">Sorry, maar met jouw versie van Internet Explorer kan mijn site niet samenwerken. Het handigste is dat je Firefox of Chrome installeerd. </h2><p style="color:black;"> Mocht u vragen hebben neem dan contact op met Dion van Velde via: ' + '&#100;'  + '&#105;' + '&#111;' + '&#110;' + '&#64;' + '&#113;' + '&#100;' + '&#114;' + '&#97;' + '&#119;' + '&#46;' + '&#110;' + '&#108;' + '</p> <a href="https://www.google.com/chrome/browser/desktop/index.html" class="button" style="color:white">Download Google Chrome</a> <a class="button" href="https://www.mozilla.org/nl/firefox/new/" style="color:white">Download Firefox</a>'   
-
-// }//e/pageFail
+setTimeout(function(){ 
+	if (window.subject.length < 1) {
+		document.getElementById("introdata").innerHTML = "<div class='container'><h2>Sorry er iets misgegaan met het laden van de inhoud</h2> <p>Wacht een klein momentje of herlaad de pagina om het opnieuw te proberen</p></div>"
+	}
+}, 3000);
 
 
-// // for IE10 and lower == unsuported
-// if(document.all && document.compatMode) {
-// 	pageFail ("noie")
-// }
+// for IE10 and lower == unsuported
+if(document.all && document.compatMode) {
+	setTimeout(function(){ 
+		document.getElementById("introdata").innerHTML = "<div class='container'><h2>Sorry, maar met jouw versie van Internet Explorer kan mijn site niet samenwerken.</h2> <p> Bekijk de website van <a href='http://browsehappy.com/?locale=nl'>browsehappy</a> voor informatie</p></div>"
+	}, 200);
+}
+
+
+// Bijna alle dieren hebben een maandelijkse cyclus, behalve natuurlijk de weekdieren.
