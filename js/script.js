@@ -436,6 +436,12 @@ function buildURL() {
 					}
 
 				}
+				if (hash[i].search("help=") !== -1) {
+					var isHelp = hash[i].replace("help=","");
+					if (isHelp == "1") {
+						help();
+					}
+				}
 			}
 
 		}
@@ -484,7 +490,9 @@ function constructURL() {
 	if (isFilterCountryActive) {
 		url += "&country=" + window.filterCountryName;
 	}
-
+	if (isHelpActive) {
+		url += "&help=1";
+	}
 
 	if (selectedVar.length === 0) {
 		url = "#";
@@ -636,38 +644,59 @@ function mmap(value, low1, high1, low2, high2) {
 
 
 
-
+var isHelpActive = false;
 
 function help () {
 
+	isHelpActive = true;
+	constructURL();
 	
-	document.querySelector("#lightbox").style.zIndex = "1";
+	document.querySelector("#lightbox").style.zIndex = "2";
 	document.querySelector("#lightbox").addEventListener("click", hideLightbox, false);
 
 
-	document.querySelector("#lightbox .container").innerHTML = "<div class='close'></div>";
+	document.querySelector("#lightbox .container").innerHTML = "<div class='close'></div><article></article>";
 
-	for (var i = 0; i <  window.helpdata.length; i++) {
+
+	var splitrow = window.helpdata.indexOf("{_splitrow_}");
+
+	// console.log(splitrow)
+	// console.log(window.helpdata)
+
+	if (splitrow === -1) {
+		splitrow = window.helpdata.length;
+	}
+
+	var content;
+	for (var i = 0; i <  splitrow; i++) {
+
 
 		if (i === 0) {
-			document.querySelector("#lightbox .container").innerHTML += "<h2>" + window.helpdata[i] + "</h2>";
+			content = "<h2>" + window.helpdata[i] + "</h2>";
 		}
 		if (window.helpdata[i] !== ""  && i !== 0) {
-			document.querySelector("#lightbox .container").innerHTML += "<p>" + window.helpdata[i] + "</p>";
-		} 
+			content += "<p>" + window.helpdata[i] + "</p>";
+		}
+
+	}
+	document.querySelector("#lightbox .container article").innerHTML = "<div>" + content + "</div>";
+
+	if (splitrow !== window.helpdata.length) {
+		
 	}
 
 
-	// add facepalm css
-    var head  = document.getElementsByTagName('head')[0];
-    var link  = document.createElement('link');
-    link.id   = "cssId";
-    link.rel  = 'stylesheet';
-    link.type = 'text/css';
-    link.href = 'css/facepalm.css';
-    link.media = 'all';
-    head.appendChild(link);
-    // end facepalm css
+
+		// // add facepalm css
+	 //    var head  = document.getElementsByTagName('head')[0];
+	 //    var link  = document.createElement('link');
+	 //    link.id   = "cssId";
+	 //    link.rel  = 'stylesheet';
+	 //    link.type = 'text/css';
+	 //    link.href = 'css/facepalm.css';
+	 //    link.media = 'all';
+	 //    head.appendChild(link);
+	 //    // end facepalm css
 
 }
 
@@ -692,6 +721,8 @@ function resetAll () {
 
 function hideLightbox () {
 	document.querySelector("#lightbox").style.zIndex = "-1";
+	isHelpActive = false;
+	constructURL();
 }
 
 
@@ -903,19 +934,19 @@ function country (name,nl_name) {
 		content.push(window.countrydescription[key][window.filterCountryName])
 	});
 
-	document.querySelector("#lightbox").style.zIndex = "1";
+	document.querySelector("#lightbox").style.zIndex = "2";
 	document.querySelector("#lightbox").addEventListener("click", hideLightbox, false);
 
 
-	document.querySelector("#lightbox .container").innerHTML = "<div class='close'></div>";
+	document.querySelector("#lightbox .container article").innerHTML = "<div class='close'></div>";
 
 	for (var i = 0; i <  content.length; i++) {
 
 		if (i === 0) {
-			document.querySelector("#lightbox .container").innerHTML += "<h2>" + nl_name + "</h2>";
+			document.querySelector("#lightbox .container article").innerHTML += "<h2>" + nl_name + "</h2>";
 		}
 		if (content[i] !== ""  && i !== 0) {
-			document.querySelector("#lightbox .container").innerHTML += "<p>" + content[i] + "</p>";
+			document.querySelector("#lightbox .container article").innerHTML += "<p>" + content[i] + "</p>";
 		} 
 	}
 

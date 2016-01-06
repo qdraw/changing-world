@@ -640,25 +640,25 @@ leaflet-popup-content {
 	position: relative;
 	background-color: white;
 	width: 80vw;
+	height: 70vh;
 	margin-top: 10vh;
 	padding: 15px;
 	padding-top: 40px;
 	padding-bottom: 40px;
 	margin-left: auto;
 	margin-right: auto;
-
-
-	-webkit-column-gap: 20px; /* Chrome, Safari, Opera */
-	-moz-column-gap: 20px; /* Firefox */
-	column-gap: 20px;
-
-	-webkit-column-count: 2; /* Chrome, Safari, Opera */
-	-moz-column-count: 2; /* Firefox */
-	column-count: 2;
-	line-height: 1.5;
-
 }
 
+#lightbox .container article {
+	overflow-x: scroll;
+	height: 70vh;
+	width: 80vw;
+	line-height: 1.5;
+}
+
+#lightbox .container img {
+	max-width: 100%;
+}
 	
 
 #introdata {
