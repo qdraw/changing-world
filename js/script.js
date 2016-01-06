@@ -228,6 +228,12 @@ function joinData(data, layer) {
 	buildURLout = buildURL();
 	if (buildURLout.length != 0) {
 		selectedVar = buildURLout[0];
+		if (buildURLout[1].length > 0) {
+			console.log("~test")
+			isFilterCountryActive = true;
+			window.filterCountryName = buildURLout[1];
+			directFilterCountry();
+		}
 	}	
 
 	setVariable();
@@ -298,13 +304,20 @@ function setVariable() {
 
 			// 	// // YEAH, eventListeners
 			layer.addEventListener("mouseover", function(e){ var those = this; mousemove(e,those); }, false);
-			layer.addEventListener("click", function(e){ var those = this; filterCountry(e,those); }, false);
+			layer.addEventListener("click", function(e){ filterCountry(e); }, false);
 
 
 		});
 
 	}//e/fi
 	else {
+		// Welcome screen
+		
+		// reset content screen
+		if (document.querySelectorAll("#sidebar #content").length > 0) {
+			document.querySelector("#sidebar #content").innerHTML = "";
+		}
+
 
 		if (document.querySelectorAll("#introdata").length > 0) {
 
@@ -324,7 +337,6 @@ function setVariable() {
 			}
 		}
 
-		// document.querySelector("#introdata").style.zIndex = "-1";
 
 		euLayer.eachLayer(function(layer) {
 			layer.setStyle({
@@ -335,17 +347,13 @@ function setVariable() {
 			});
 		});
 
-		console.log("welcome");
 	}
 
+	// isFilterCountryActive ? "yes" : "no"
+	isFilterCountryActive ? directFilterCountry() : legenda(hues)
 
-	legenda(hues);
+
 	hidePreloader();
-
-
-	// bestCountry (name);
-	// setActiveMenu (name);
-	// displayCurrentType (name);
 }
 
 
@@ -403,7 +411,7 @@ function buildURL() {
 	if (location.hash.length > 0) {
 
 		var urlsubject = [];
-		var urlcountry;
+		var urlcountry = "";
 
 		if (location.hash.search("&") > 0) {
 			var hash = location.hash.split("&");
@@ -414,6 +422,16 @@ function buildURL() {
 				}
 				if (hash[i].search("country=") !== -1) {
 					var urlcountry = hash[i].replace("country=","");
+
+					// check if country exist
+					var listOfAllCounties = [];
+					Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
+						listOfAllCounties.push(euLayer.getGeoJSON()[key].properties.name);
+					});
+					if (listOfAllCounties.indexOf(urlcountry) === -1) {
+						urlcountry = "NL";
+					}
+
 				}
 			}
 
@@ -427,7 +445,7 @@ function buildURL() {
 
 		}
 
-		// controle;
+		// controle; voor subject
 		for (var i = 0; i < urlsubject.length; i++) {
 			if (window.subject.indexOf(urlsubject[i]) === -1) {
 				var index = urlsubject.indexOf(urlsubject[i]);
@@ -459,6 +477,11 @@ function constructURL() {
 			url += selectedVar[i] + ",";
 		}
 	}
+
+	if (isFilterCountryActive) {
+		url += "&country=" + window.filterCountryName;
+	}
+
 
 	if (selectedVar.length === 0) {
 		url = "#";
@@ -536,7 +559,9 @@ function legenda (hues) {
 
 
 
-function mousemove(e,those) {
+function mousemove(e,those) { // legenda high
+
+
 	// https://www.mapbox.com/mapbox.js/example/v1.0.0/choropleth/
 
 
@@ -653,7 +678,9 @@ function resetAll () {
 
 	isFilterCountryActive = false;
 
-
+	if (document.querySelectorAll("#sidebar #content").length > 0) {
+		document.querySelector("#sidebar #content").innerHTML = "";
+	}
 
 
 }
@@ -661,14 +688,34 @@ function resetAll () {
 
 function hideLightbox () {
 	document.querySelector("#lightbox").style.zIndex = "-1";
-	document.querySelector("#introdata").style.zIndex = "-1";
 }
 
 
 
 
+function directFilterCountry() {
+	if (isFilterCountryActive) {
+		var e = {};
+		e.target = {};
+		e.target.feature = {};
+		e.target.feature.properties = {};
+	
+		euLayer.eachLayer(function(layer) {
+		
+			if(layer.feature.properties.name === window.filterCountryName)	{
+				e.target.feature.properties = layer.feature.properties;
+			}
+		
+
+		});
+		filterCountry(e)
+	}
+}
+
+
 var isFilterCountryActive = false;
-function filterCountry(e,those) {
+
+function filterCountry(e) {
 	isFilterCountryActive = true;
 
 
@@ -676,24 +723,6 @@ function filterCountry(e,those) {
 		var countryname = e.target.feature.properties.name;
 		window.filterCountryName = countryname;
 
-		// var combinedScoreArrayOrderByNames = Object.keys(window.combinedScore).sort(function(a,b){return window.combinedScore[a]-window.combinedScore[b]})
-
-		// function sortObject(obj) {
-		//     var arr = [];
-		//     for (var prop in obj) {
-		//         if (obj.hasOwnProperty(prop)) {
-		//             arr.push({
-		//                 'key': prop,
-		//                 'value': obj[prop]
-		//             });
-		//         }
-		//     }
-		//     arr.sort(function(a, b) { return a.value - b.value; });
-		//     //arr.sort(function(a, b) { a.value.toLowerCase().localeCompare(b.value.toLowerCase()); }); //use this to sort as strings
-		//     return arr; // returns array
-		// }
-		// var sortCombinedScore = sortObject(window.combinedScore);
-		// console.log(sortCombinedScore);
 
 		var color = "#DDD";
 		var borderwidth = 0.25;
@@ -719,7 +748,7 @@ function filterCountry(e,those) {
 
 
 				// The selected country
-				if (layer.feature.properties["name"] === e.target.feature.properties["name"]) {
+				if (layer.feature.properties["name"] === e.target.feature.properties.name) {
 					 color = "white"; // blue // selected country
 					 borderwidth = 2;
 				}
@@ -744,12 +773,13 @@ function filterCountry(e,those) {
 
 		legenda(fHues);
 		selectedCountry(e);
+		constructURL();
 	}
 
 }
 
 
-function selectedCountry (e) {
+function selectedCountry (e) { // the text
 	console.log(window.filterCountryName);
 
 
@@ -762,10 +792,10 @@ function selectedCountry (e) {
 
 
 
-	console.log(window.subject);
+	// console.log(window.subject);
 
-	console.log(window.subjectintro);
-	console.log(selectedVar);
+	// console.log(window.subjectintro);
+	// console.log(selectedVar);
 
 
 
