@@ -547,7 +547,7 @@ function readVariable (those) {
 function legenda (hues) {
 
 	// reset html
-	document.querySelector("#sidebar #legenda").innerHTML = " <a class='close' onclick='toggleHamburger()'></a>		<span class='pointer'></span>";
+	document.querySelector("#sidebar #legenda").innerHTML = " <a class='close' onclick='toggleHamburger()'></a>		<span class='pointer' id='selectedcountry'></span> <span class='pointer' id='pointer'></span>";
 
 
 	for (var i = 0; i < hues.length; i++) {
@@ -589,7 +589,7 @@ function mousemove(e,those) { // legenda high
 			else {
 
 				var top = mmap(window.combinedScore[e.target.feature.properties.name],0,window.combinedScore[window.filterCountryName],0,50);
-				top = 100 - top;
+				top = 98 - top;
 				// console.log("lower" + e.target.feature.properties.name + top + " `" + window.combinedScore[window.filterCountryName]);
 
 			}
@@ -610,16 +610,17 @@ function mousemove(e,those) { // legenda high
 			top = 92;
 		}
 
-		if (document.querySelectorAll("#sidebar #legenda .pointer").length > 0) {
 
-			document.querySelector("#sidebar #legenda .pointer").style.display = "block";
-			document.querySelector("#sidebar #legenda .pointer").style.top = "calc( " + top + "vh" + " - 20px )";
+		if (document.querySelectorAll("#sidebar #legenda #pointer").length > 0) {
+
+			document.querySelector("#sidebar #legenda #pointer").style.display = "block";
+			document.querySelector("#sidebar #legenda #pointer").style.top = "calc( " + top + "vh" + " - 20px )";
 			
 			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
 
 			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + score;
 			 // filterReplace (variablesScale[name],content,countrynames[e.target.feature.properties["name"]]) 
-		 	document.querySelector("#sidebar #legenda .pointer").innerHTML = content;
+		 	document.querySelector("#sidebar #legenda #pointer").innerHTML = content;
 		}
 	}
 
@@ -773,7 +774,19 @@ function filterCountry(e) {
 
 		legenda(fHues);
 		selectedCountry(e);
+		selectedcountryLegenda(e);
 		constructURL();
+	}
+
+}
+
+function selectedcountryLegenda (e) {
+	if (isFilterCountryActive && document.querySelectorAll("#sidebar #legenda #selectedcountry").length > 0) {
+		document.querySelector("#sidebar #legenda #selectedcountry").style.display = "block";
+
+		var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
+		var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + score;
+		document.querySelector("#sidebar #legenda #selectedcountry").innerHTML = content;
 	}
 
 }

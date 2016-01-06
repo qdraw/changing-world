@@ -430,7 +430,7 @@ path {
 #sidebar #legenda .pointer {
 	display: none;
 	position: absolute;
-	top: 0px;
+	top: 45vh;
 	left: 4.1vw;
 	width: 150px;
 	height: 5vh;
