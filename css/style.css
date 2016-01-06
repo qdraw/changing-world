@@ -621,6 +621,7 @@ leaflet-popup-content {
 	top: 0px;
 	left: 0px;
 	background-color: rgba(0,0,0,0.3);
+	cursor: pointer;
 }
 
 #lightbox .close {
@@ -652,6 +653,7 @@ leaflet-popup-content {
 	height: 70vh;
 	overflow-x: scroll;
 	float: left;
+	cursor: default;
 }
 #lightbox .container .left p{
 	margin-top: 20px;
@@ -663,6 +665,7 @@ leaflet-popup-content {
 	width: 38vw;
 	float: right;
 	line-height: 1.5;
+	cursor: default;
 }
 #lightbox .container .subject {
 	margin-top: 20px;

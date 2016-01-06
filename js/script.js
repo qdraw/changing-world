@@ -806,12 +806,20 @@ function resetAll () {
 }
 
 
-function hideLightbox () {
-	document.querySelector("#lightbox").style.zIndex = "-1";
-	isHelpActive = false;
-	isCountyInfoActive = false;
+function hideLightbox (e) {
 
-	constructURL();
+	console.log(e.target.parentNode.className);
+
+	if ( !(e.target.parentNode.className === "left") ) {
+		if (!(e.target.parentNode.className === "right") ) {
+			document.querySelector("#lightbox").style.zIndex = "-1";
+			isHelpActive = false;
+			isCountyInfoActive = false;
+
+			constructURL();
+		}
+	}
+
 }
 
 
@@ -1047,7 +1055,7 @@ function country (name,nl_name) {
 
 
 	document.querySelector("#lightbox").style.zIndex = "2";
-	document.querySelector("#lightbox").addEventListener("click", hideLightbox, false);
+	document.querySelector("#lightbox").addEventListener("click", function(e){ hideLightbox(e) }, false);
 
 
 	write2lightbox(content);
