@@ -676,16 +676,6 @@ function help () {
 
 	write2lightbox(window.helpdata);
 
-		// // add facepalm css
-	 //    var head  = document.getElementsByTagName('head')[0];
-	 //    var link  = document.createElement('link');
-	 //    link.id   = "cssId";
-	 //    link.rel  = 'stylesheet';
-	 //    link.type = 'text/css';
-	 //    link.href = 'css/facepalm.css';
-	 //    link.media = 'all';
-	 //    head.appendChild(link);
-	 //    // end facepalm css
 
 }
 
@@ -855,6 +845,9 @@ function filterCountry(e) {
 		var countryname = e.target.feature.properties.name;
 		window.filterCountryName = countryname;
 
+		if (window.filterCountryName === "DO") {
+			facepalm();
+		}
 
 		var color = "#DDD";
 		var borderwidth = 0.25;
@@ -1062,7 +1055,18 @@ function country (name,nl_name) {
 
 }
 
-
+function facepalm () {
+	// add facepalm css
+	var head  = document.getElementsByTagName('head')[0];
+	var link  = document.createElement('link');
+	link.id   = "cssId";
+	link.rel  = 'stylesheet';
+	link.type = 'text/css';
+	link.href = 'css/facepalm.css';
+	link.media = 'all';
+	head.appendChild(link);
+	// end facepalm css
+}
 
 // function pageFail (e) {
 
