@@ -201,8 +201,6 @@ function joinData(data, layer) {
 			window.ranges[jName].min = Math.min(value, window.ranges[jName].min);
 			window.ranges[jName].max = Math.max(value, window.ranges[jName].max);
 
-
-
 		}	
 	}
 
@@ -232,9 +230,9 @@ function joinData(data, layer) {
 	if (buildURLout.length != 0) {
 		selectedVar = buildURLout[0];
 		if (buildURLout[1].length > 0) {
-			// console.log("~test")
 			isFilterCountryActive = true;
 			window.filterCountryName = buildURLout[1];
+			console.log("~filterCountryName` " + window.filterCountryName)
 			directFilterCountry();
 		}
 	}	
@@ -450,7 +448,9 @@ function buildURL() {
 				if (hash[i].search("info=") !== -1) {
 					var isInfo = hash[i].replace("info=","");
 					if (isInfo == "1" && hash[i].search("help=") === -1) {
-						country (urlcountry,listOfAllCounties_nl_name[listOfAllCounties_nl_name.indexOf(urlcountry)])
+						setTimeout(function(){ 
+							country (urlcountry,listOfAllCounties_nl_name[listOfAllCounties.indexOf(urlcountry)])
+						}, 2);
 					}
 				}
 
@@ -649,7 +649,6 @@ function mousemove(e,those) { // legenda high
 			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
 
 			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + score;
-			 // filterReplace (variablesScale[name],content,countrynames[e.target.feature.properties["name"]]) 
 		 	document.querySelector("#sidebar #legenda #pointer").innerHTML = content;
 		}
 	}
@@ -692,7 +691,7 @@ function help () {
 
 function write2lightbox (contentArray) {
 
-	document.querySelector("#lightbox .container").innerHTML = "<div class='close'></div><article></article>";
+	var contentHTML = "<div class='close'></div>";
 
 	var splitrow = contentArray.indexOf("{_splitrow_}");
 
@@ -712,7 +711,8 @@ function write2lightbox (contentArray) {
 		}
 
 	}
-	document.querySelector("#lightbox .container").innerHTML += "<div class='left'>" + content + "</div>";
+
+	contentHTML += "<div class='left'>" + content + "</div>";
 
 
 
@@ -731,10 +731,20 @@ function write2lightbox (contentArray) {
 			}
 
 		}
-		document.querySelector("#lightbox .container article").innerHTML += "<div>" + content + "</div>";
+		contentHTML += "<div class='right'>" + content + "</div>";
 
 	}
 
+
+	var properties = {};
+	Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
+		if (window.filterCountryName === euLayer.getGeoJSON()[key].properties.name) {
+			properties = euLayer.getGeoJSON()[key].properties;
+		}
+	});
+	contentHTML = replaceKeys(properties,contentHTML);
+
+	document.querySelector("#lightbox .container").innerHTML = contentHTML;
 
 	// body...
 
@@ -799,6 +809,8 @@ function resetAll () {
 function hideLightbox () {
 	document.querySelector("#lightbox").style.zIndex = "-1";
 	isHelpActive = false;
+	isCountyInfoActive = false;
+
 	constructURL();
 }
 
@@ -903,7 +915,7 @@ function selectedcountryLegenda (e) {
 }
 
 
-function selectedCountry (e) { // the text
+function selectedCountry(e) { // the text
 	// console.log(window.filterCountryName);
 
 
@@ -927,7 +939,7 @@ function selectedCountry (e) { // the text
 
 		var index = window.subject.indexOf(selectedVar[0])
 		var content = window.subjectintro[index];
-		content = replaceKeys(e,content);
+		content = replaceKeys(e.target.feature.properties,content);
 
 		document.querySelector("#sidebar #content").innerHTML += "<p>" + content + "</p>";
 
@@ -937,7 +949,7 @@ function selectedCountry (e) { // the text
 
 		if (selectedVar.length <= 4) {
 
-			var content = replaceKeys(e,window.subjectintro_selectie2ofmeer[0]);
+			var content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[0]);
 		
 			document.querySelector("#sidebar #content").innerHTML += content; 
 
@@ -957,7 +969,7 @@ function selectedCountry (e) { // the text
 
 		}
 		else {
-			var content = replaceKeys(e,window.subjectintro_selectie2ofmeer[1]);
+			var content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[1]);
 			document.querySelector("#sidebar #content").innerHTML += content;
 		}
 	}
@@ -982,20 +994,31 @@ function selectedCountry (e) { // the text
 }
 
 
-function replaceKeys (e,content) {
+function replaceKeys (properties,content) {
+	// e.target.feature.properties
+
 	// search and replace items in text
 	var replaceKeys = [];
-	Object.keys(e.target.feature.properties).forEach(function(key) {
+	Object.keys(properties).forEach(function(key) {
 		replaceKeys.push(key);
 	});
 
 	for (var i = 0; i < replaceKeys.length; i++) {
 		var re = new RegExp("{" + replaceKeys[i] + "}","ig");
-		content = content.replace(re, e.target.feature.properties[replaceKeys[i]]);
+
+		var value = properties[replaceKeys[i]];
+		value = String(value).replace(/,/ig,".");
+
+		if (!isNaN(value)) {
+			value = Math.ceil(value * 10)/10;
+			value = String(value).replace(/\./ig,",");
+
+		}
+		content = content.replace(re, value);
 	}
 
 	// score pointer feature
-	var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
+	var score = Math.ceil(window.combinedScore[properties.name] * 10)/10;
 	content = content.replace(/\{_score_\}/ig, score);
 
 
@@ -1013,30 +1036,21 @@ function country (name,nl_name) {
 
 
 	var content = [];
-	content.push("{_splitrow_}");
 
-
+	var i = 0;
 	Object.keys(window.countrydescription).forEach(function(key) {
-		content.push(window.countrydescription[key][window.filterCountryName])
+		if ( i!== 0) {
+			content.push(window.countrydescription[key][window.filterCountryName])
+		}
+		i++;
 	});
+
 
 	document.querySelector("#lightbox").style.zIndex = "2";
 	document.querySelector("#lightbox").addEventListener("click", hideLightbox, false);
 
+
 	write2lightbox(content);
-
-	// document.querySelector("#lightbox .container article").innerHTML = "<div class='close'></div>";
-
-	// for (var i = 0; i <  content.length; i++) {
-
-	// 	if (i === 0) {
-	// 		document.querySelector("#lightbox .container article").innerHTML += "<h2>" + nl_name + "</h2>";
-	// 	}
-	// 	if (content[i] !== ""  && i !== 0) {
-	// 		document.querySelector("#lightbox .container article").innerHTML += "<p>" + content[i] + "</p>";
-	// 	} 
-	// }
-
 
 }
 

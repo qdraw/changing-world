@@ -651,12 +651,13 @@ leaflet-popup-content {
 	width: 38vw;
 	height: 70vh;
 	overflow-x: scroll;
+	float: left;
 }
 #lightbox .container .left p{
 	margin-top: 20px;
 }
 
-#lightbox .container article {
+#lightbox .container .right {
 	overflow-x: scroll;
 	height: 70vh;
 	width: 38vw;
@@ -685,10 +686,20 @@ leaflet-popup-content {
 	margin-left: 15px;
 }
 
+
+#lightbox .container .subject b {
+	float: right;
+	margin-right: 10px;
+	margin-top: 6px;
+}
+
+
 #lightbox .container img {
 	max-width: 100%;
 }
-	
+#lightbox .container .countries {
+	height: 40vh;
+}
 
 #introdata {
 	position: absolute;
