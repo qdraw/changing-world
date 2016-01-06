@@ -143,7 +143,9 @@ function loadData () {
 
 function processData (data, tabletop) {
 	Object.keys(data.datatableoptions.elements).forEach(function(key) {
-		window.subject.push(data.datatableoptions.elements[key].subject);
+		if (data.datatableoptions.elements[key].subject !== "") {
+			window.subject.push(data.datatableoptions.elements[key].subject);
+		}
 		window.subjectui.push(data.datatableoptions.elements[key].subjectui);
 		window.subjectintro.push(data.datatableoptions.elements[key].subjectintro);
 		window.subjectintro_selectie2ofmeer.push(data.datatableoptions.elements[key].subjectintro_selectie2ofmeer);
@@ -191,7 +193,6 @@ function joinData(data, layer) {
 	for (var j = 0; j < window.subject.length; j++) {
 
 		for (i = 0; i < data.length; i++) {
-
 			data[i][window.subject[j]] = data[i][window.subject[j]].replace(/,/i, "."); 
 			data[i][window.subject[j]] = Number(data[i][window.subject[j]]);
 			var jName = window.subject[j];
@@ -199,6 +200,8 @@ function joinData(data, layer) {
 
 			window.ranges[jName].min = Math.min(value, window.ranges[jName].min);
 			window.ranges[jName].max = Math.max(value, window.ranges[jName].max);
+
+
 
 		}	
 	}
@@ -229,7 +232,7 @@ function joinData(data, layer) {
 	if (buildURLout.length != 0) {
 		selectedVar = buildURLout[0];
 		if (buildURLout[1].length > 0) {
-			console.log("~test")
+			// console.log("~test")
 			isFilterCountryActive = true;
 			window.filterCountryName = buildURLout[1];
 			directFilterCountry();
@@ -264,8 +267,8 @@ function setVariable() {
 			document.querySelector("#introdata").style.zIndex = "-1";
 		}
 
-		console.log("selectedVar");
-		console.log(selectedVar);
+		// console.log("selectedVar");
+		// console.log(selectedVar);
 
 		var combinedScore = {};
 
@@ -538,7 +541,7 @@ function readVariable (those) {
 	
 	constructURL();
 
-	console.log(selectedVar);
+	// console.log(selectedVar);
 
 	setVariable(selectedVar);
 }
@@ -744,7 +747,7 @@ function filterCountry(e) {
 			}
 			else if (window.combinedScore[layer.feature.properties.name] === window.combinedScore[countryname]){
 				color = fHues[Math.round(fHues.length/2)];
-				console.log(Math.round(fHues.length/2));
+				// console.log(Math.round(fHues.length/2));
 				borderwidth = 0.5;
 
 
@@ -793,7 +796,7 @@ function selectedcountryLegenda (e) {
 
 
 function selectedCountry (e) { // the text
-	console.log(window.filterCountryName);
+	// console.log(window.filterCountryName);
 
 
 	// var content = [];
