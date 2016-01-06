@@ -3,10 +3,10 @@
 	STOP READING CODE, GIVE ME A+ ;)
 
 
-	                      ,                                  
-	                     ,:                                  
-	      ,:==++=~,      :~                                  
-	    ,=+=:::::+?~     ~=                 ,,                  
+						  ,                                  
+						 ,:                                  
+		  ,:==++=~,      :~                                  
+		,=+=:::::+?~     ~=                 ,,                  
 	   ~+~:~==++=,,~,    ~=                :==:   ,=~,       ,   
 	  ==,~      :~,      ~~       ~??~     :~ =:   :I=      ,,        
 	 ~~=,        ==,    ,~II    :?$+=?=:      ?,   ++:     ;;  
@@ -16,9 +16,10 @@
 	,=~:~:,:~=++,  ,I?:  ,=?:  :I7+~~:  ,?7:,~++,   =$I :I+,   
 	 ,==::::::+?=~  ~II,,=II,  ,??: :~~  +?=++I$+   ~7? ,++:   
 	   :~::~:, :+?+:  ?II+~:  ,:+~   ,~~  ==~::::,  :+,  :=:   
-	            ,=II+:        ,:,    ,~=:                    
-	              :=~==                ~=,                   
-	                  ,                ,::                            
+				,=II+:        ,:,    ,~=:                    
+				  :=~==                ~=,                   
+					  ,                ,::                            
+		                    
 */		
 
 
@@ -43,12 +44,12 @@
 
 
 var style = {
-    "clickable": false,
-    "color": "#00D",
-    "fillColor": "rgb(18,19,20)",
-    "weight": 0,
-    "opacity": 1,
-    "fillOpacity": 1
+	"clickable": false,
+	"color": "#00D",
+	"fillColor": "rgb(18,19,20)",
+	"weight": 0,
+	"opacity": 1,
+	"fillOpacity": 1
 };
 
 var hues = [
@@ -84,35 +85,35 @@ var fHues = [
 var geojsonURL = 'data/vectiles-water-areas/{z}/{x}/{y}.json';
 var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, 
 	{
-        clipTiles: true,
-        unique: function (feature) {
-            return feature.id; 
-        }
-    }, 
-    {
-        style: style,
-        onEachFeature: function (feature, layer) {
-            if (feature.properties) {
-                var popupString = '<div class="popup">';
-                for (var k in feature.properties) {
-                    var v = feature.properties[k];
-                    popupString += k + ': ' + v + '<br />';
-                }
-                popupString += '</div>';
-                layer.bindPopup(popupString);
-            }
-        }
-    }
+		clipTiles: true,
+		unique: function (feature) {
+			return feature.id; 
+		}
+	}, 
+	{
+		style: style,
+		onEachFeature: function (feature, layer) {
+			if (feature.properties) {
+				var popupString = '<div class="popup">';
+				for (var k in feature.properties) {
+					var v = feature.properties[k];
+					popupString += k + ': ' + v + '<br />';
+				}
+				popupString += '</div>';
+				layer.bindPopup(popupString);
+			}
+		}
+	}
 );
 
 
 var southWest = L.latLng(3.337953961416485, -118.47656249),
-    northEast = L.latLng(81.17449100425956, 112.8515625),
-    bounds = L.latLngBounds(southWest, northEast);
+	northEast = L.latLng(81.17449100425956, 112.8515625),
+	bounds = L.latLngBounds(southWest, northEast);
 
 var map = L.map('map',{ 
 	zoomControl:false,
-    maxBounds: bounds,
+	maxBounds: bounds,
 	minZoom: 4,
 	maxZoom: 5 
 	})
@@ -143,8 +144,8 @@ window.countrydescription = {};
 function loadData () {
 	var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1v9Dsd5LwlLrSd5jzO7_QfTECU3TEtnlK44omvdYCJ8E/pubhtml';
 	Tabletop.init( { key: public_spreadsheet_url,
-	                callback: processData,
-	                simpleSheet: false } );
+					callback: processData,
+					simpleSheet: false } );
 }
 
 function processData (data, tabletop) {
@@ -655,7 +656,7 @@ function mousemove(e,those) { // legenda high
 			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
 
 			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + score;
-		 	document.querySelector("#sidebar #legenda #pointer").innerHTML = content;
+			document.querySelector("#sidebar #legenda #pointer").innerHTML = content;
 		}
 	}
 
