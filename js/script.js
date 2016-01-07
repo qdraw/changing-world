@@ -46,40 +46,93 @@
 var style = {
 	"clickable": false,
 	"color": "#00D",
-	"fillColor": "rgb(18,19,20)",
+	"fillColor": "#fff",
 	"weight": 0,
 	"opacity": 1,
 	"fillOpacity": 1
 };
+// 	"fillColor": "#334163",
 
 var hues = [
-	'#0eb223', // green green
-	'#26cb2a',
-	'#5ade46',
-	'#96f566',
-	'#b9ff82', // light groen
+	'hsl(192,100%,90%)', 
+	'hsl(192,100%,80%)', 
+	'hsl(192,100%,70%)', 
+	'hsl(192,100%,60%)', 
+	'hsl(192,100%,50%)', 
+	'hsl(192,100%,40%)', 
+	'hsl(192,100%,30%)', 
+	'hsl(192,100%,25%)', 
+	'hsl(192,100%,20%)', 
+	'hsl(192,100%,15%)' 
+];
+// var hues = [
+// 	'hsl(223,70%,80%)', 
+// 	'hsl(223,70%,75%)', 
+// 	'hsl(223,70%,70%)', 
+// 	'hsl(223,70%,65%)', 
+// 	'hsl(223,70%,60%)', 
+// 	'hsl(223,70%,55%)', 
+// 	'hsl(223,70%,50%)', 
+// 	'hsl(223,70%,45%)', 
+// 	'hsl(223,70%,40%)', 
+// 	'hsl(223,70%,35%)' 
+// ];
+
+// var hues = [
+// 	'rgb(3,9,93)', 
+// 	'rgb(19,29,124)', 
+// 	'rgb(6,34,170)', 
+// 	'rgb(0,68,186)', 
+// 	'rgb(26,97,202)', 
+// 	'rgb(33,141,231)', 
+// 	'rgb(58,147,247)', 
+// 	'rgb(114,167,243)', 
+// 	'rgb(163,192,225)', 
+// 	'rgb(208,224,250)' 
+// ];
+
+
+var fHues = [
+	'rgba(14, 178, 35, 0.8)', // green green
+	'rgba(38, 203, 42, 0.8)',
+	'rgba(90, 222, 70, 0.8)',
+	'rgba(150, 245, 102, 0.8)',
+	'rgba(185, 255, 130, 0.8)', // light groen
 	'#ff8383',
 	'#f46767', // light rood
 	'#dd4747',
 	'#c92727',
 	'#af1010', //donker rood
 	];
-	// 'hsl(120,20%,70%)', // light groen
-	// 'hsl(0,20%,70%)',
 
 
-var fHues = [
-	'rgb(72,101,19)', // green green
-	'rgb(102,144,27)',
-	'rgb(133,187,35)',
-	'rgb(160,218,55)',
-	'rgb(193,227,100)', // light groen
-	'hsl(330,95%,95%)', 
-	'hsl(330,80%,80%)', // light rood
-	'hsl(330,70%,70%)',
-	'hsl(330,60%,60%)',
-	'hsl(330,50%,50%)', //donker rood
-	];
+// var hues = [
+// 	'#64738C', // green green
+// 	'#889EBB',
+// 	'#B6D2DE',
+// 	'#D4EAF2',
+// 	'#888',
+// 	'#888',
+// 	'#EBC2D0', // light rood
+// 	'#D994AB',
+// 	'#E679A3',
+// 	'#C0537A'
+// ];
+
+
+
+// var fHues = [
+// 	'rgba(14, 178, 35, 0.8)', // green green
+// 	'rgba(38, 203, 42, 0.8)',
+// 	'rgba(90, 222, 70, 0.8)',
+// 	'rgba(150, 245, 102, 0.8)',
+// 	'rgba(185, 255, 130, 0.8', // light groen
+// 	'#ff8383',
+// 	'#f46767', // light rood
+// 	'#dd4747',
+// 	'#c92727',
+// 	'#af1010', //donker rood
+// 	];
 
 
 var geojsonURL = 'data/vectiles-water-areas/{z}/{x}/{y}.json';
@@ -626,10 +679,11 @@ function mousemove(e,those) { // legenda high
 			else {
 
 				var top = mmap(window.combinedScore[e.target.feature.properties.name],0,window.combinedScore[window.filterCountryName],0,50);
-				top = 98 - top;
+				top = 100 - top;
 				// console.log("lower" + e.target.feature.properties.name + top + " `" + window.combinedScore[window.filterCountryName]);
-
 			}
+
+
 			// euLayer.eachLayer(function(layer) {
 			// 	if (window.combinedScore[layer.feature.properties.name] > window.combinedScore[window.filterCountryName]) {
 				
@@ -639,6 +693,8 @@ function mousemove(e,those) { // legenda high
 
 
 		}
+
+		top = top - 5;
 
 		if (top < 3) {
 			top = 3;
@@ -651,7 +707,8 @@ function mousemove(e,those) { // legenda high
 		if (document.querySelectorAll("#sidebar #legenda #pointer").length > 0) {
 
 			document.querySelector("#sidebar #legenda #pointer").style.display = "block";
-			document.querySelector("#sidebar #legenda #pointer").style.top = "calc( " + top + "vh" + " - 20px )";
+			// document.querySelector("#sidebar #legenda #pointer").style.top = "calc( " + top + "vh" + " - 20px )";
+			document.querySelector("#sidebar #legenda #pointer").style.top = top + "vh";
 			
 			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
 
@@ -881,7 +938,7 @@ function filterCountry(e) {
 
 				// The selected country
 				if (layer.feature.properties["name"] === e.target.feature.properties.name) {
-					 color = "white"; // blue // selected country
+					 color = "#fff28f"; // blue // selected country
 					 borderwidth = 2;
 				}
 			}
@@ -983,7 +1040,7 @@ function selectedCountry(e) { // the text
 	}
 
 	var link = "\"" + e.target.feature.properties.name + "\",\"" + e.target.feature.properties.nl_name + "\"";
-	document.querySelector("#sidebar #content").innerHTML += "<a href='javascript:country(" + link + ")'>Lees meer..</a>";
+	document.querySelector("#sidebar #content").innerHTML += "<a class='button' href='javascript:country(" + link + ")'>Lees meer..</a>";
 
 }
 
@@ -1065,7 +1122,7 @@ setTimeout(function(){
 	if (window.subject.length < 1) {
 		document.getElementById("introdata").innerHTML = "<div class='container'><h2>Sorry er iets misgegaan met het laden van de inhoud</h2> <p>Wacht een klein momentje of herlaad de pagina om het opnieuw te proberen</p></div>"
 	}
-}, 3000);
+}, 5000);
 
 
 // for IE10 and lower == unsuported

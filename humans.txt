@@ -31,8 +31,8 @@
 
 
 */ SITE */
-	Url:				https://qdraw.github.io/cbs-werk-datavisualisatie/
-	Last update:			2015/11/02
+	Url:				https://qdraw.github.io/changing-world/
+	Last update:			2016/01/07
 	Language:			Dutch
 	Doctype:			HTML5
 	Standards:			HTML5, CSS3	
