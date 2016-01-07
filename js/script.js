@@ -183,6 +183,7 @@ var euLayer = L.mapbox.featureLayer()
 	.loadURL('data/europe.geo.json')
 	.addTo(map)
 	.on('ready', loadData);
+	// https://geojson-maps.kyd.com.au/
 
 window.subject = [];
 window.subjectui = [];
@@ -704,7 +705,7 @@ function mousemove(e,those) { // legenda high
 		}
 
 
-		if (document.querySelectorAll("#sidebar #legenda #pointer").length > 0) {
+		if (document.querySelectorAll("#sidebar #legenda #pointer").length > 0 && !isNaN(window.combinedScore[e.target.feature.properties.name]) ) {
 
 			document.querySelector("#sidebar #legenda #pointer").style.display = "block";
 			// document.querySelector("#sidebar #legenda #pointer").style.top = "calc( " + top + "vh" + " - 20px )";
@@ -712,7 +713,7 @@ function mousemove(e,those) { // legenda high
 			
 			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
 
-			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + score;
+			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + score.toLocaleString();
 			document.querySelector("#sidebar #legenda #pointer").innerHTML = content;
 		}
 	}
@@ -913,135 +914,135 @@ function filterCountry(e) {
 			facepalm();
 		}
 
-		var color = "#DDD";
+		var color = "red";
 		var borderwidth = 0.25;
 		var fillOpacity = 1;
 
 		euLayer.eachLayer(function(layer) {
 
-			if (window.combinedScore[layer.feature.properties.name] > window.combinedScore[countryname]) {
-				// Countries who perform better! :D :D :D
 
-				var cindex = mmap(window.combinedScore[layer.feature.properties.name],window.combinedScore[countryname],10,5,0);
-				color = fHues[Math.floor(cindex)];
-				borderwidth = 0.5;
+			if (window.combinedScore[layer.feature.properties.name] !== undefined) {
 
-				//mmap(this,min,max,outmin,outmax)
+				if (window.combinedScore[layer.feature.properties.name] > window.combinedScore[countryname]) {
+					// Countries who perform better! :D :D :D
 
+					var cindex = mmap(window.combinedScore[layer.feature.properties.name],window.combinedScore[countryname],10,5,0);
+					color = fHues[Math.floor(cindex)];
+					borderwidth = 0.5;
 
-			}
-			else if (window.combinedScore[layer.feature.properties.name] === window.combinedScore[countryname]){
-				color = fHues[Math.round(fHues.length/2)];
-				// console.log(Math.round(fHues.length/2));
-				borderwidth = 0.5;
+					//mmap(this,min,max,outmin,outmax)
 
 
-				// The selected country
-				if (layer.feature.properties["name"] === e.target.feature.properties.name) {
-					 color = "#fff28f"; // blue // selected country
-					 borderwidth = 2;
 				}
-			}
-			else {
-				color = "red";
-				var cindex = mmap(window.combinedScore[layer.feature.properties.name],0,window.combinedScore[countryname],9,5);
-				color = fHues[Math.floor(cindex)];
-				borderwidth = 0.5;
+				else if (window.combinedScore[layer.feature.properties.name] === window.combinedScore[countryname]){
+					color = fHues[Math.round(fHues.length/2)];
+					// console.log(Math.round(fHues.length/2));
+					borderwidth = 0.5;
+
+
+					// The selected country
+					if (layer.feature.properties["name"] === e.target.feature.properties.name) {
+						 color = "#fff28f"; // blue // selected country
+						 borderwidth = 2;
+					}
+				}
+				else {
+					var cindex = mmap(window.combinedScore[layer.feature.properties.name],0,window.combinedScore[countryname],9,5);
+					color = fHues[Math.floor(cindex)];
+					borderwidth = 0.5;
+
+				}
 
 			}
+
 
 			// And finaly arange all the colours from all countries
 			layer.setStyle({
 				fillColor: color,
 				fillOpacity: fillOpacity,
-				color: '#fff',
+				color: '#ccc',
 				weight: borderwidth
 			});
 
 		});
 
-		legenda(fHues);
 		selectedCountry(e);
 		selectedcountryLegenda(e);
+		legenda(fHues);
 		constructURL();
+
+
 	}
 
 }
 
 function selectedcountryLegenda (e) {
 	if (isFilterCountryActive && document.querySelectorAll("#sidebar #legenda #selectedcountry").length > 0) {
-		document.querySelector("#sidebar #legenda #selectedcountry").style.display = "block";
 
-		var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
-		var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + score;
-		document.querySelector("#sidebar #legenda #selectedcountry").innerHTML = content;
+		if (!isNaN(window.combinedScore[e.target.feature.properties.name]) ) {
+			document.querySelector("#sidebar #legenda #selectedcountry").style.display = "block";
+
+			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
+			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + score.toLocaleString();
+			document.querySelector("#sidebar #legenda #selectedcountry").innerHTML = content;
+		}
+
 	}
 
 }
 
 
 function selectedCountry(e) { // the text
-	// console.log(window.filterCountryName);
 
+	if (!isNaN(window.combinedScore[e.target.feature.properties.name]) ) {
 
-	// var content = [];
-	// Object.keys(window.countrydescription).forEach(function(key) {
-	// 	content.push(window.countrydescription[key][window.filterCountryName])
-	// });
+		document.querySelector("#sidebar #content").innerHTML = "<h2>" +  e.target.feature.properties.nl_name + "</h2>"
 
-	document.querySelector("#sidebar #content").innerHTML = "<h2>" +  e.target.feature.properties.nl_name + "</h2>"
+		if (selectedVar.length === 1) {
 
+			var index = window.subject.indexOf(selectedVar[0])
+			var content = window.subjectintro[index];
+			content = replaceKeys(e.target.feature.properties,content);
 
-
-	// console.log(window.subject);
-
-	// console.log(window.subjectintro);
-	// console.log(selectedVar);
-
-
-
-	if (selectedVar.length === 1) {
-
-		var index = window.subject.indexOf(selectedVar[0])
-		var content = window.subjectintro[index];
-		content = replaceKeys(e.target.feature.properties,content);
-
-		document.querySelector("#sidebar #content").innerHTML += "<p>" + content + "</p>";
-
-	}
-	else {
-
-
-		if (selectedVar.length <= 4) {
-
-			var content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[0]);
-		
-			document.querySelector("#sidebar #content").innerHTML += content; 
-
-			for (var i = 0; i < selectedVar.length; i++) {
-				var index = window.subject.indexOf(selectedVar[i]);
-				
-				if (i === selectedVar.length-2) {
-					document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + " en ";
-				}
-				else if(i === selectedVar.length-1) {
-					document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index]+ " (" + e.target.feature.properties[window.subject[index]] + ")";
-				}
-				else {
-					document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + ", ";
-				}
-			}
+			document.querySelector("#sidebar #content").innerHTML += "<p>" + content + "</p>";
 
 		}
 		else {
-			var content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[1]);
-			document.querySelector("#sidebar #content").innerHTML += content;
+
+
+			if (selectedVar.length <= 4) {
+
+				var content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[0]);
+			
+				document.querySelector("#sidebar #content").innerHTML += content; 
+
+				for (var i = 0; i < selectedVar.length; i++) {
+					var index = window.subject.indexOf(selectedVar[i]);
+					
+					if (i === selectedVar.length-2) {
+						document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + " en ";
+					}
+					else if(i === selectedVar.length-1) {
+						document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index]+ " (" + e.target.feature.properties[window.subject[index]] + ")";
+					}
+					else {
+						document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + ", ";
+					}
+				}
+
+			}
+			else {
+				var content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[1]);
+				document.querySelector("#sidebar #content").innerHTML += content;
+			}
 		}
+
+		var link = "\"" + e.target.feature.properties.name + "\",\"" + e.target.feature.properties.nl_name + "\"";
+		document.querySelector("#sidebar #content").innerHTML += "<a class='button' href='javascript:country(" + link + ")'>Lees meer..</a>";
 	}
 
-	var link = "\"" + e.target.feature.properties.name + "\",\"" + e.target.feature.properties.nl_name + "\"";
-	document.querySelector("#sidebar #content").innerHTML += "<a class='button' href='javascript:country(" + link + ")'>Lees meer..</a>";
 
+	
 }
 
 
@@ -1062,7 +1063,7 @@ function replaceKeys (properties,content) {
 
 		if (!isNaN(value)) {
 			value = Math.ceil(value * 10)/10;
-			value = String(value).replace(/\./ig,",");
+			value = value.toLocaleString();
 
 		}
 		content = content.replace(re, value);
@@ -1070,7 +1071,7 @@ function replaceKeys (properties,content) {
 
 	// score pointer feature
 	var score = Math.ceil(window.combinedScore[properties.name] * 10)/10;
-	content = content.replace(/\{_score_\}/ig, score);
+	content = content.replace(/\{_score_\}/ig, score.toLocaleString());
 
 
 	return content;
