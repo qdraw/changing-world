@@ -287,26 +287,32 @@ function joinData(data, layer) {
 	euLayer.setGeoJSON(newFeatures);
 
 
+	buildPage ();
+	
+}
+
+
+function buildPage () {
 	buildURLout = buildURL();
 	if (buildURLout.length != 0) {
 		selectedVar = buildURLout[0];
+		isFilterCountryActive = false;
 		if (buildURLout[1].length > 0) {
 			isFilterCountryActive = true;
 			window.filterCountryName = buildURLout[1];
 			console.log("~filterCountryName` " + window.filterCountryName)
 			directFilterCountry();
 		}
+	}
+	else {
+		selectedVar = [];
 	}	
 
 	setVariable();
-	// or [];
-
 	buildMenu();
 	buildSidebarHeader();
-	
 
 }
-
 
 
 // Excuse the short function name: this is not setting a JavaScript
@@ -318,7 +324,6 @@ function joinData(data, layer) {
 window.combinedScore = {};
 
 function setVariable() {
-
 
 	if (selectedVar.length > 0) {
 
@@ -335,7 +340,6 @@ function setVariable() {
 			
 			
 			for (var i = 0; i < selectedVar.length; i++) {
-
 
 				if (combinedScore[layer.feature.properties.name] !== undefined) {
 					combinedScore[layer.feature.properties.name] += layer.feature.properties[selectedVar[i]];
@@ -355,7 +359,6 @@ function setVariable() {
 
 
 			var colorindex = hues.length + (Math.round(combinedScore[layer.feature.properties.name]) * -1);
-
 
 			layer.setStyle({
 				fillColor: hues[colorindex],
@@ -477,6 +480,8 @@ function buildURL() {
 	// #subject=gini_score,freedom_score&country=DE
 	// #subject=gini_score,freedom_score
 
+	console.log(location.hash);
+
 	if (location.hash.length > 0) {
 
 		var urlsubject = [];
@@ -554,7 +559,9 @@ function buildURL() {
 	// console.log(hash)
 }
 
-
+var urlList = [];
+var timestampList = [];
+var prevURL;
 function constructURL() {
 
 	var url = "#subject=";
@@ -585,12 +592,58 @@ function constructURL() {
 		url += "&help=1";
 	}
 
-	var stateObj = { object: "~" };
-	history.pushState(stateObj, "Qdraw", url);
+	if (url !== prevURL) {
+		var timestamp = new Date().getTime();
+		var stateObj = { url: url, timestamp: timestamp };
+		history.pushState(stateObj, "Qdraw", url);
+
+		urlList.push(url);
+		timestampList.push(timestamp);
+	}
+	prevURL = url;
 
 
 
 }
+
+
+
+
+window.onhashchange = function() {
+    if (window.innerDocClick) {
+        window.innerDocClick = false;
+
+        console.log("innerDocClick")
+    	buildPage();
+
+
+    } else {
+        if (window.location.hash != '#undefined') {
+        	buildPage();
+
+        } else {
+        	        	console.log("h2o ")
+
+            history.pushState("", document.title, window.location.pathname);
+            location.reload();
+        }
+    }
+}
+
+
+
+
+window.innerDocClick = false;
+document.onmouseover = function() {
+    //User's mouse is inside the page.
+    window.innerDocClick = true;
+}
+
+document.onmouseleave = function() {
+    //User's mouse has left the page.
+    window.innerDocClick = false;
+}
+
 
 
 var selectedVar = [];
@@ -634,7 +687,9 @@ function readVariable (those) {
 		}		
 	}
 	
-	constructURL();
+	if (those !== undefined) {
+		constructURL();
+	}
 
 	// console.log(selectedVar);
 
@@ -837,7 +892,7 @@ function resetAll () {
 	setVariable();
 	buildMenu ();
 
-	var stateObj = { object: "~" };
+	var stateObj = { url: "#" };
 	history.pushState(stateObj, "Qdraw", "#");
 
 	isFilterCountryActive = false;
