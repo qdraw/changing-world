@@ -863,17 +863,24 @@ function resetAll () {
 
 function hideLightbox (e) {
 
-	console.log(e.target.parentNode.className);
-
-	if ( !(e.target.parentNode.className === "left") ) {
-		if (!(e.target.parentNode.className === "right") ) {
+	try {
+		if ( (e.target.parentNode.nodeName != "P") &&  (e.target.parentNode.className != "left") && (e.target.parentNode.className != "right")  && (e.target.parentNode.className != "container")   ) {
 			document.querySelector("#lightbox").style.zIndex = "-1";
 			isHelpActive = false;
 			isCountyInfoActive = false;
+			constructURL();
+		}
 
+	}
+	catch(er) {
+		if (e) {
+			document.querySelector("#lightbox").style.zIndex = "-1";
+			isHelpActive = false;
+			isCountyInfoActive = false;
 			constructURL();
 		}
 	}
+
 
 }
 
@@ -1131,6 +1138,16 @@ if(document.all && document.compatMode) {
 	setTimeout(function(){ 
 		document.getElementById("introdata").innerHTML = "<div class='container'><h2>Sorry, maar met jouw versie van Internet Explorer kan mijn site niet samenwerken.</h2> <p> Bekijk de website van <a href='http://browsehappy.com/?locale=nl'>browsehappy</a> voor informatie</p></div>"
 	}, 200);
+}
+
+
+document.addEventListener("keydown", function(e){ keyboardHandler(e); }, false);
+
+function keyboardHandler (e) {
+	if ( (isCountyInfoActive || isHelpActive) && e.keyCode === 27 ) {
+		hideLightbox (true);
+	}
+
 }
 
 
