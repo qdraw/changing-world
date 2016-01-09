@@ -215,11 +215,13 @@ path {
 	line-height: 1.4;
 	padding-left: 2.75vw;
 	padding-right: 2.75vw;
+	transition: all 300ms;
 
 }
 
 #sidebar .container{
 	width: 20vw;
+	transition: all 300ms;
 }
 
 @media (max-width: 1325px){
@@ -230,9 +232,12 @@ path {
 		width: 270px;
 	}
 }
-@media (max-width: 350px){
+@media (max-width: 550px){
+	#sidebar {
+		width: 80%;
+	}
 	#sidebar .container {
-		width: 100%;
+		width: 90%;
 	}   
 }
 
@@ -255,7 +260,7 @@ path {
 
 
 
-@media (max-height: 550px) {
+@media (max-height: 677px) {
 	#sidebar #header {
 		margin-top: 10px;
 	}
@@ -286,6 +291,12 @@ path {
 	display: inline-block;
 	float: left;
 }
+@media (max-width: 1100px) {
+	#sidebar #legenda div {
+		width: 40px;
+	}
+}
+
 #sidebar #legenda .close {
 	width: 2.75vw;
 	height: 5vh;
@@ -293,7 +304,17 @@ path {
 	top: -5vh;
 	left: 0px;
 	background-color: black;
+	background-image: url("../images/arrow-toleft-white.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	cursor: pointer;
+}
 
+@media (max-width: 1100px) {
+	#sidebar #legenda .close  {
+		width: 40px;
+	}
 }
 
 #sidebar #legenda .pointer {
@@ -328,6 +349,30 @@ path {
 	width: 3.6vw;
 	top: calc( 2.5vh - 3.5px );
 	background-color: #d3d2ce;
+}
+
+
+@media (max-height: 720px){
+	#sidebar #legenda .pointer {
+		height: 40px;
+	}
+
+	#sidebar #legenda .pointer:after {
+		border-width: 20px;
+		margin-top: -20px;
+	}
+	#sidebar #legenda .pointer:before {
+		width: 40px;
+		top:16.5px;
+	}
+
+}
+
+@media (max-width: 1100px) {
+	#sidebar #legenda .pointer {
+		left: 45px;
+	}
+
 }
 
 #sidebar #menu input {
@@ -458,6 +503,7 @@ leaflet-popup-content {
 	left: 0px;
 	background-color: rgba(0,0,0,0.3);
 	cursor: pointer;
+	display: none;
 }
 
 #lightbox .close {
@@ -480,6 +526,11 @@ leaflet-popup-content {
 	height: 70vh;
 	margin-top: 10vh;
 	padding: 40px;
+	padding-top: 6vh;
+	padding-bottom: 2.5vh;
+	padding-left: 2.5vw;
+	padding-right: 2.5vw;
+
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -518,6 +569,12 @@ leaflet-popup-content {
 	float: left;
 	display: inline-block;
 }
+@media (max-width: 670px){
+	#lightbox .container .subject img{
+		display: none;
+	}
+}
+
 #lightbox .container .subject span{
 	display: inline-block;
 	float: left;
@@ -525,7 +582,11 @@ leaflet-popup-content {
 	line-height: 33px;
 	padding-left: 15px;
 }
-
+@media (max-width: 670px){
+	#lightbox .container .subject span{
+		padding-left: 0px;
+	}
+}
 
 #lightbox .container .subject .grade {
 	display: inline-block;
@@ -546,6 +607,7 @@ leaflet-popup-content {
 }
 
 #introdata {
+	display: none;
 	position: absolute;
 	top: 15vh;
 	left: 29vw;

@@ -383,10 +383,17 @@ function setVariable() {
 
 		if (document.querySelectorAll("#introdata").length > 0) {
 
+			var	windowwidth = window.innerWidth  || document.documentElement.clientWidth 	|| document.body.clientWidth;
+			if (windowwidth > 570) {
+				document.querySelector("#introdata").style.display = "block";
+			}
+
+
+
 			document.querySelector("#introdata").style.zIndex = "1";
 
 
-			document.querySelector("#introdata .container").innerHTML = "<div class='close'></div>";
+			document.querySelector("#introdata .container").innerHTML = "<a onclick='showAndHideSidebar()' class='close'></a>";
 
 			for (var i = 0; i <  window.introdata.length; i++) {
 
@@ -638,7 +645,7 @@ function readVariable (those) {
 function legenda (hues) {
 
 	// reset html
-	document.querySelector("#sidebar #legenda").innerHTML = " <a class='close' onclick='toggleHamburger()'></a>		<span class='pointer' id='selectedcountry'></span> <span class='pointer' id='pointer'></span>";
+	document.querySelector("#sidebar #legenda").innerHTML = " <a onclick='showAndHideSidebar()' class='close'></a>		<span class='pointer' id='selectedcountry'></span> <span class='pointer' id='pointer'></span>";
 
 
 	for (var i = 0; i < hues.length; i++) {
@@ -652,47 +659,28 @@ function legenda (hues) {
 
 function mousemove(e,those) { // legenda high
 
-
 	// https://www.mapbox.com/mapbox.js/example/v1.0.0/choropleth/
-
-
 
 	if (selectedVar.length > 0) {
 
-
 		if (!isFilterCountryActive) {
-
 			var top = mmap(window.combinedScore[e.target.feature.properties.name],0,10,0,100);
 			top = (100 + (top * -1) + 0 /*fix*/ );
 
 		} 
 		else{
-			// // isFilterCountryActive = true;
-			
+		
 			if (window.combinedScore[e.target.feature.properties.name] > window.combinedScore[window.filterCountryName]) {
 				// Countries who perform better! :D :D :D
-
 				var top = mmap(window.combinedScore[e.target.feature.properties.name],window.combinedScore[window.filterCountryName],10,0,50);
 				top = 50 - top;
 				// console.log("higher" + e.target.feature.properties.name + top + " `" + window.combinedScore[window.filterCountryName]);
-
 			}
 			else {
-
 				var top = mmap(window.combinedScore[e.target.feature.properties.name],0,window.combinedScore[window.filterCountryName],0,50);
 				top = 100 - top;
 				// console.log("lower" + e.target.feature.properties.name + top + " `" + window.combinedScore[window.filterCountryName]);
 			}
-
-
-			// euLayer.eachLayer(function(layer) {
-			// 	if (window.combinedScore[layer.feature.properties.name] > window.combinedScore[window.filterCountryName]) {
-				
-			// 	}
-			// });
-			
-
-
 		}
 
 		top = top - 5;
@@ -700,12 +688,12 @@ function mousemove(e,those) { // legenda high
 		if (top < 3) {
 			top = 3;
 		}
-		if (top > 92) {
-			top = 92;
+		if (top > 87) {
+			top = 87;
 		}
 
-
-		if (document.querySelectorAll("#sidebar #legenda #pointer").length > 0 && !isNaN(window.combinedScore[e.target.feature.properties.name]) ) {
+		answerShowPointersWhenSidebarIsClosed ();
+		if (document.querySelectorAll("#sidebar #legenda #pointer").length > 0 && !isNaN(window.combinedScore[e.target.feature.properties.name])  && showPointersWhenSidebarIsClosed) {
 
 			document.querySelector("#sidebar #legenda #pointer").style.display = "block";
 			// document.querySelector("#sidebar #legenda #pointer").style.top = "calc( " + top + "vh" + " - 20px )";
@@ -735,6 +723,7 @@ function help () {
 	constructURL();
 	
 	document.querySelector("#lightbox").style.zIndex = "2";
+	document.querySelector("#lightbox").style.display = "block";
 	document.querySelector("#lightbox").addEventListener("click", hideLightbox, false);
 
 
@@ -861,11 +850,78 @@ function resetAll () {
 }
 
 
+var isSidebarVisible = true;
+function showAndHideSidebar () {
+	console.log(isSidebarVisible)
+
+	// Hide sidebar
+	if (isSidebarVisible) {
+		document.querySelector("#sidebar #legenda .close").style.backgroundImage = "url('images/arrow-toright-white.svg')";
+		document.querySelector("#sidebar .container").style.width = "0px";
+		document.querySelector("#sidebar").style.width = "0px";
+		document.querySelector("#sidebar .container").style.display = "none";
+		if(	document.querySelectorAll("#sidebar #legenda #pointer").length > 0  && isFilterCountryActive  ) { 
+			document.querySelector("#sidebar #legenda #pointer").style.display = "block";
+		}
+			
+		if(	document.querySelectorAll("#sidebar #legenda #selectedcountry").length > 0 && isFilterCountryActive ) {
+			document.querySelector("#sidebar #legenda #selectedcountry").style.display = "block";
+		}
+	}
+	// Show sidebar
+	else {
+		document.querySelector("#sidebar #legenda .close").style.backgroundImage = "url('images/arrow-toleft-white.svg')";
+		document.querySelector("#sidebar .container").style.width = "";
+		document.querySelector("#sidebar").style.width = "";
+		document.querySelector("#sidebar .container").style.display = "block";
+		if(	document.querySelectorAll("#sidebar #legenda #pointer").length > 0) {
+			document.querySelector("#sidebar #legenda #pointer").style.display = "none";
+		}
+			
+		if(	document.querySelectorAll("#sidebar #legenda #selectedcountry").length > 0) {
+			document.querySelector("#sidebar #legenda #selectedcountry").style.display = "none";
+		}
+	}
+
+	answerShowPointersWhenSidebarIsClosed ();
+	
+
+
+
+
+	isSidebarVisible = (isSidebarVisible ? false : true);
+
+
+	 
+}
+
+var showPointersWhenSidebarIsClosed = true;
+function answerShowPointersWhenSidebarIsClosed () {
+	windowwidth = window.innerWidth
+	|| document.documentElement.clientWidth
+	|| document.body.clientWidth;
+
+
+	if (windowwidth < 570) {
+		if (isSidebarVisible) {
+			showPointersWhenSidebarIsClosed = false;
+		}
+		else {
+			showPointersWhenSidebarIsClosed = true
+		}
+	}
+	else {
+		showPointersWhenSidebarIsClosed = true
+	}
+
+}
+
+
 function hideLightbox (e) {
 
 	try {
 		if ( (e.target.parentNode.nodeName != "P") &&  (e.target.parentNode.className != "left") && (e.target.parentNode.className != "right")  && (e.target.parentNode.className != "container")   ) {
-			document.querySelector("#lightbox").style.zIndex = "-1";
+			document.querySelector("#lightbox").style.display = "none";
 			isHelpActive = false;
 			isCountyInfoActive = false;
 			constructURL();
@@ -874,7 +930,7 @@ function hideLightbox (e) {
 	}
 	catch(er) {
 		if (e) {
-			document.querySelector("#lightbox").style.zIndex = "-1";
+			document.querySelector("#lightbox").style.display = "none";
 			isHelpActive = false;
 			isCountyInfoActive = false;
 			constructURL();
@@ -974,8 +1030,8 @@ function filterCountry(e) {
 		});
 
 		selectedCountry(e);
-		selectedcountryLegenda(e);
 		legenda(fHues);
+		selectedcountryLegenda(e);
 		constructURL();
 
 
@@ -984,9 +1040,11 @@ function filterCountry(e) {
 }
 
 function selectedcountryLegenda (e) {
-	if (isFilterCountryActive && document.querySelectorAll("#sidebar #legenda #selectedcountry").length > 0) {
+	answerShowPointersWhenSidebarIsClosed ();
 
-		if (!isNaN(window.combinedScore[e.target.feature.properties.name]) ) {
+	if (isFilterCountryActive && showPointersWhenSidebarIsClosed && (document.querySelectorAll("#sidebar #legenda #selectedcountry").length > 0) ) {
+
+		if (!isNaN(Number(e.target.feature.properties[selectedVar[0]])) ) {
 			document.querySelector("#sidebar #legenda #selectedcountry").style.display = "block";
 
 			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
@@ -995,13 +1053,21 @@ function selectedcountryLegenda (e) {
 		}
 
 	}
+	else {
+		console.error("~ legenda pointer not availble for: " + e.target.feature.properties.name );
+	}
+
+	// document.querySelector('#sidebar .close').addEventListener("click", function(e){ var those = this; showAndHideSidebar(); }, false);
+
 
 }
 
 
 function selectedCountry(e) { // the text
 
-	if (!isNaN(window.combinedScore[e.target.feature.properties.name]) ) {
+
+
+	if (!isNaN(Number(e.target.feature.properties[selectedVar[0]])) ) {
 
 		document.querySelector("#sidebar #content").innerHTML = "<h2>" +  e.target.feature.properties.nl_name + "</h2>"
 
@@ -1046,6 +1112,9 @@ function selectedCountry(e) { // the text
 
 		var link = "\"" + e.target.feature.properties.name + "\",\"" + e.target.feature.properties.nl_name + "\"";
 		document.querySelector("#sidebar #content").innerHTML += "<a class='button' href='javascript:country(" + link + ")'>Lees meer..</a>";
+	}
+	else {
+		console.error("~ no data availble over country " + e.target.feature.properties.name );
 	}
 
 
@@ -1106,6 +1175,8 @@ function country (name,nl_name) {
 
 
 	document.querySelector("#lightbox").style.zIndex = "2";
+	document.querySelector("#lightbox").style.display = "block";
+
 	document.querySelector("#lightbox").addEventListener("click", function(e){ hideLightbox(e) }, false);
 
 
