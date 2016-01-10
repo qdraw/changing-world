@@ -494,11 +494,13 @@ function buildURL() {
 					var urlsubject = hash[i].replace("#subject=","");
 					urlsubject = urlsubject.split(",");
 				}
+
+				var listOfAllCounties = [];
 				if (hash[i].search("country=") !== -1) {
 					var urlcountry = hash[i].replace("country=","");
 
 					// check if country exist
-					var listOfAllCounties = [];
+					
 					var listOfAllCounties_nl_name = [];
 
 					Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
@@ -510,6 +512,8 @@ function buildURL() {
 						urlcountry = "NL";
 					}
 
+
+
 				}
 				if (hash[i].search("help=") !== -1) {
 					var isHelp = hash[i].replace("help=","");
@@ -519,13 +523,15 @@ function buildURL() {
 				}
 
 				if (hash[i].search("info=") !== -1) {
+					console.log("info")
 					var isInfo = hash[i].replace("info=","");
 					if (isInfo == "1" && hash[i].search("help=") === -1) {
 						setTimeout(function(){ 
 							country (urlcountry,listOfAllCounties_nl_name[listOfAllCounties.indexOf(urlcountry)])
 						}, 2);
 					}
-				}
+				}	
+
 
 
 			}
@@ -789,6 +795,9 @@ function help () {
 }
 
 function write2lightbox (contentArray) {
+
+
+	document.querySelector("#lightbox").innerHTML = "<div class='container'></div>";
 
 	var contentHTML = "<div class='close'></div>";
 
@@ -1277,98 +1286,179 @@ function keyboardHandler (e) {
 }
 
 
-// // selectedVar
-// // isFilterCountryActive
-// // window.filterCountryName
+// selectedVar
+// isFilterCountryActive
+// window.filterCountryName
 
-// var prevSelectedVar;
-// var prevIsFilterCountryActive;
-// var prevFilterCountryName;
+var prevSelectedVar;
+var prevIsFilterCountryActive;
+var prevFilterCountryName;
+var prevDocumentTitle;
 
-// var isUserNotIdle = true;
-// function idle() {
-// 	var t;
-//     window.onload = resetTimer;
-//     window.onmousemove = resetTimer;
-//     window.onmousedown = resetTimer; // catches touchscreen presses
-//     window.onclick = resetTimer;     // catches touchpad clicks
-//     window.onscroll = resetTimer;    // catches scrolling with arrow keys
-//     window.onkeypress = resetTimer;
-// 	var screensaver;
-
-// 	function idleHelper() {
-// 		isUserNotIdle = false;
-
-// 		prevSelectedVar = selectedVar;
-// 		prevIsFilterCountryActive = isFilterCountryActive;
-// 		prevFilterCountryName = window.filterCountryName;
-
-// 		selectedVar = [];
-// 		screensaver = setInterval(idleActive, 500);
-// 	    console.log("U bent inactief")
-// 	}
-
-//     function resetTimer() {
-//         clearTimeout(t);
-//         t = setTimeout(idleHelper, 2000);  // time is in milliseconds
-
-//         if (!isUserNotIdle) {
-//         	idleI = 0;
-// 	     	clearInterval(screensaver);
-// 			selectedVar = prevSelectedVar;
-// 			isFilterCountryActive = prevIsFilterCountryActive;
-// 			window.filterCountryName = prevFilterCountryName;
-// 			constructURL();
-// 			buildPage();
-// 		}
-
-//     	isUserNotIdle = true;
-
-
-//     }
-// }
-// idle();
-
-
-// var idleI = 0;
-// var idleMode = 0;
-// function idleActive () {
-
-// 	switch(idleMode) {
-// 		case 0:
-// 			selectedVar.push(window.subject[idleI]);
-// 			constructURL();
-// 			buildPage();
-// 			if (idleI <= window.subject.length-1) {
-// 				idleI++;
-// 			}
-// 			else {
-// 				idleMode++;
-// 			}
-// 		break;
-// 		case 1: 
-// 			for (var i = 0; i < window.subject.length; i++) {
-// 				// window.subject[i].remove/
-// 				var index = selectedVar.indexOf(selectedVar[i]);
-// 				selectedVar.splice( index, 1 );
-
-// 				if (i===window.subject.length-1) {
-// 					idleMode++;
-// 				}
-// 			}
-
-// 			constructURL();
-// 			buildPage();
-
-// 		break;
-// 		default:
-// 			console.log("def");
-// 		break;
-// 	}
+var isUserActive = true;
+function idle() {
+	var t;
+    window.onload = resetTimer;
+    window.onmousemove = resetTimer;
+    window.onmousedown = resetTimer; // catches touchscreen presses
+    window.onclick = resetTimer;     // catches touchpad clicks
+    window.onscroll = resetTimer;    // catches scrolling with arrow keys
+    window.onkeypress = resetTimer;
 
 
 
-// }
+	var screensaver;
+
+	function idleHelper() {
+
+		isUserActive = false;
+
+		prevSelectedVar = selectedVar;
+		prevIsFilterCountryActive = isFilterCountryActive;
+		prevFilterCountryName = window.filterCountryName;
+
+		selectedVar = [];
+		isFilterCountryActive = false;
+
+		prevDocumentTitle = document.title;
+
+		document.querySelector("#lightbox").style.zIndex = "2";
+		document.querySelector("#lightbox").innerHTML = "";
+		document.querySelector("#lightbox").style.display = "block";
+
+		screensaver = setInterval(idleActive, 1250); // speed of slides
+	    console.log("~~~ U bent inactief");
+
+
+	}
+
+    function resetTimer() {
+        clearTimeout(t);
+        t = setTimeout(idleHelper, 188400);  // time is in milliseconds 188400 == 3,14 minute
+
+        if (!isUserActive) {
+        	document.title = prevDocumentTitle;
+        	idleI = 0;
+	     	clearInterval(screensaver);
+			selectedVar = prevSelectedVar;
+			document.querySelector("#lightbox").style.display = "none";
+			isFilterCountryActive = prevIsFilterCountryActive;
+			window.filterCountryName = prevFilterCountryName;
+			constructURL();
+			buildPage();
+		}
+
+    	isUserActive = true;
+
+
+    }
+}
+idle();
+
+
+var idleI = 0;
+var idleMode = 0;
+function idleActive () {
+
+	switch(idleMode) {
+		case 0:
+			document.title = "~ " + prevDocumentTitle;
+
+			if (idleI <= window.subject.length-1) {
+				selectedVar.push(window.subject[idleI]);
+				constructURL();
+				buildPage();
+				idleI++;
+			}
+			else {
+				idleMode++;
+
+				selectedVar = [];
+				for (var i = 0; i < window.subject.length; i++) {
+					selectedVar.push(window.subject[i]);
+				}
+			}
+		break;
+		case 1: 
+			console.log(selectedVar);
+
+			if (idleI > 0) {
+				var index = selectedVar.indexOf(selectedVar[idleI]);
+				selectedVar.splice( index, 1 );
+
+				constructURL();
+				buildPage();
+
+				idleI--;
+			}
+			else {
+				idleMode++;	
+			}
+
+		break;
+		case 2:
+			if (!isFilterCountryActive) {
+
+				isFilterCountryActive = true;
+				window.filterCountryName = "NL";
+
+				idleI = 0;
+				idleMode = 0;
+				// selectedVar = [];
+
+				console.log(selectedVar)
+			}
+			else {
+				idleMode++;	
+			}
+
+		break;
+		case 3:
+			if (idleI <= window.subject.length-1) {
+				selectedVar.push(window.subject[idleI]);
+				constructURL();
+				buildPage();
+				idleI++;
+			}
+			else {
+				idleI = 0;
+				idleMode++;	
+			}			
+
+		break;
+
+		case 4:
+			var listOfAllCounties = [];
+			euLayer.eachLayer(function(layer) {
+				if (!isNaN(layer.feature.properties[window.subject[0]]) && layer.feature.properties.name !== "DO" ) {
+					listOfAllCounties.push(layer.feature.properties.name);
+				}
+			});
+			// listOfAllCounties = ["UA", "RU", "SK"];
+
+			if (idleI <= listOfAllCounties.length-1) {
+				window.filterCountryName = listOfAllCounties[idleI];
+				constructURL();
+				buildPage();
+				idleI++;
+			}
+			else {
+
+				selectedVar = [];
+				isFilterCountryActive = false;
+
+				idleMode = 0;	
+			}
+		break;
+
+		default:
+			console.log("default");
+		break;
+	}
+
+
+
+}
 
 
 
