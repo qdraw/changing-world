@@ -434,25 +434,25 @@ path {
 
 #sidebar .resetAll,
 #sidebar .help {
-	float: right;
+	float: left;
 	background-repeat: no-repeat;
 	background-position: left center;
 	display: inline-block;
 	cursor: pointer;
-
-	height: 22px;
+	width: 33px;
+	height: 33px;
 	background-size: contain;
 	background-image: url("../images/question-neg.svg");
-	width: 30px;
-	line-height: 22px;
-	padding-left: 30px;
+	line-height: 33px;
+	padding-left: 40px;
 	margin-top: 10px;
+	opacity: 0.9;
 }
 
 #sidebar .resetAll:hover,
 #sidebar .help:hover {
 	transition: all 1s ease;
-	opacity: 0.8;
+	opacity: 0.6;
 }
 
 
@@ -504,6 +504,14 @@ leaflet-popup-content {
 	background-color: rgba(0,0,0,0.3);
 	cursor: pointer;
 	display: none;
+}
+
+#lightbox .rotating{
+	position:absolute; 
+	top:48%; 
+	left:85%; 	
+    filter: invert(100%);
+	-webkit-filter: invert(100%);
 }
 
 #lightbox .close {
