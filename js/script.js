@@ -1277,4 +1277,100 @@ function keyboardHandler (e) {
 }
 
 
+// // selectedVar
+// // isFilterCountryActive
+// // window.filterCountryName
+
+// var prevSelectedVar;
+// var prevIsFilterCountryActive;
+// var prevFilterCountryName;
+
+// var isUserNotIdle = true;
+// function idle() {
+// 	var t;
+//     window.onload = resetTimer;
+//     window.onmousemove = resetTimer;
+//     window.onmousedown = resetTimer; // catches touchscreen presses
+//     window.onclick = resetTimer;     // catches touchpad clicks
+//     window.onscroll = resetTimer;    // catches scrolling with arrow keys
+//     window.onkeypress = resetTimer;
+// 	var screensaver;
+
+// 	function idleHelper() {
+// 		isUserNotIdle = false;
+
+// 		prevSelectedVar = selectedVar;
+// 		prevIsFilterCountryActive = isFilterCountryActive;
+// 		prevFilterCountryName = window.filterCountryName;
+
+// 		selectedVar = [];
+// 		screensaver = setInterval(idleActive, 500);
+// 	    console.log("U bent inactief")
+// 	}
+
+//     function resetTimer() {
+//         clearTimeout(t);
+//         t = setTimeout(idleHelper, 2000);  // time is in milliseconds
+
+//         if (!isUserNotIdle) {
+//         	idleI = 0;
+// 	     	clearInterval(screensaver);
+// 			selectedVar = prevSelectedVar;
+// 			isFilterCountryActive = prevIsFilterCountryActive;
+// 			window.filterCountryName = prevFilterCountryName;
+// 			constructURL();
+// 			buildPage();
+// 		}
+
+//     	isUserNotIdle = true;
+
+
+//     }
+// }
+// idle();
+
+
+// var idleI = 0;
+// var idleMode = 0;
+// function idleActive () {
+
+// 	switch(idleMode) {
+// 		case 0:
+// 			selectedVar.push(window.subject[idleI]);
+// 			constructURL();
+// 			buildPage();
+// 			if (idleI <= window.subject.length-1) {
+// 				idleI++;
+// 			}
+// 			else {
+// 				idleMode++;
+// 			}
+// 		break;
+// 		case 1: 
+// 			for (var i = 0; i < window.subject.length; i++) {
+// 				// window.subject[i].remove/
+// 				var index = selectedVar.indexOf(selectedVar[i]);
+// 				selectedVar.splice( index, 1 );
+
+// 				if (i===window.subject.length-1) {
+// 					idleMode++;
+// 				}
+// 			}
+
+// 			constructURL();
+// 			buildPage();
+
+// 		break;
+// 		default:
+// 			console.log("def");
+// 		break;
+// 	}
+
+
+
+// }
+
+
+
+
 // Bijna alle dieren hebben een maandelijkse cyclus, behalve natuurlijk de weekdieren.
