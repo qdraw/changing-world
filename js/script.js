@@ -984,7 +984,7 @@ function answerShowPointersWhenSidebarIsClosed () {
 function hideLightbox (e) {
 
 	try {
-		if ( (e.target.parentNode.nodeName != "P") &&  (e.target.parentNode.className != "left") && (e.target.parentNode.className != "right")  && (e.target.parentNode.className != "container")   ) {
+		if ( (e.target.parentNode.nodeName != "P") &&  (e.target.parentNode.className != "left") && (e.target.parentNode.className != "right")  && (e.target.parentNode.className != "container")  ||  e.target.className === "close") {
 			document.querySelector("#lightbox").style.display = "none";
 			isHelpActive = false;
 			isCountyInfoActive = false;
@@ -1319,14 +1319,16 @@ function idle() {
 
 		selectedVar = [];
 		isFilterCountryActive = false;
+		idleMode = 0;
 
 		prevDocumentTitle = document.title;
 
 		document.querySelector("#lightbox").style.zIndex = "2";
+
 		document.querySelector("#lightbox").innerHTML = "";
 		document.querySelector("#lightbox").style.display = "block";
 
-		screensaver = setInterval(idleActive, 1250); // speed of slides
+		screensaver = setInterval(idleActive, 2000); // speed of slides
 	    console.log("~~~ U bent inactief");
 
 
@@ -1342,6 +1344,7 @@ function idle() {
 	     	clearInterval(screensaver);
 			selectedVar = prevSelectedVar;
 			document.querySelector("#lightbox").style.display = "none";
+
 			isFilterCountryActive = prevIsFilterCountryActive;
 			window.filterCountryName = prevFilterCountryName;
 			constructURL();
