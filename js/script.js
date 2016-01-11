@@ -1363,7 +1363,7 @@ function idle() {
 
     function resetTimer() {
         clearTimeout(t);
-        t = setTimeout(idleHelper, 3000);  // time is in milliseconds 188400 == 3,14 minute
+        t = setTimeout(idleHelper, 188400);  // time is in milliseconds 188400 == 3,14 minute
 
         if (!isUserActive) {
         	console.log("~!isUserActive");
