@@ -436,14 +436,17 @@ function buildMenu () {
 	
 	document.querySelector("#sidebar #menu").innerHTML = "";
 
+
 	// #sidebar #menu
 	for (var i = 0; i <  window.subject.length; i++) {
-		document.querySelector("#sidebar #menu").innerHTML += "<label id='label_" + window.subject[i] +"'><input type='checkbox' id='" + window.subject[i] +"' name='checkbox' value='" + window.subject[i] +"'><span class='checkbox'></span><span class='txt'>" + window.subjectui[i] + "</span><span class='i' style='background-image: url(images/" + window.subject[i] + ".svg)'></span></label>";
+		document.querySelector("#sidebar #menu").innerHTML += "<label class='none' id='label_" + window.subject[i] +"'><input type='checkbox' id='" + window.subject[i] +"' name='checkbox' value='" + window.subject[i] +"'><span class='checkbox'></span> <span class='p'> </span> <span class='txt'>" + window.subjectui[i] + "</span><span class='i' style='background-image: url(images/" + window.subject[i] + ".svg)'></span></label>";
 	}
+
+	updateMenuProgress ();
 
 	for (i = 0; i <  window.subject.length; i++) {
 		document.querySelector('#sidebar #menu #' + window.subject[i] ).addEventListener("click", function(e){ var those = this; readVariable(those); }, false);
-		// line 450, col 151, Don't make functions within a loop.
+		// line 454, col 151, Don't make functions within a loop.
 	}
 
 	if (selectedVar.length > 0) {
@@ -458,6 +461,26 @@ function buildMenu () {
 
 }
 
+function updateMenuProgress () {
+	if (document.querySelectorAll("#sidebar #menu label").length > 0) {
+		console.log(document.querySelectorAll("#sidebar #menu label").length);
+
+		for (i = 0; i <  window.subject.length; i++) {
+			if (isFilterCountryActive) {
+
+				var value;
+				euLayer.eachLayer(function(layer) {
+					if(window.filterCountryName === layer.feature.properties.name){
+						value = layer.feature.properties[window.subject[i]];
+					}
+				});
+
+				// document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.width = value*10 + "%";
+				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.width = mmap(value,0,10,0,65) + "%";
+			}
+		}	
+	}
+}
 
 
 function buildSidebarHeader () {
@@ -630,21 +653,6 @@ window.onhashchange = function() {
 };
 
 
-
-
-window.innerDocClick = false;
-document.onmouseover = function() {
-    //User's mouse is inside the page.
-    window.innerDocClick = true;
-};
-
-document.onmouseleave = function() {
-    //User's mouse has left the page.
-    window.innerDocClick = false;
-};
-
-
-
 var selectedVar = [];
 
 
@@ -656,6 +664,7 @@ function readVariable (those) {
 	
 	// isFilterCountryActive = false;
 
+	var i;
 	
 	if (those !== undefined) {
 		
@@ -671,18 +680,22 @@ function readVariable (those) {
 			selectedVar.splice( index, 1 );
 		}
 
-		for (var i = 0; i < window.subject.length; i++) {
-			document.querySelector("#menu #label_" + window.subject[i] + " .checkbox").style.backgroundImage = "none";
+		for (i = 0; i < window.subject.length; i++) {
+			document.querySelector("#menu #label_" + window.subject[i]).className = "none";
+
+			// document.querySelector("#menu #label_" + window.subject[i] + " .checkbox").style.backgroundImage = "none";
 		}
 
 		for (i = 0; i < selectedVar.length; i++) {
-			document.querySelector("#menu #label_" + selectedVar[i] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
+			document.querySelector("#menu #label_" + selectedVar[i]).className = "active";
+			// document.querySelector("#menu #label_" + selectedVar[i] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
 		}
 	}
 	else {
 		// direct input
-		for (var j = 0; j < selectedVar.length; j++) {
-			document.querySelector("#menu #label_" + selectedVar[j] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
+		for (i = 0; i < selectedVar.length; i++) {
+			document.querySelector("#menu #label_" + selectedVar[i]).className = "active";
+			// document.querySelector("#menu #label_" + selectedVar[i] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
 		}		
 	}
 	
@@ -848,45 +861,6 @@ function write2lightbox (contentArray) {
 	contentHTML = replaceKeys(properties,contentHTML);
 
 	document.querySelector("#lightbox .container").innerHTML = contentHTML;
-
-	// body...
-
-
-	// var splitrow = window.helpdata.indexOf("{_splitrow_}");
-
-	// if (splitrow === -1) {
-	// 	splitrow = window.helpdata.length;
-	// }
-
-	// var content;
-	// for (var i = 0; i <  splitrow; i++) {
-
-
-	// 	if (i === 0) {
-	// 		content = "<h2>" + window.helpdata[i] + "</h2>";
-	// 	}
-	// 	if (window.helpdata[i] !== ""  && i !== 0) {
-	// 		content += "<p>" + window.helpdata[i] + "</p>";
-	// 	}
-
-	// }
-	// document.querySelector("#lightbox .container").innerHTML += "<div class='left'>" + content + "</div>";
-
-	// if (splitrow !== window.helpdata.length) {
-	// 	for (var i = splitrow+1; i <  window.helpdata.length; i++) {
-
-
-	// 		if (i === splitrow+1) {
-	// 			content = "<h2>" + window.helpdata[i] + "</h2>";
-	// 		}
-	// 		if (window.helpdata[i] !== ""  && i !== splitrow+1) {
-	// 			content += "<p>" + window.helpdata[i] + "</p>";
-	// 		}
-
-	// 	}
-
-	// }
-	// document.querySelector("#lightbox .container article").innerHTML += "<div>" + content + "</div>";
 
 }
 
@@ -1098,6 +1072,7 @@ function filterCountry(e) {
 		legenda(fHues);
 		selectedcountryLegenda(e);
 		constructURL();
+		updateMenuProgress ();
 
 
 	}
@@ -1461,6 +1436,7 @@ function idleActive () {
 			else {
 
 				selectedVar = [];
+				window.filterCountryName = "BE";
 				isFilterCountryActive = false;
 
 				idleMode = 0;	

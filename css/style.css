@@ -396,6 +396,7 @@ path {
 	color: inherit;
 	background-color: rgba(214,214,214,0.3);
 	margin-bottom: 3px;
+	position: relative;
 }
 #sidebar #menu label:hover {
 	transition: all 1s ease;
@@ -422,11 +423,13 @@ path {
 	cursor: pointer;	
 	margin-right: 15px;
 }
+#sidebar #menu .active .checkbox{
+	background-image: url("../images/checkbox.svg");
+}
+
+
 
 #sidebar #menu label .i {
-	-webkit-filter: grayscale(100%);
-	filter: grayscale(100%);
-	
 	height: 33px;
 	width: 33px;
 	float: right;
@@ -436,6 +439,27 @@ path {
 	background-position: center;
 	display: inline-block;
 	cursor: pointer;
+}
+#sidebar #menu .none .i {
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+}
+#sidebar #menu label .txt {
+	position: absolute;
+	top: 0px;
+	left: 43px;
+	z-index: 2;
+}
+
+#sidebar #menu label .p {
+	transition: all 1s ease;
+	z-index: 1;
+	position: absolute;
+	top: 0px;
+	left: 33px;
+	height: 33px;
+	width: 0%;
+	background-color: red;
 }
 
 #sidebar .resetAll,
