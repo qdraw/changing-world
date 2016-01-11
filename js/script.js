@@ -42,64 +42,26 @@
 		// 	}
 		// });
 
-var style = {
-	"clickable": false,
-	"color": "#00D",
-	"fillColor": "#383839",
-	"weight": 0,
-	"opacity": 1,
-	"fillOpacity": 1
-};
-
-var hues = [
-	'#081D58', 
-	'#183176', 
-	'#253494', 
-	'#2251A8', 
-	'#1D91c0', 
-	'#41b6c4', 
-	'#7Fcdbb', 
-	'#c7e9b4', 
-	'#edf8b1', 
-	'#ffffd9'
-];
-
-
-
-var fHues = [
-	'rgba(14, 178, 35, 0.8)', // green green
-	'rgba(38, 203, 42, 0.8)',
-	'rgba(90, 222, 70, 0.8)',
-	'rgba(150, 245, 102, 0.8)',
-	'rgba(185, 255, 130, 0.8)', // light groen
-	'#ff8383',
-	'#f46767', // light rood
-	'#dd4747',
-	'#c92727',
-	'#af1010', //donker rood
-	];
-
-
 // var style = {
 // 	"clickable": false,
 // 	"color": "#00D",
-// 	"fillColor": "#fff",
+// 	"fillColor": "#383839",
 // 	"weight": 0,
 // 	"opacity": 1,
 // 	"fillOpacity": 1
 // };
 
 // var hues = [
-// 	'hsl(192,100%,90%)', 
-// 	'hsl(192,100%,80%)', 
-// 	'hsl(192,100%,70%)', 
-// 	'hsl(192,100%,60%)', 
-// 	'hsl(192,100%,50%)', 
-// 	'hsl(192,100%,40%)', 
-// 	'hsl(192,100%,30%)', 
-// 	'hsl(192,100%,25%)', 
-// 	'hsl(192,100%,20%)', 
-// 	'hsl(192,100%,15%)' 
+// 	'#081D58', 
+// 	'#183176', 
+// 	'#253494', 
+// 	'#2251A8', 
+// 	'#1D91c0', 
+// 	'#41b6c4', 
+// 	'#7Fcdbb', 
+// 	'#c7e9b4', 
+// 	'#edf8b1', 
+// 	'#ffffd9'
 // ];
 
 
@@ -116,6 +78,55 @@ var fHues = [
 // 	'#c92727',
 // 	'#af1010', //donker rood
 // 	];
+
+
+var style = {
+	"clickable": false,
+	"color": "#00D",
+	"fillColor": "#fff",
+	"weight": 0,
+	"opacity": 1,
+	"fillOpacity": 1
+};
+
+// var hues = [
+// 	'hsl(192,100%,90%)', 
+// 	'hsl(192,100%,80%)', 
+// 	'hsl(192,100%,70%)', 
+// 	'hsl(192,100%,60%)', 
+// 	'hsl(192,100%,50%)', 
+// 	'hsl(192,100%,40%)', 
+// 	'hsl(192,100%,30%)', 
+// 	'hsl(192,100%,25%)', 
+// 	'hsl(192,100%,20%)', 
+// 	'hsl(192,100%,15%)' 
+// ];
+
+var hues = [
+	'hsl(192,100%,15%)',
+	'hsl(192,100%,20%)', 
+	'hsl(192,100%,25%)', 
+	'hsl(192,100%,30%)', 
+	'hsl(192,100%,40%)', 
+	'hsl(192,100%,50%)', 
+	'hsl(192,100%,60%)', 
+	'hsl(192,100%,70%)', 
+	'hsl(192,100%,80%)', 
+	'hsl(192,100%,90%)'
+];
+
+var fHues = [
+	'rgba(14, 178, 35, 0.8)', // green green
+	'rgba(38, 203, 42, 0.8)',
+	'rgba(90, 222, 70, 0.8)',
+	'rgba(150, 245, 102, 0.8)',
+	'rgba(185, 255, 130, 0.8)', // light groen
+	'#ff8383',
+	'#f46767', // light rood
+	'#dd4747',
+	'#c92727',
+	'#af1010', //donker rood
+	];
 
 
 
@@ -894,6 +905,13 @@ function resetAll () {
 		document.querySelector("#sidebar #content").innerHTML = "";
 	}
 
+	if(	document.querySelectorAll("#sidebar #legenda #pointer").length > 0) {
+		document.querySelector("#sidebar #legenda #pointer").style.display = "none";
+	}
+		
+	if(	document.querySelectorAll("#sidebar #legenda #selectedcountry").length > 0) {
+		document.querySelector("#sidebar #legenda #selectedcountry").style.display = "none";
+	}
 
 }
 
