@@ -182,6 +182,7 @@ var euLayer = L.mapbox.featureLayer()
 
 window.subject = [];
 window.subjectui = [];
+window.subjectcolor = [];
 window.subjectintro = [];
 window.subjectintro_selectie2ofmeer = [];
 window.ishightolow = [];
@@ -203,6 +204,8 @@ function processData (data, tabletop) {
 			window.subject.push(data.datatableoptions.elements[key].subject);
 		}
 		window.subjectui.push(data.datatableoptions.elements[key].subjectui);
+		window.subjectcolor.push(data.datatableoptions.elements[key].subjectcolor);
+
 		window.subjectintro.push(data.datatableoptions.elements[key].subjectintro);
 		window.subjectintro_selectie2ofmeer.push(data.datatableoptions.elements[key].subjectintro_selectie2ofmeer);
 		window.ishightolow.push(data.datatableoptions.elements[key].ishightolow);
@@ -457,7 +460,10 @@ function buildMenu () {
 
 
 	document.querySelector('#sidebar .help').addEventListener("click", function(e){ var those = this; help(those); }, false);
+	document.querySelector('#sidebar .readmore').addEventListener("click", function(e){ var those = this; country(); }, false);
 	document.querySelector('#sidebar .resetAll').addEventListener("click", function(e){ var those = this; resetAll(those); }, false);
+
+	showHideReadmoreButton ();
 
 }
 
@@ -475,12 +481,31 @@ function updateMenuProgress () {
 					}
 				});
 
-				// document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.width = value*10 + "%";
-				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.width = mmap(value,0,10,0,65) + "%";
+				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.width = mmap(value,0,10,0,76) + "%";
+				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.backgroundColor = window.subjectcolor[i];
+				// console.log(window.subjectcolor[i]);
+				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .i").style.background = "#CCC";
+				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .i").innerHTML = value.toLocaleString();
+			}
+			else {
+				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .i").style.background = "background-image: url(images/" + window.subject[i] + ".svg)";
 			}
 		}	
 	}
+
+	showHideReadmoreButton ();
+
 }
+
+function showHideReadmoreButton () {
+	if (document.querySelectorAll("#sidebar .readmore").length > 0  && !isFilterCountryActive) {
+		document.querySelector("#sidebar .readmore").style.display = "none";
+	}
+	else if(document.querySelectorAll("#sidebar .readmore").length > 0  && isFilterCountryActive) {
+		document.querySelector("#sidebar .readmore").style.display = "inline-block";
+	}
+}
+
 
 
 function buildSidebarHeader () {
@@ -543,7 +568,7 @@ function buildURL() {
 					var isInfo = hash[i].replace("info=","");
 					if (isInfo == "1" && hash[i].search("help=") === -1) {
 						setTimeout(function(){ 
-							country (urlcountry,listOfAllCounties_nl_name[listOfAllCounties.indexOf(urlcountry)]);
+							country ();
 						}, 2);
 					}
 				}	
@@ -770,7 +795,7 @@ function mousemove(e,those) { // legenda high
 			
 			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
 
-			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + score.toLocaleString();
+			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "cijfer: " + score.toLocaleString();
 			document.querySelector("#sidebar #legenda #pointer").innerHTML = content;
 		}
 	}
@@ -1088,7 +1113,7 @@ function selectedcountryLegenda (e) {
 			document.querySelector("#sidebar #legenda #selectedcountry").style.display = "block";
 
 			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
-			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "score " + score.toLocaleString();
+			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "cijfer: " + score.toLocaleString();
 			document.querySelector("#sidebar #legenda #selectedcountry").innerHTML = content;
 		}
 
@@ -1109,53 +1134,60 @@ function selectedCountry(e) { // the text
 
 	if (!isNaN(Number(e.target.feature.properties[selectedVar[0]])) ) {
 
-		var content;
-		var index;
-		var i;
-
-		document.querySelector("#sidebar #content").innerHTML = "<h2>" +  e.target.feature.properties.nl_name + "</h2>";
-
-		if (selectedVar.length === 1) {
-
-			index = window.subject.indexOf(selectedVar[0]);
-			content = window.subjectintro[index];
-			content = replaceKeys(e.target.feature.properties,content);
-
-			document.querySelector("#sidebar #content").innerHTML += "<p>" + content + "</p>";
-
-		}
-		else {
+		var value = Math.ceil( window.combinedScore[e.target.feature.properties.name] * 10)/10;
+		value = value.toLocaleString();
+		document.querySelector("#sidebar #content").innerHTML = "<h2>" +  e.target.feature.properties.nl_name + " <span class='score'>" + value + " </span></h2>";
 
 
-			if (selectedVar.length <= 4) {
+		// var content;
+		// var index;
+		// var i;
 
-				content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[0]);
+
+		// if (selectedVar.length === 1) {
+
+		// 	index = window.subject.indexOf(selectedVar[0]);
+		// 	content = window.subjectintro[index];
+		// 	content = replaceKeys(e.target.feature.properties,content);
+
+		// 	document.querySelector("#sidebar #content").innerHTML += "<p>" + content + "</p>";
+
+		// }
+		// else {
+
+
+		// 	if (selectedVar.length <= 4) {
+
+		// 		content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[0]);
 			
-				document.querySelector("#sidebar #content").innerHTML += content; 
+		// 		document.querySelector("#sidebar #content").innerHTML += content; 
 
-				for (i = 0; i < selectedVar.length; i++) {
-					index = window.subject.indexOf(selectedVar[i]);
+		// 		for (i = 0; i < selectedVar.length; i++) {
+		// 			index = window.subject.indexOf(selectedVar[i]);
 					
-					if (i === selectedVar.length-2) {
-						document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + " en ";
-					}
-					else if(i === selectedVar.length-1) {
-						document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index]+ " (" + e.target.feature.properties[window.subject[index]] + ")";
-					}
-					else {
-						document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + ", ";
-					}
-				}
+		// 			if (i === selectedVar.length-2) {
+		// 				document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + " en ";
+		// 			}
+		// 			else if(i === selectedVar.length-1) {
+		// 				document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index]+ " (" + e.target.feature.properties[window.subject[index]] + ")";
+		// 			}
+		// 			else {
+		// 				document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + ", ";
+		// 			}
+		// 		}
 
-			}
-			else {
-				content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[1]);
-				document.querySelector("#sidebar #content").innerHTML += content;
-			}
-		}
+		// 	}
+		// 	else {
+		// 		content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[1]);
+		// 		document.querySelector("#sidebar #content").innerHTML += content;
+		// 	}
+		// }
 
-		var link = "\"" + e.target.feature.properties.name + "\",\"" + e.target.feature.properties.nl_name + "\"";
-		document.querySelector("#sidebar #content").innerHTML += "<a class='button' href='javascript:country(" + link + ")'>Lees meer..</a>";
+		// var link = "\"" + e.target.feature.properties.name + "\",\"" + e.target.feature.properties.nl_name + "\"";
+		// document.querySelector("#sidebar #content").innerHTML += "<a class='button' href='javascript:country(" + link + ")'>Lees meer..</a>";
+
+
+
 	}
 	else {
 		console.error("~ no data availble over country " + e.target.feature.properties.name );
@@ -1200,7 +1232,20 @@ function replaceKeys (properties,content) {
 
 var isCountyInfoActive = false; 
 
-function country (name,nl_name) {
+function country () {
+
+	var listOfAllCounties = [];
+	var listOfAllCounties_nl_name = [];
+	Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
+		listOfAllCounties.push(euLayer.getGeoJSON()[key].properties.name);
+		listOfAllCounties_nl_name.push(euLayer.getGeoJSON()[key].properties.nl_name);
+	});
+
+	var name = window.filterCountryName;
+	var nl_name = listOfAllCounties_nl_name[listOfAllCounties.indexOf(name)];
+
+
+
 	isCountyInfoActive = true;
 	constructURL();
 
@@ -1307,7 +1352,7 @@ function idle() {
 
 		document.querySelector("#lightbox").style.zIndex = "2";
 
-		document.querySelector("#lightbox").innerHTML = "<div class='rotating'><img src='images/history.svg' height='100px' width='100px'></div>";
+		document.querySelector("#lightbox").innerHTML = "<div class='rotating'><p>Beweeg de muis<br /> om verder te gaan</p><img src='images/history.svg' height='100px' width='100px'></div>";
 		document.querySelector("#lightbox").style.display = "block";
 
 		screensaver = setInterval(idleActive, 2000); // speed of slides
@@ -1318,15 +1363,13 @@ function idle() {
 
     function resetTimer() {
         clearTimeout(t);
-        t = setTimeout(idleHelper, 188400);  // time is in milliseconds 188400 == 3,14 minute
+        t = setTimeout(idleHelper, 3000);  // time is in milliseconds 188400 == 3,14 minute
 
         if (!isUserActive) {
-        	var isFF = !!window.sidebar;
-        	if (isFF) {
-        		window.location.reload(false) // true - Reloads the current page from the server
-        	}
-
         	console.log("~!isUserActive");
+    		window.location.reload(false); // true - Reloads the current page from the server
+
+    		// never excuted code:
         	document.title = prevDocumentTitle;
         	idleI = 0;
 	     	clearInterval(screensaver);
@@ -1380,14 +1423,33 @@ function idleActive () {
 				constructURL();
 				buildPage();
 
-				idleI--;
+				idleI = idleI-2;
+			}
+			else {
+				idleMode++;	
+				idleI = window.subject.length-2;
+			}
+
+		break;
+
+		case 2: 
+
+			if (idleI > 0) {
+				var index = selectedVar.indexOf(selectedVar[idleI]);
+				selectedVar.splice( index, 1 );
+
+				constructURL();
+				buildPage();
+
+				idleI = idleI-2;
 			}
 			else {
 				idleMode++;	
 			}
 
 		break;
-		case 2:
+
+		case 3:
 			if (!isFilterCountryActive) {
 
 				isFilterCountryActive = true;
@@ -1404,7 +1466,7 @@ function idleActive () {
 			}
 
 		break;
-		case 3:
+		case 4:
 			if (idleI <= window.subject.length-1) {
 				selectedVar.push(window.subject[idleI]);
 				constructURL();
@@ -1418,14 +1480,14 @@ function idleActive () {
 
 		break;
 
-		case 4:
+		case 5:
 			var listOfAllCounties = [];
 			euLayer.eachLayer(function(layer) {
 				if (!isNaN(layer.feature.properties[window.subject[0]]) && layer.feature.properties.name !== "DO" ) {
 					listOfAllCounties.push(layer.feature.properties.name);
 				}
 			});
-			// listOfAllCounties = ["UA", "RU", "SK"];
+			listOfAllCounties = ["UA", "RU", "SK"];
 
 			if (idleI <= listOfAllCounties.length-1) {
 				window.filterCountryName = listOfAllCounties[idleI];
@@ -1438,6 +1500,8 @@ function idleActive () {
 				selectedVar = [];
 				window.filterCountryName = "BE";
 				isFilterCountryActive = false;
+
+				idleI = 0;
 
 				idleMode = 0;	
 			}

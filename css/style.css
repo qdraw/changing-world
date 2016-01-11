@@ -259,11 +259,19 @@ path {
 
 #sidebar #content h2{
 	padding-top: 5px;
-	margin-top: 70px;
+	margin-top: 20px;
 	border-top: 1px solid rgb(214,214,214);
+
+	font-size: 28px;
+
 }
 
-
+#sidebar #content h2 .score {
+	float: right;
+    letter-spacing: -2px;
+	display: inline-block;
+	padding-right: 4px;
+}
 
 @media (max-height: 677px) {
 	#sidebar #header {
@@ -439,10 +447,14 @@ path {
 	background-position: center;
 	display: inline-block;
 	cursor: pointer;
+	line-height: 33px;
+	text-align: center;
 }
+
 #sidebar #menu .none .i {
 	-webkit-filter: grayscale(100%);
 	filter: grayscale(100%);
+
 }
 #sidebar #menu label .txt {
 	position: absolute;
@@ -462,23 +474,33 @@ path {
 	background-color: red;
 }
 
+#sidebar #menu .none .p {
+	background-color: #ececea !important;
+}
+#sidebar #menu .none .i {
+	background-color: #ececea !important;
+	text-indent: -9999px;
+}
+
+#sidebar .readmore,
 #sidebar .resetAll,
 #sidebar .help {
-	float: left;
+	text-align: left;
 	background-repeat: no-repeat;
 	background-position: left center;
 	display: inline-block;
 	cursor: pointer;
-	width: 33px;
-	height: 33px;
+	width: 35px;
+	height: 25px;
 	background-size: contain;
 	background-image: url("../images/question-neg.svg");
-	line-height: 33px;
-	padding-left: 40px;
+	line-height: 25px;
+	padding-left: 30px;
 	margin-top: 10px;
 	opacity: 0.9;
 }
 
+#sidebar .readmore:hover,
 #sidebar .resetAll:hover,
 #sidebar .help:hover {
 	transition: all 1s ease;
@@ -486,8 +508,12 @@ path {
 }
 
 
+#sidebar .readmore {
+	width: 67px;
+}
+
 #sidebar .resetAll {
-	width: 80px;
+	width: 70px;
 	background-image: url("../images/close-neg.svg");
 }
 /*.leaflet-popup-content-wrapper,
@@ -539,9 +565,16 @@ leaflet-popup-content {
 #lightbox .rotating{
 	position:absolute; 
 	top:48%; 
-	left:85%; 	
+	left:80%; 	
     filter: invert(100%);
 	-webkit-filter: invert(100%);
+}
+
+#lightbox .rotating p {
+	float: right;
+	height: 100px;
+	padding-top: 30px;
+	color: black; /* inverted color */
 }
 
 #lightbox .close {
