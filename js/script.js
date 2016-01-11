@@ -42,54 +42,28 @@
 		// 	}
 		// });
 
-
 var style = {
 	"clickable": false,
 	"color": "#00D",
-	"fillColor": "#fff",
+	"fillColor": "#383839",
 	"weight": 0,
 	"opacity": 1,
 	"fillOpacity": 1
 };
-// 	"fillColor": "#334163",
 
 var hues = [
-	'hsl(192,100%,90%)', 
-	'hsl(192,100%,80%)', 
-	'hsl(192,100%,70%)', 
-	'hsl(192,100%,60%)', 
-	'hsl(192,100%,50%)', 
-	'hsl(192,100%,40%)', 
-	'hsl(192,100%,30%)', 
-	'hsl(192,100%,25%)', 
-	'hsl(192,100%,20%)', 
-	'hsl(192,100%,15%)' 
+	'#081D58', 
+	'#183176', 
+	'#253494', 
+	'#2251A8', 
+	'#1D91c0', 
+	'#41b6c4', 
+	'#7Fcdbb', 
+	'#c7e9b4', 
+	'#edf8b1', 
+	'#ffffd9'
 ];
-// var hues = [
-// 	'hsl(223,70%,80%)', 
-// 	'hsl(223,70%,75%)', 
-// 	'hsl(223,70%,70%)', 
-// 	'hsl(223,70%,65%)', 
-// 	'hsl(223,70%,60%)', 
-// 	'hsl(223,70%,55%)', 
-// 	'hsl(223,70%,50%)', 
-// 	'hsl(223,70%,45%)', 
-// 	'hsl(223,70%,40%)', 
-// 	'hsl(223,70%,35%)' 
-// ];
 
-// var hues = [
-// 	'rgb(3,9,93)', 
-// 	'rgb(19,29,124)', 
-// 	'rgb(6,34,170)', 
-// 	'rgb(0,68,186)', 
-// 	'rgb(26,97,202)', 
-// 	'rgb(33,141,231)', 
-// 	'rgb(58,147,247)', 
-// 	'rgb(114,167,243)', 
-// 	'rgb(163,192,225)', 
-// 	'rgb(208,224,250)' 
-// ];
 
 
 var fHues = [
@@ -106,17 +80,26 @@ var fHues = [
 	];
 
 
+// var style = {
+// 	"clickable": false,
+// 	"color": "#00D",
+// 	"fillColor": "#fff",
+// 	"weight": 0,
+// 	"opacity": 1,
+// 	"fillOpacity": 1
+// };
+
 // var hues = [
-// 	'#64738C', // green green
-// 	'#889EBB',
-// 	'#B6D2DE',
-// 	'#D4EAF2',
-// 	'#888',
-// 	'#888',
-// 	'#EBC2D0', // light rood
-// 	'#D994AB',
-// 	'#E679A3',
-// 	'#C0537A'
+// 	'hsl(192,100%,90%)', 
+// 	'hsl(192,100%,80%)', 
+// 	'hsl(192,100%,70%)', 
+// 	'hsl(192,100%,60%)', 
+// 	'hsl(192,100%,50%)', 
+// 	'hsl(192,100%,40%)', 
+// 	'hsl(192,100%,30%)', 
+// 	'hsl(192,100%,25%)', 
+// 	'hsl(192,100%,20%)', 
+// 	'hsl(192,100%,15%)' 
 // ];
 
 
@@ -126,13 +109,14 @@ var fHues = [
 // 	'rgba(38, 203, 42, 0.8)',
 // 	'rgba(90, 222, 70, 0.8)',
 // 	'rgba(150, 245, 102, 0.8)',
-// 	'rgba(185, 255, 130, 0.8', // light groen
+// 	'rgba(185, 255, 130, 0.8)', // light groen
 // 	'#ff8383',
 // 	'#f46767', // light rood
 // 	'#dd4747',
 // 	'#c92727',
 // 	'#af1010', //donker rood
 // 	];
+
 
 
 var geojsonURL = 'data/vectiles-water-areas/{z}/{x}/{y}.json';
@@ -294,13 +278,13 @@ function joinData(data, layer) {
 
 function buildPage () {
 	buildURLout = buildURL();
-	if (buildURLout.length != 0) {
+	if (buildURLout.length !== 0) {
 		selectedVar = buildURLout[0];
 		isFilterCountryActive = false;
 		if (buildURLout[1].length > 0) {
 			isFilterCountryActive = true;
 			window.filterCountryName = buildURLout[1];
-			console.log("~filterCountryName` " + window.filterCountryName)
+			// console.log("~filterCountryName` " + window.filterCountryName)
 			directFilterCountry();
 		}
 	}
@@ -396,7 +380,7 @@ function setVariable() {
 			document.querySelector("#introdata").style.zIndex = "1";
 
 
-			document.querySelector("#introdata .container").innerHTML = "<a onclick='showAndHideSidebar()' class='close'></a>";
+			document.querySelector("#introdata .container").innerHTML = "";
 
 			for (var i = 0; i <  window.introdata.length; i++) {
 
@@ -422,7 +406,7 @@ function setVariable() {
 	}
 
 	// isFilterCountryActive ? "yes" : "no"
-	isFilterCountryActive ? directFilterCountry() : legenda(hues)
+	isFilterCountryActive ? directFilterCountry() : legenda(hues);
 
 
 	hidePreloader();
@@ -448,11 +432,11 @@ function buildMenu () {
 
 	for (i = 0; i <  window.subject.length; i++) {
 		document.querySelector('#sidebar #menu #' + window.subject[i] ).addEventListener("click", function(e){ var those = this; readVariable(those); }, false);
-		// line 305, col 151, Don't make functions within a loop.
+		// line 450, col 151, Don't make functions within a loop.
 	}
 
 	if (selectedVar.length > 0) {
-		for (var i = 0; i < selectedVar.length; i++) {
+		for (i = 0; i < selectedVar.length; i++) {
 			readVariable(undefined);
 		}
 	}
@@ -480,39 +464,37 @@ function buildURL() {
 	// #subject=gini_score,freedom_score&country=DE
 	// #subject=gini_score,freedom_score
 
-	console.log(location.hash);
+	// console.log(location.hash);
 
 	if (location.hash.length > 0) {
 
 		var urlsubject = [];
 		var urlcountry = "";
 
+
+		// check if country exist
+		var listOfAllCounties = [];
+		var listOfAllCounties_nl_name = [];
+		Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
+			listOfAllCounties.push(euLayer.getGeoJSON()[key].properties.name);
+			listOfAllCounties_nl_name.push(euLayer.getGeoJSON()[key].properties.nl_name);
+		});
+
+
 		if (location.hash.search("&") > 0) {
 			var hash = location.hash.split("&");
 			for (var i = 0; i < hash.length; i++) {
 				if (hash[i].search("#subject=") !== -1) {
-					var urlsubject = hash[i].replace("#subject=","");
+					urlsubject = hash[i].replace("#subject=","");
 					urlsubject = urlsubject.split(",");
 				}
 
-				var listOfAllCounties = [];
 				if (hash[i].search("country=") !== -1) {
-					var urlcountry = hash[i].replace("country=","");
+					urlcountry = hash[i].replace("country=","");
 
-					// check if country exist
-					
-					var listOfAllCounties_nl_name = [];
-
-					Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
-						listOfAllCounties.push(euLayer.getGeoJSON()[key].properties.name);
-						listOfAllCounties_nl_name.push(euLayer.getGeoJSON()[key].properties.nl_name);
-
-					});
 					if (listOfAllCounties.indexOf(urlcountry) === -1) {
 						urlcountry = "NL";
 					}
-
-
 
 				}
 				if (hash[i].search("help=") !== -1) {
@@ -523,11 +505,11 @@ function buildURL() {
 				}
 
 				if (hash[i].search("info=") !== -1) {
-					console.log("info")
+					console.log("info");
 					var isInfo = hash[i].replace("info=","");
 					if (isInfo == "1" && hash[i].search("help=") === -1) {
 						setTimeout(function(){ 
-							country (urlcountry,listOfAllCounties_nl_name[listOfAllCounties.indexOf(urlcountry)])
+							country (urlcountry,listOfAllCounties_nl_name[listOfAllCounties.indexOf(urlcountry)]);
 						}, 2);
 					}
 				}	
@@ -540,16 +522,16 @@ function buildURL() {
 		else {
 
 			if (location.hash.search("#subject=") !== -1) {
-				var urlsubject = location.hash.replace("#subject=","");
+				urlsubject = location.hash.replace("#subject=","");
 				urlsubject = urlsubject.split(",");
 			}
 
 		}
 
 		// controle; voor subject
-		for (var i = 0; i < urlsubject.length; i++) {
-			if (window.subject.indexOf(urlsubject[i]) === -1) {
-				var index = urlsubject.indexOf(urlsubject[i]);
+		for (var j = 0; j < urlsubject.length; j++) {
+			if (window.subject.indexOf(urlsubject[j]) === -1) {
+				var index = urlsubject.indexOf(urlsubject[j]);
 				urlsubject.splice( index, 1 );
 			}
 		}
@@ -619,7 +601,7 @@ window.onhashchange = function() {
     if (window.innerDocClick) {
         window.innerDocClick = false;
 
-        console.log("innerDocClick")
+        console.log("innerDocClick");
     	buildPage();
 
 
@@ -628,13 +610,13 @@ window.onhashchange = function() {
         	buildPage();
 
         } else {
-        	        	console.log("h2o ")
+        	console.log("h2o ");
 
             history.pushState("", document.title, window.location.pathname);
             location.reload();
         }
     }
-}
+};
 
 
 
@@ -643,12 +625,12 @@ window.innerDocClick = false;
 document.onmouseover = function() {
     //User's mouse is inside the page.
     window.innerDocClick = true;
-}
+};
 
 document.onmouseleave = function() {
     //User's mouse has left the page.
     window.innerDocClick = false;
-}
+};
 
 
 
@@ -667,11 +649,11 @@ function readVariable (those) {
 	if (those !== undefined) {
 		
 		if ( selectedVar.indexOf(those.id) === -1 ) {
-			console.log(those.id)
+			console.log(those.id);
 			selectedVar.push(those.id);
 		}
 		else {
-			console.log(selectedVar.indexOf(those.id) + "~")
+			console.log(selectedVar.indexOf(those.id) + "~");
 
 			var index = selectedVar.indexOf(those.id);
 			// delete storeActiveVar[index];
@@ -682,14 +664,14 @@ function readVariable (those) {
 			document.querySelector("#menu #label_" + window.subject[i] + " .checkbox").style.backgroundImage = "none";
 		}
 
-		for (var i = 0; i < selectedVar.length; i++) {
+		for (i = 0; i < selectedVar.length; i++) {
 			document.querySelector("#menu #label_" + selectedVar[i] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
 		}
 	}
 	else {
 		// direct input
-		for (var i = 0; i < selectedVar.length; i++) {
-			document.querySelector("#menu #label_" + selectedVar[i] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
+		for (var j = 0; j < selectedVar.length; j++) {
+			document.querySelector("#menu #label_" + selectedVar[j] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
 		}		
 	}
 	
@@ -723,9 +705,11 @@ function mousemove(e,those) { // legenda high
 	// https://www.mapbox.com/mapbox.js/example/v1.0.0/choropleth/
 
 	if (selectedVar.length > 0) {
+		
+		var top;
 
 		if (!isFilterCountryActive) {
-			var top = mmap(window.combinedScore[e.target.feature.properties.name],0,10,0,100);
+			top = mmap(window.combinedScore[e.target.feature.properties.name],0,10,0,100);
 			top = (100 + (top * -1) + 0 /*fix*/ );
 
 		} 
@@ -733,12 +717,12 @@ function mousemove(e,those) { // legenda high
 		
 			if (window.combinedScore[e.target.feature.properties.name] > window.combinedScore[window.filterCountryName]) {
 				// Countries who perform better! :D :D :D
-				var top = mmap(window.combinedScore[e.target.feature.properties.name],window.combinedScore[window.filterCountryName],10,0,50);
+				top = mmap(window.combinedScore[e.target.feature.properties.name],window.combinedScore[window.filterCountryName],10,0,50);
 				top = 50 - top;
 				// console.log("higher" + e.target.feature.properties.name + top + " `" + window.combinedScore[window.filterCountryName]);
 			}
 			else {
-				var top = mmap(window.combinedScore[e.target.feature.properties.name],0,window.combinedScore[window.filterCountryName],0,50);
+				top = mmap(window.combinedScore[e.target.feature.properties.name],0,window.combinedScore[window.filterCountryName],0,50);
 				top = 100 - top;
 				// console.log("lower" + e.target.feature.properties.name + top + " `" + window.combinedScore[window.filterCountryName]);
 			}
@@ -828,7 +812,7 @@ function write2lightbox (contentArray) {
 	
 
 
-		for (var i = splitrow+1; i <  contentArray.length; i++) {
+		for (i = splitrow+1; i <  contentArray.length; i++) {
 
 
 			if (i === splitrow+1) {
@@ -916,7 +900,7 @@ function resetAll () {
 
 var isSidebarVisible = true;
 function showAndHideSidebar () {
-	console.log(isSidebarVisible)
+	console.log(isSidebarVisible);
 
 	// Hide sidebar
 	if (isSidebarVisible) {
@@ -961,9 +945,7 @@ function showAndHideSidebar () {
 
 var showPointersWhenSidebarIsClosed = true;
 function answerShowPointersWhenSidebarIsClosed () {
-	windowwidth = window.innerWidth
-	|| document.documentElement.clientWidth
-	|| document.body.clientWidth;
+	windowwidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
 
 	if (windowwidth < 570) {
@@ -971,11 +953,11 @@ function answerShowPointersWhenSidebarIsClosed () {
 			showPointersWhenSidebarIsClosed = false;
 		}
 		else {
-			showPointersWhenSidebarIsClosed = true
+			showPointersWhenSidebarIsClosed = true;
 		}
 	}
 	else {
-		showPointersWhenSidebarIsClosed = true
+		showPointersWhenSidebarIsClosed = true;
 	}
 
 }
@@ -984,7 +966,7 @@ function answerShowPointersWhenSidebarIsClosed () {
 function hideLightbox (e) {
 
 	try {
-		if ( (e.target.parentNode.nodeName != "P") &&  (e.target.parentNode.className != "left") && (e.target.parentNode.className != "right")  && (e.target.parentNode.className != "container")  ||  e.target.className === "close") {
+		if ( (e.target.parentNode.nodeName != "P") &&  (e.target.parentNode.className != "subject") &&  (e.target.parentNode.className != "left") && (e.target.parentNode.className != "right")  && (e.target.parentNode.className != "container")  ||  e.target.className === "close") {
 			document.querySelector("#lightbox").style.display = "none";
 			isHelpActive = false;
 			isCountyInfoActive = false;
@@ -1022,7 +1004,7 @@ function directFilterCountry() {
 		
 
 		});
-		filterCountry(e)
+		filterCountry(e);
 	}
 }
 
@@ -1044,6 +1026,7 @@ function filterCountry(e) {
 		var color = "red";
 		var borderwidth = 0.25;
 		var fillOpacity = 1;
+		var cindex;
 
 		euLayer.eachLayer(function(layer) {
 
@@ -1053,7 +1036,7 @@ function filterCountry(e) {
 				if (window.combinedScore[layer.feature.properties.name] > window.combinedScore[countryname]) {
 					// Countries who perform better! :D :D :D
 
-					var cindex = mmap(window.combinedScore[layer.feature.properties.name],window.combinedScore[countryname],10,5,0);
+					cindex = mmap(window.combinedScore[layer.feature.properties.name],window.combinedScore[countryname],10,5,0);
 					color = fHues[Math.floor(cindex)];
 					borderwidth = 0.5;
 
@@ -1068,13 +1051,13 @@ function filterCountry(e) {
 
 
 					// The selected country
-					if (layer.feature.properties["name"] === e.target.feature.properties.name) {
+					if (layer.feature.properties.name === e.target.feature.properties.name) {
 						 color = "#fff28f"; // blue // selected country
 						 borderwidth = 2;
 					}
 				}
 				else {
-					var cindex = mmap(window.combinedScore[layer.feature.properties.name],0,window.combinedScore[countryname],9,5);
+					cindex = mmap(window.combinedScore[layer.feature.properties.name],0,window.combinedScore[countryname],9,5);
 					color = fHues[Math.floor(cindex)];
 					borderwidth = 0.5;
 
@@ -1133,12 +1116,16 @@ function selectedCountry(e) { // the text
 
 	if (!isNaN(Number(e.target.feature.properties[selectedVar[0]])) ) {
 
-		document.querySelector("#sidebar #content").innerHTML = "<h2>" +  e.target.feature.properties.nl_name + "</h2>"
+		var content;
+		var index;
+		var i;
+
+		document.querySelector("#sidebar #content").innerHTML = "<h2>" +  e.target.feature.properties.nl_name + "</h2>";
 
 		if (selectedVar.length === 1) {
 
-			var index = window.subject.indexOf(selectedVar[0])
-			var content = window.subjectintro[index];
+			index = window.subject.indexOf(selectedVar[0]);
+			content = window.subjectintro[index];
 			content = replaceKeys(e.target.feature.properties,content);
 
 			document.querySelector("#sidebar #content").innerHTML += "<p>" + content + "</p>";
@@ -1149,12 +1136,12 @@ function selectedCountry(e) { // the text
 
 			if (selectedVar.length <= 4) {
 
-				var content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[0]);
+				content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[0]);
 			
 				document.querySelector("#sidebar #content").innerHTML += content; 
 
-				for (var i = 0; i < selectedVar.length; i++) {
-					var index = window.subject.indexOf(selectedVar[i]);
+				for (i = 0; i < selectedVar.length; i++) {
+					index = window.subject.indexOf(selectedVar[i]);
 					
 					if (i === selectedVar.length-2) {
 						document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + " en ";
@@ -1169,7 +1156,7 @@ function selectedCountry(e) { // the text
 
 			}
 			else {
-				var content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[1]);
+				content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[1]);
 				document.querySelector("#sidebar #content").innerHTML += content;
 			}
 		}
@@ -1190,15 +1177,15 @@ function replaceKeys (properties,content) {
 	// e.target.feature.properties
 
 	// search and replace items in text
-	var replaceKeys = [];
+	replaceKeysArray = [];
 	Object.keys(properties).forEach(function(key) {
-		replaceKeys.push(key);
+		replaceKeysArray.push(key);
 	});
 
-	for (var i = 0; i < replaceKeys.length; i++) {
-		var re = new RegExp("{" + replaceKeys[i] + "}","ig");
+	for (var i = 0; i < replaceKeysArray.length; i++) {
+		var re = new RegExp("{" + replaceKeysArray[i] + "}","ig");
 
-		var value = properties[replaceKeys[i]];
+		var value = properties[replaceKeysArray[i]];
 		value = String(value).replace(/,/ig,".");
 
 		if (!isNaN(value)) {
@@ -1232,7 +1219,7 @@ function country (name,nl_name) {
 	var i = 0;
 	Object.keys(window.countrydescription).forEach(function(key) {
 		if ( i!== 0) {
-			content.push(window.countrydescription[key][window.filterCountryName])
+			content.push(window.countrydescription[key][window.filterCountryName]);
 		}
 		i++;
 	});
@@ -1241,7 +1228,7 @@ function country (name,nl_name) {
 	document.querySelector("#lightbox").style.zIndex = "2";
 	document.querySelector("#lightbox").style.display = "block";
 
-	document.querySelector("#lightbox").addEventListener("click", function(e){ hideLightbox(e) }, false);
+	document.querySelector("#lightbox").addEventListener("click", function(e){ hideLightbox(e); }, false);
 
 
 	write2lightbox(content);
@@ -1263,7 +1250,7 @@ function facepalm () {
 
 setTimeout(function(){ 
 	if (window.subject.length < 1) {
-		document.getElementById("introdata").innerHTML = "<div class='container'><h2>Sorry er iets misgegaan met het laden van de inhoud</h2> <p>Wacht een klein momentje of herlaad de pagina om het opnieuw te proberen</p></div>"
+		document.getElementById("introdata").innerHTML = "<div class='container'><h2>Sorry er iets misgegaan met het laden van de inhoud</h2> <p>Wacht een klein momentje of herlaad de pagina om het opnieuw te proberen</p></div>";
 	}
 }, 5000);
 
@@ -1271,7 +1258,7 @@ setTimeout(function(){
 // for IE10 and lower == unsuported
 if(document.all && document.compatMode) {
 	setTimeout(function(){ 
-		document.getElementById("introdata").innerHTML = "<div class='container'><h2>Sorry, maar met jouw versie van Internet Explorer kan mijn site niet samenwerken.</h2> <p> Bekijk de website van <a href='http://browsehappy.com/?locale=nl'>browsehappy</a> voor informatie</p></div>"
+		document.getElementById("introdata").innerHTML = "<div class='container'><h2>Sorry, maar met jouw versie van Internet Explorer kan mijn site niet samenwerken.</h2> <p> Bekijk de website van <a href='http://browsehappy.com/?locale=nl'>browsehappy</a> voor informatie</p></div>";
 	}, 200);
 }
 
@@ -1279,7 +1266,9 @@ if(document.all && document.compatMode) {
 document.addEventListener("keydown", function(e){ keyboardHandler(e); }, false);
 
 function keyboardHandler (e) {
-	if ( (isCountyInfoActive || isHelpActive) && e.keyCode === 27 ) {
+	
+	// 27 == esc || 32 === space bar
+	if ( (isCountyInfoActive || isHelpActive) && (e.keyCode === 27 || e.keyCode === 32) ) {
 		hideLightbox (true);
 	}
 
@@ -1339,6 +1328,12 @@ function idle() {
         t = setTimeout(idleHelper, 188400);  // time is in milliseconds 188400 == 3,14 minute
 
         if (!isUserActive) {
+        	var isFF = !!window.sidebar;
+        	if (isFF) {
+        		window.location.reload(false) // true - Reloads the current page from the server
+        	}
+
+        	console.log("~!isUserActive");
         	document.title = prevDocumentTitle;
         	idleI = 0;
 	     	clearInterval(screensaver);
@@ -1383,7 +1378,7 @@ function idleActive () {
 			}
 		break;
 		case 1: 
-			console.log(selectedVar);
+			// console.log(selectedVar);
 
 			if (idleI > 0) {
 				var index = selectedVar.indexOf(selectedVar[idleI]);
@@ -1409,7 +1404,7 @@ function idleActive () {
 				idleMode = 0;
 				// selectedVar = [];
 
-				console.log(selectedVar)
+				// console.log(selectedVar);
 			}
 			else {
 				idleMode++;	
