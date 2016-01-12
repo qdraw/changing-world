@@ -1352,7 +1352,7 @@ function idle() {
 
 		document.querySelector("#lightbox").style.zIndex = "2";
 
-		document.querySelector("#lightbox").innerHTML = "<div class='rotating'><p>Beweeg de muis<br /> om verder te gaan</p><img src='images/history.svg' height='100px' width='100px'></div>";
+		document.querySelector("#lightbox").innerHTML = "<div class='rotating'><p>Beweeg je muis<br /> om verder te gaan</p><img src='images/history.svg' height='100px' width='100px'></div>";
 		document.querySelector("#lightbox").style.display = "block";
 
 		screensaver = setInterval(idleActive, 2000); // speed of slides
