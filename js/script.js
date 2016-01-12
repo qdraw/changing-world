@@ -129,7 +129,6 @@ var fHues = [
 	];
 
 
-
 var geojsonURL = 'data/vectiles-water-areas/{z}/{x}/{y}.json';
 var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, 
 	{
@@ -611,44 +610,46 @@ var timestampList = [];
 var prevURL;
 function constructURL() {
 
-	var url = "#subject=";
-	for (var i = 0; i < selectedVar.length; i++) {
-		
-		if (i === selectedVar.length-1) {
-			url += selectedVar[i];
+	if (history.pushState) { // for IE9
+
+		var url = "#subject=";
+		for (var i = 0; i < selectedVar.length; i++) {
+			
+			if (i === selectedVar.length-1) {
+				url += selectedVar[i];
+			}
+			else {
+				url += selectedVar[i] + ",";
+			}
 		}
-		else {
-			url += selectedVar[i] + ",";
+
+		if (isFilterCountryActive) {
+			url += "&country=" + window.filterCountryName;
 		}
+
+
+		if (isCountyInfoActive) {
+			url += "&info=1";
+		}
+
+		if (selectedVar.length === 0) {
+			url = "#";
+		}
+
+		if (isHelpActive) {
+			url += "&help=1";
+		}
+
+		if (url !== prevURL) {
+			var timestamp = new Date().getTime();
+			var stateObj = { url: url, timestamp: timestamp };
+			history.pushState(stateObj, "Qdraw", url);
+
+			urlList.push(url);
+			timestampList.push(timestamp);
+		}
+		prevURL = url;
 	}
-
-	if (isFilterCountryActive) {
-		url += "&country=" + window.filterCountryName;
-	}
-
-
-	if (isCountyInfoActive) {
-		url += "&info=1";
-	}
-
-	if (selectedVar.length === 0) {
-		url = "#";
-	}
-
-	if (isHelpActive) {
-		url += "&help=1";
-	}
-
-	if (url !== prevURL) {
-		var timestamp = new Date().getTime();
-		var stateObj = { url: url, timestamp: timestamp };
-		history.pushState(stateObj, "Qdraw", url);
-
-		urlList.push(url);
-		timestampList.push(timestamp);
-	}
-	prevURL = url;
-
 
 
 }
@@ -1293,22 +1294,31 @@ setTimeout(function(){
 }, 5000);
 
 
-// for IE10 and lower == unsuported
-if(document.all && document.compatMode) {
-	setTimeout(function(){ 
-		document.getElementById("introdata").innerHTML = "<div class='container'><h2>Sorry, maar met jouw versie van Internet Explorer kan mijn site niet samenwerken.</h2> <p> Bekijk de website van <a href='http://browsehappy.com/?locale=nl'>browsehappy</a> voor informatie</p></div>";
-	}, 200);
-}
-
+var storeKeys = [],
+    easteregg = "73,78,69,69,68,82,73,67,75";
 
 document.addEventListener("keydown", function(e){ keyboardHandler(e); }, false);
-
 function keyboardHandler (e) {
 	
 	// 27 == esc || 32 === space bar
 	if ( (isCountyInfoActive || isHelpActive) && (e.keyCode === 27 || e.keyCode === 32) ) {
 		hideLightbox (true);
 	}
+
+	// I Need Rick;
+    storeKeys.push(e.keyCode);
+    if (storeKeys.toString().indexOf(easteregg) >= 0) {
+
+		selectedVar = [window.subject[0]];
+		window.filterCountryName = "DO";
+		isFilterCountryActive = true;
+
+		facepalm();
+    	country();
+
+	    	storeKeys = [];
+    }
+
 
 }
 
@@ -1487,7 +1497,7 @@ function idleActive () {
 					listOfAllCounties.push(layer.feature.properties.name);
 				}
 			});
-			listOfAllCounties = ["UA", "RU", "SK"];
+			// listOfAllCounties = ["UA", "RU", "SK"];
 
 			if (idleI <= listOfAllCounties.length-1) {
 				window.filterCountryName = listOfAllCounties[idleI];
