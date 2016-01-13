@@ -438,7 +438,7 @@ function buildMenu () {
 
 	for (i = 0; i <  window.subject.length; i++) {
 		document.querySelector('#sidebar #menu #' + window.subject[i] ).addEventListener("click", function(e){ var those = this; readVariable(those); }, false);
-		// line 438, col 151, Don't make functions within a loop.
+		// line 440, col 151, Don't make functions within a loop.
 	}
 
 	if (selectedVar.length > 0) {
@@ -466,7 +466,7 @@ function updateMenuProgress () {
 						value = layer.feature.properties[window.subject[i]];
 					}
 				});
-				// line 466, col 18, Don't make functions within a loop.
+				// line 464, col 18, Don't make functions within a loop.
 
 				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.width = mmap(value,0,10,0,76) + "%";
 				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.backgroundColor = window.subjectcolor[i];
