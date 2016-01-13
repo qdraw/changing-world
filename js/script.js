@@ -1162,6 +1162,17 @@ setTimeout(function(){
 	}
 }, 5000);
 
+// For local users, firefox does handle this correct;
+var isFF = 'MozAppearance' in document.documentElement.style;
+if (window.location.protocol === "file:") {
+	if (isFF) {
+		console.error("Please use a webserver to test this visalisation");
+	}
+	else {
+		alert("Please use a webserver to test this visalisation or use firefox");
+		console.error("Please use a webserver to test this visalisation");
+	}
+}
 
 // ineedrick;
 var storeKeys = [],
