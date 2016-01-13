@@ -19,67 +19,31 @@
 				,=II+:        ,:,    ,~=:                    
 				  :=~==                ~=,                   
 					  ,                ,::                            
-		                    
+							
 */		
 
 
 
-//loops
+// Different Loop i use in this code:
 
-	// Object.keys(data.datatable).forEach(function(key) {
-	// 	console.log([key])
+// Object.keys(data.datatable).forEach(function(key) {
+// 	console.log([key])
+// });
+
+// for (var i = 0; i < data.datatable.elements.length; i++) {
+	
+// 	console.log(data.datatable.elements[i])
+// };
+	// alle landen
+	// console.log(euLayer.getGeoJSON());
+	// Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
+	// 	if (e.target.feature.properties.name === euLayer.getGeoJSON()[key].properties.name) {
+
+	// 	}
 	// });
 
-	// for (var i = 0; i < data.datatable.elements.length; i++) {
-		
-	// 	console.log(data.datatable.elements[i])
-	// };
-		// alle landen
-		// console.log(euLayer.getGeoJSON());
-		// Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
-		// 	if (e.target.feature.properties.name === euLayer.getGeoJSON()[key].properties.name) {
 
-		// 	}
-		// });
-
-// var style = {
-// 	"clickable": false,
-// 	"color": "#00D",
-// 	"fillColor": "#383839",
-// 	"weight": 0,
-// 	"opacity": 1,
-// 	"fillOpacity": 1
-// };
-
-// var hues = [
-// 	'#081D58', 
-// 	'#183176', 
-// 	'#253494', 
-// 	'#2251A8', 
-// 	'#1D91c0', 
-// 	'#41b6c4', 
-// 	'#7Fcdbb', 
-// 	'#c7e9b4', 
-// 	'#edf8b1', 
-// 	'#ffffd9'
-// ];
-
-
-
-// var fHues = [
-// 	'rgba(14, 178, 35, 0.8)', // green green
-// 	'rgba(38, 203, 42, 0.8)',
-// 	'rgba(90, 222, 70, 0.8)',
-// 	'rgba(150, 245, 102, 0.8)',
-// 	'rgba(185, 255, 130, 0.8)', // light groen
-// 	'#ff8383',
-// 	'#f46767', // light rood
-// 	'#dd4747',
-// 	'#c92727',
-// 	'#af1010', //donker rood
-// 	];
-
-
+// Map style
 var style = {
 	"clickable": false,
 	"color": "#00D",
@@ -89,21 +53,9 @@ var style = {
 	"fillOpacity": 1
 };
 
-// var hues = [
-// 	'hsl(192,100%,90%)', 
-// 	'hsl(192,100%,80%)', 
-// 	'hsl(192,100%,70%)', 
-// 	'hsl(192,100%,60%)', 
-// 	'hsl(192,100%,50%)', 
-// 	'hsl(192,100%,40%)', 
-// 	'hsl(192,100%,30%)', 
-// 	'hsl(192,100%,25%)', 
-// 	'hsl(192,100%,20%)', 
-// 	'hsl(192,100%,15%)' 
-// ];
-
+// country codes in absolute mode
 var hues = [
-	'hsl(192,100%,15%)',
+	'hsl(192,100%,15%)', // best
 	'hsl(192,100%,20%)', 
 	'hsl(192,100%,25%)', 
 	'hsl(192,100%,30%)', 
@@ -112,9 +64,10 @@ var hues = [
 	'hsl(192,100%,60%)', 
 	'hsl(192,100%,70%)', 
 	'hsl(192,100%,80%)', 
-	'hsl(192,100%,90%)'
+	'hsl(192,100%,90%)'// worst
 ];
 
+// country codes in relative mode
 var fHues = [
 	'rgba(14, 178, 35, 0.8)', // green green
 	'rgba(38, 203, 42, 0.8)',
@@ -128,7 +81,7 @@ var fHues = [
 	'#af1010', //donker rood
 	];
 
-
+// Loading GeoJSON data as tiles
 var geojsonURL = 'data/vectiles-water-areas/{z}/{x}/{y}.json';
 var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, 
 	{
@@ -138,26 +91,16 @@ var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL,
 		}
 	}, 
 	{
-		style: style,
-		onEachFeature: function (feature, layer) {
-			if (feature.properties) {
-				var popupString = '<div class="popup">';
-				for (var k in feature.properties) {
-					var v = feature.properties[k];
-					popupString += k + ': ' + v + '<br />';
-				}
-				popupString += '</div>';
-				layer.bindPopup(popupString);
-			}
-		}
+		style: style
 	}
 );
 
-
+// Allow the user only in the area
 var southWest = L.latLng(3.337953961416485, -118.47656249),
 	northEast = L.latLng(81.17449100425956, 112.8515625),
 	bounds = L.latLngBounds(southWest, northEast);
 
+// the map variable
 var map = L.map('map',{ 
 	zoomControl:false,
 	maxBounds: bounds,
@@ -167,18 +110,15 @@ var map = L.map('map',{
 	.addLayer(geojsonTileLayer)
 	.setView([55, 0], 4);
 
-
-var popup = new L.Popup({ autoPan: false });
-
-
 // Create a layer of state features, and when it's done
 // loading, run loadData
 var euLayer = L.mapbox.featureLayer()
 	.loadURL('data/europe.geo.json')
 	.addTo(map)
 	.on('ready', loadData);
-	// https://geojson-maps.kyd.com.au/
+	// Source: https://geojson-maps.kyd.com.au/
 
+// The variables used to store dynamic loaded data
 window.subject = [];
 window.subjectui = [];
 window.subjectcolor = [];
@@ -190,43 +130,96 @@ window.helpdata = [];
 window.introdata = [];
 window.countrydescription = {};
 
+// When this project is over, I will probly lose access to the Google Spreadsheet, when i place it to Archive mode load a local json file.
+var archiveMode = false;
 function loadData () {
-	var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1v9Dsd5LwlLrSd5jzO7_QfTECU3TEtnlK44omvdYCJ8E/pubhtml';
-	Tabletop.init( { key: public_spreadsheet_url,
-					callback: processData,
-					simpleSheet: false } );
+	if (!archiveMode) {
+		// Tabletop loads here the spreadsheet data async.
+		var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1v9Dsd5LwlLrSd5jzO7_QfTECU3TEtnlK44omvdYCJ8E/pubhtml';
+		Tabletop.init( { key: public_spreadsheet_url,
+						callback: processData,
+						simpleSheet: false } );
+		}
+	else {
+		loadJSON("data/backup.json",
+			function(data) { processData(data); },
+			function(xhr) { console.error(xhr); }
+		);
+	}
+
 }
 
+// The normal XMLHttpRequest to load json files and parse it
+function loadJSON(path, success, error){
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function()
+	{
+		if (xhr.readyState === XMLHttpRequest.DONE) {
+			if (xhr.status === 200) {
+				if (success)
+					success(JSON.parse(xhr.responseText));
+			} else {
+				if (error)
+					error(xhr);
+			}
+		}
+	};
+	xhr.open("GET", path, true);
+	xhr.send();
+}
+
+window.ranges = {};
+// callback function from loadData
 function processData (data, tabletop) {
+	
+	// backupDataJSON (data);
+	// return;
+
 	Object.keys(data.datatableoptions.elements).forEach(function(key) {
+		// Check first if it isn't emthy
 		if (data.datatableoptions.elements[key].subject !== "") {
 			window.subject.push(data.datatableoptions.elements[key].subject);
 		}
 		window.subjectui.push(data.datatableoptions.elements[key].subjectui);
 		window.subjectcolor.push(data.datatableoptions.elements[key].subjectcolor);
-
-		window.subjectintro.push(data.datatableoptions.elements[key].subjectintro);
-		window.subjectintro_selectie2ofmeer.push(data.datatableoptions.elements[key].subjectintro_selectie2ofmeer);
 		window.ishightolow.push(data.datatableoptions.elements[key].ishightolow);
 		window.sidebarheader.push(data.datatableoptions.elements[key].sidebarheader);
 		window.introdata.push(data.datatableoptions.elements[key].introdata);
 		window.helpdata.push(data.datatableoptions.elements[key].helpdata);
 	});
 
+	// The text to have more information (read more)
 	window.countrydescription = data.countrydescription.elements;
 
+	// used to be the way to sort the data > now it is 0-10
 	for (var i = 0; i < window.subject.length; i++) {
 		window.ranges[window.subject[i]] = { min: Infinity, max: -Infinity };
 	}
 
 	joinData(data.datatable.elements, euLayer);
+}
 
+// a function to show all the merged tabletop google drive content on the screen; disabled by default.
+function backupDataJSON (data) {
+
+	var received = [];
+	tojson = JSON.stringify(data, function(key, val) {
+	   if (typeof val == "object") {
+			if (received.indexOf(val) >= 0)
+				return;
+			received.push(val);
+		}
+		return val;
+	});
+	var body  = document.getElementsByTagName('body')[0];
+	var div  = document.createElement('div');
+
+	body.appendChild(div);
+	body.textContent = tojson;
 }
 
 
-window.ranges = {};
-
-
+// Join the data in the map;
 function joinData(data, layer) {
 	// First, get the Europian state GeoJSON data for reference.
 
@@ -245,14 +238,16 @@ function joinData(data, layer) {
 
 
 
-
-
-
 	for (var j = 0; j < window.subject.length; j++) {
 
 		for (i = 0; i < data.length; i++) {
+			
+			// Very inported feature to replace data to valid integers/floats
 			data[i][window.subject[j]] = data[i][window.subject[j]].replace(/,/i, "."); 
 			data[i][window.subject[j]] = Number(data[i][window.subject[j]]);
+
+
+			// Place range data in variable
 			var jName = window.subject[j];
 			var value = data[i][window.subject[j]];
 
@@ -267,6 +262,7 @@ function joinData(data, layer) {
 		// Match the GeoJSON data (byState) with the tabular data
 		// (data), replacing the GeoJSON feature properties
 		// with the full data.
+		// ignore it goes wrong
 		try {
 			byState[data[i].name].properties = data[i];
 		}
@@ -283,13 +279,15 @@ function joinData(data, layer) {
 	}
 	euLayer.setGeoJSON(newFeatures);
 
-
 	buildPage ();
 	
 }
 
 
 function buildPage () {
+	// refresh the page without refreshing ~  all features when the page is loaded
+
+	// read values from the url
 	buildURLout = buildURL();
 	if (buildURLout.length !== 0) {
 		selectedVar = buildURLout[0];
@@ -297,7 +295,6 @@ function buildPage () {
 		if (buildURLout[1].length > 0) {
 			isFilterCountryActive = true;
 			window.filterCountryName = buildURLout[1];
-			// console.log("~filterCountryName` " + window.filterCountryName)
 			directFilterCountry();
 		}
 	}
@@ -312,11 +309,6 @@ function buildPage () {
 }
 
 
-// Excuse the short function name: this is not setting a JavaScript
-// variable, but rather the variable by which the map is colored.
-// The input is a string 'name', which specifies which column
-// of the imported JSON file is used to color the map.
-
 
 window.combinedScore = {};
 
@@ -324,17 +316,17 @@ function setVariable() {
 
 	if (selectedVar.length > 0) {
 
+		// hide welcome screen
 		if (document.querySelectorAll("#introdata").length > 0) {
 			document.querySelector("#introdata").style.zIndex = "-1";
 		}
 
-		// console.log("selectedVar");
-		// console.log(selectedVar);
-
+		// the total score reset // this is NOT window.combinedScore;
 		var combinedScore = {};
 
 		euLayer.eachLayer(function(layer) {
-			
+
+			// Calculate the average of the selected subjects
 			
 			for (var i = 0; i < selectedVar.length; i++) {
 
@@ -345,8 +337,6 @@ function setVariable() {
 					combinedScore[layer.feature.properties.name] = layer.feature.properties[selectedVar[i]];
 				}
 
-				// console.log()
-				// console.log(selectedVar[i]);
 			}
 			
 			if (selectedVar.length !== 0) {
@@ -354,9 +344,10 @@ function setVariable() {
 				window.combinedScore = combinedScore;
 			}
 
-
+			// make a color based on the combinedScore;
 			var colorindex = hues.length + (Math.round(combinedScore[layer.feature.properties.name]) * -1);
 
+			// place the color to all countries;
 			layer.setStyle({
 				fillColor: hues[colorindex],
 				fillOpacity: 1,
@@ -364,7 +355,8 @@ function setVariable() {
 				weight: 0.25
 			});
 
-			// 	// // YEAH, eventListeners
+			// 	// // YEAH, eventListeners; 
+			// Atach an event to all countries (caniuse IE9+)
 			layer.addEventListener("mouseover", function(e){ var those = this; mousemove(e,those); }, false);
 			layer.addEventListener("click", function(e){ filterCountry(e); }, false);
 
@@ -373,7 +365,7 @@ function setVariable() {
 
 	}//e/fi
 	else {
-		// Welcome screen
+		// Welcome screen, Hello, is it me you're looking for?
 
 		// reset content screen
 		if (document.querySelectorAll("#sidebar #content").length > 0) {
@@ -383,18 +375,18 @@ function setVariable() {
 
 		if (document.querySelectorAll("#introdata").length > 0) {
 
+			// No welcome screen for mobile
 			var	windowwidth = window.innerWidth  || document.documentElement.clientWidth 	|| document.body.clientWidth;
 			if (windowwidth > 570) {
 				document.querySelector("#introdata").style.display = "block";
 			}
 
 
-
+			// reset welcome screen;
 			document.querySelector("#introdata").style.zIndex = "1";
-
-
 			document.querySelector("#introdata .container").innerHTML = "";
 
+			// feature to display first row in <h2> and the rest in <p>
 			for (var i = 0; i <  window.introdata.length; i++) {
 
 				if (i === 0) {
@@ -406,7 +398,7 @@ function setVariable() {
 			}
 		}
 
-
+		// reset all countries to grey
 		euLayer.eachLayer(function(layer) {
 			layer.setStyle({
 				fillColor: "#d6d6d6",
@@ -419,21 +411,18 @@ function setVariable() {
 	}
 
 	// isFilterCountryActive ? "yes" : "no"
+	//  line 415, col 65, Expected an assignment or function call and instead saw an expression.
 	isFilterCountryActive ? directFilterCountry() : legenda(hues);
 
-
+	// and the sunset arrives
 	hidePreloader();
 }
-
-
 
 function hidePreloader () {
 	document.querySelector(".preloader").style.zIndex = "-1";
 }
 
-
-
-
+// rebuild and build for the first time the left menu
 function buildMenu () {
 	
 	document.querySelector("#sidebar #menu").innerHTML = "";
@@ -444,11 +433,12 @@ function buildMenu () {
 		document.querySelector("#sidebar #menu").innerHTML += "<label class='none' id='label_" + window.subject[i] +"'><input type='checkbox' id='" + window.subject[i] +"' name='checkbox' value='" + window.subject[i] +"'><span class='checkbox'></span> <span class='p'> </span> <span class='txt'>" + window.subjectui[i] + "</span><span class='i' style='background-image: url(images/" + window.subject[i] + ".svg)'></span></label>";
 	}
 
+	// the backgroud progress bars
 	updateMenuProgress ();
 
 	for (i = 0; i <  window.subject.length; i++) {
 		document.querySelector('#sidebar #menu #' + window.subject[i] ).addEventListener("click", function(e){ var those = this; readVariable(those); }, false);
-		// line 454, col 151, Don't make functions within a loop.
+		// line 438, col 151, Don't make functions within a loop.
 	}
 
 	if (selectedVar.length > 0) {
@@ -459,16 +449,13 @@ function buildMenu () {
 
 
 	document.querySelector('#sidebar .help').addEventListener("click", function(e){ var those = this; help(those); }, false);
-	document.querySelector('#sidebar .readmore').addEventListener("click", function(e){ var those = this; country(); }, false);
 	document.querySelector('#sidebar .resetAll').addEventListener("click", function(e){ var those = this; resetAll(those); }, false);
-
-	showHideReadmoreButton ();
 
 }
 
+// To update the progress bars inside the menu;
 function updateMenuProgress () {
 	if (document.querySelectorAll("#sidebar #menu label").length > 0) {
-		console.log(document.querySelectorAll("#sidebar #menu label").length);
 
 		for (i = 0; i <  window.subject.length; i++) {
 			if (isFilterCountryActive) {
@@ -479,12 +466,13 @@ function updateMenuProgress () {
 						value = layer.feature.properties[window.subject[i]];
 					}
 				});
+				// line 466, col 18, Don't make functions within a loop.
 
 				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.width = mmap(value,0,10,0,76) + "%";
 				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.backgroundColor = window.subjectcolor[i];
 				// console.log(window.subjectcolor[i]);
 				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .i").style.background = "#CCC";
-				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .i").innerHTML = value.toLocaleString();
+				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .i").innerHTML = value.toLocaleString('nl-NL');
 			}
 			else {
 				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .i").style.background = "background-image: url(images/" + window.subject[i] + ".svg)";
@@ -492,19 +480,8 @@ function updateMenuProgress () {
 		}	
 	}
 
-	showHideReadmoreButton ();
 
 }
-
-function showHideReadmoreButton () {
-	if (document.querySelectorAll("#sidebar .readmore").length > 0  && !isFilterCountryActive) {
-		document.querySelector("#sidebar .readmore").style.display = "none";
-	}
-	else if(document.querySelectorAll("#sidebar .readmore").length > 0  && isFilterCountryActive) {
-		document.querySelector("#sidebar .readmore").style.display = "inline-block";
-	}
-}
-
 
 
 function buildSidebarHeader () {
@@ -519,28 +496,40 @@ function buildSidebarHeader () {
 }
 
 function buildURL() {
-	// #subject=gini_score,freedom_score&country=DE
+
+	// Usage in the browser navigation bar:
+	// #
 	// #subject=gini_score,freedom_score
 
-	// console.log(location.hash);
+	// #subject=gini_score,freedom_score&country=DE
 
+	// #subject=gini_score,freedom_score&info=1
+	// #subject=gini_score,freedom_score&country=DE&info=1
+
+	// #&help=1
+	// #subject=gini_score,freedom_score&help=1
+	// #subject=gini_score,freedom_score&country=DE&help=1
+
+	// is it # or #any-value?
 	if (location.hash.length > 0) {
 
+		// the subject that will be returned
 		var urlsubject = [];
+		// the country
 		var urlcountry = "";
 
 
-		// check if country exist
+		// make a list of all countries using the ISO 3166-2 code
 		var listOfAllCounties = [];
-		var listOfAllCounties_nl_name = [];
 		Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
 			listOfAllCounties.push(euLayer.getGeoJSON()[key].properties.name);
-			listOfAllCounties_nl_name.push(euLayer.getGeoJSON()[key].properties.nl_name);
 		});
 
-
+		// search for seperators
 		if (location.hash.search("&") > 0) {
+			// make an array of the url
 			var hash = location.hash.split("&");
+			// loop though the array
 			for (var i = 0; i < hash.length; i++) {
 				if (hash[i].search("#subject=") !== -1) {
 					urlsubject = hash[i].replace("#subject=","");
@@ -550,6 +539,7 @@ function buildURL() {
 				if (hash[i].search("country=") !== -1) {
 					urlcountry = hash[i].replace("country=","");
 
+					// on error use the netherlands
 					if (listOfAllCounties.indexOf(urlcountry) === -1) {
 						urlcountry = "NL";
 					}
@@ -563,22 +553,19 @@ function buildURL() {
 				}
 
 				if (hash[i].search("info=") !== -1) {
-					console.log("info");
 					var isInfo = hash[i].replace("info=","");
 					if (isInfo == "1" && hash[i].search("help=") === -1) {
+						// without time out you will see undefined in the UI;
 						setTimeout(function(){ 
 							country ();
-						}, 2);
+						}, 1);
+						//  line 559, col 26, Don't make functions within a loop.
 					}
 				}	
-
-
-
 			}
-
 		}
 		else {
-
+			// display only the subjects;
 			if (location.hash.search("#subject=") !== -1) {
 				urlsubject = location.hash.replace("#subject=","");
 				urlsubject = urlsubject.split(",");
@@ -586,7 +573,7 @@ function buildURL() {
 
 		}
 
-		// controle; voor subject
+		// controle; voor subject; ignore non existing subjects
 		for (var j = 0; j < urlsubject.length; j++) {
 			if (window.subject.indexOf(urlsubject[j]) === -1) {
 				var index = urlsubject.indexOf(urlsubject[j]);
@@ -594,23 +581,19 @@ function buildURL() {
 			}
 		}
 
-
 		return [urlsubject,urlcountry];
-
 	}
 	else {
+		// no value
 		return [];
 	}
-
-	// console.log(hash)
 }
 
-var urlList = [];
-var timestampList = [];
 var prevURL;
 function constructURL() {
+	// Please check: buildURL() for usage;
 
-	if (history.pushState) { // for IE9
+	if (history.pushState) { // for old browsers like: IE9/IE10
 
 		var url = "#subject=";
 		for (var i = 0; i < selectedVar.length; i++) {
@@ -640,13 +623,10 @@ function constructURL() {
 			url += "&help=1";
 		}
 
+		// Check if this function isn't repeated excuded;
 		if (url !== prevURL) {
-			var timestamp = new Date().getTime();
-			var stateObj = { url: url, timestamp: timestamp };
+			var stateObj = { url: url };
 			history.pushState(stateObj, "Qdraw", url);
-
-			urlList.push(url);
-			timestampList.push(timestamp);
 		}
 		prevURL = url;
 	}
@@ -658,36 +638,36 @@ function constructURL() {
 
 
 window.onhashchange = function() {
-    if (window.innerDocClick) {
-        window.innerDocClick = false;
+	if (window.innerDocClick) {
+		// Thanks: http://stackoverflow.com/questions/25806608/how-to-detect-browser-back-button-event-cross-browser
+		window.innerDocClick = false;
 
-        console.log("innerDocClick");
-    	buildPage();
+		console.log("innerDocClick");
+		buildPage();
 
 
-    } else {
-        if (window.location.hash != '#undefined') {
-        	buildPage();
+	} else {
+		if (window.location.hash != '#undefined') {
+			buildPage();
 
-        } else {
-        	console.log("h2o ");
-
-            history.pushState("", document.title, window.location.pathname);
-            location.reload();
-        }
-    }
+		} else {
+			// Go back to (for expample) Google;
+			history.pushState("", document.title, window.location.pathname);
+			location.reload();
+		}
+	}
 };
 
 
 var selectedVar = [];
-
-
 function readVariable (those) {
-	
+	// those is this of the eventListerer
 
-	// var y = (x == 2 ? "yes" : "no");
-	// those.state = (those.state === true ? false : true);
-	
+
+	// When you click on the checkbox
+
+
+	// There used to be a reset;	
 	// isFilterCountryActive = false;
 
 	var i;
@@ -699,50 +679,43 @@ function readVariable (those) {
 			selectedVar.push(those.id);
 		}
 		else {
-			console.log(selectedVar.indexOf(those.id) + "~");
-
 			var index = selectedVar.indexOf(those.id);
-			// delete storeActiveVar[index];
-			selectedVar.splice( index, 1 );
+			// delete storeActiveVar[index]; // replace this item of the list with: ""
+			selectedVar.splice( index, 1 ); // delete this item of the array;
 		}
 
+		// reset all checkboxes to none;
 		for (i = 0; i < window.subject.length; i++) {
 			document.querySelector("#menu #label_" + window.subject[i]).className = "none";
-
-			// document.querySelector("#menu #label_" + window.subject[i] + " .checkbox").style.backgroundImage = "none";
 		}
 
+		// set the selected checkboxes to active;
 		for (i = 0; i < selectedVar.length; i++) {
 			document.querySelector("#menu #label_" + selectedVar[i]).className = "active";
-			// document.querySelector("#menu #label_" + selectedVar[i] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
 		}
 	}
 	else {
-		// direct input
+		// direct input; for example using a url (no reset needed);
 		for (i = 0; i < selectedVar.length; i++) {
 			document.querySelector("#menu #label_" + selectedVar[i]).className = "active";
-			// document.querySelector("#menu #label_" + selectedVar[i] + " .checkbox").style.backgroundImage = "url('images/checkbox.svg')";
 		}		
 	}
-	
+
+	// exept for direct input;	> create an unique url;
 	if (those !== undefined) {
 		constructURL();
 	}
 
-	// console.log(selectedVar);
-
 	setVariable(selectedVar);
 }
 
-
+// display the legenda; (no updates required)
 function legenda (hues) {
 
 	// reset html
 	document.querySelector("#sidebar #legenda").innerHTML = " <a onclick='showAndHideSidebar()' class='close'></a>		<span class='pointer' id='selectedcountry'></span> <span class='pointer' id='pointer'></span>";
 
-
 	for (var i = 0; i < hues.length; i++) {
-		// console.log(hues[i])
 		document.querySelector("#sidebar #legenda").innerHTML +=  "  <div style='background-color:" + hues[i] + "'></div>";
 	}
 
@@ -750,36 +723,36 @@ function legenda (hues) {
 
 
 
-function mousemove(e,those) { // legenda high
+function mousemove(e,those) { // legenda updates 
 
-	// https://www.mapbox.com/mapbox.js/example/v1.0.0/choropleth/
+	// Thanks (https://www.mapbox.com/mapbox.js/example/v1.0.0/choropleth/)
 
 	if (selectedVar.length > 0) {
 		
 		var top;
 
-		if (!isFilterCountryActive) {
+		if (!isFilterCountryActive) { // display pointer absolute
 			top = mmap(window.combinedScore[e.target.feature.properties.name],0,10,0,100);
 			top = (100 + (top * -1) + 0 /*fix*/ );
 
 		} 
-		else{
+		else{ // display pointer relative
 		
 			if (window.combinedScore[e.target.feature.properties.name] > window.combinedScore[window.filterCountryName]) {
 				// Countries who perform better! :D :D :D
 				top = mmap(window.combinedScore[e.target.feature.properties.name],window.combinedScore[window.filterCountryName],10,0,50);
 				top = 50 - top;
-				// console.log("higher" + e.target.feature.properties.name + top + " `" + window.combinedScore[window.filterCountryName]);
 			}
-			else {
+			else { // Worse countries :(
 				top = mmap(window.combinedScore[e.target.feature.properties.name],0,window.combinedScore[window.filterCountryName],0,50);
 				top = 100 - top;
-				// console.log("lower" + e.target.feature.properties.name + top + " `" + window.combinedScore[window.filterCountryName]);
 			}
 		}
 
+		// corection used for close button;
 		top = top - 5;
 
+		// corection used for top and bottom of the screen;
 		if (top < 3) {
 			top = 3;
 		}
@@ -787,16 +760,17 @@ function mousemove(e,those) { // legenda high
 			top = 87;
 		}
 
+		// feature for mobile only
 		answerShowPointersWhenSidebarIsClosed ();
+
 		if (document.querySelectorAll("#sidebar #legenda #pointer").length > 0 && !isNaN(window.combinedScore[e.target.feature.properties.name])  && showPointersWhenSidebarIsClosed) {
+			// if element exist, is a valid number and, is allow to show (for mobile);
 
 			document.querySelector("#sidebar #legenda #pointer").style.display = "block";
-			// document.querySelector("#sidebar #legenda #pointer").style.top = "calc( " + top + "vh" + " - 20px )";
-			document.querySelector("#sidebar #legenda #pointer").style.top = top + "vh";
-			
-			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
+			document.querySelector("#sidebar #legenda #pointer").style.top = top + "vh"; // using view height ~ http://caniuse.com/#search=vh
+			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10; // to 5.4 instead of 5.44444;
 
-			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "cijfer: " + score.toLocaleString();
+			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "cijfer: " + score.toLocaleString('nl-NL'); // special javascript method;
 			document.querySelector("#sidebar #legenda #pointer").innerHTML = content;
 		}
 	}
@@ -821,20 +795,16 @@ function help () {
 	document.querySelector("#lightbox").style.display = "block";
 	document.querySelector("#lightbox").addEventListener("click", hideLightbox, false);
 
-
-
 	write2lightbox(window.helpdata);
-
-
 }
 
 function write2lightbox (contentArray) {
 
-
 	document.querySelector("#lightbox").innerHTML = "<div class='container'></div>";
 
 	var contentHTML = "<div class='close'></div>";
-
+		
+	// there are two rows; the split feature = {_splitrow_};
 	var splitrow = contentArray.indexOf("{_splitrow_}");
 
 	if (splitrow === -1) {
@@ -843,7 +813,6 @@ function write2lightbox (contentArray) {
 
 	var content;
 	for (var i = 0; i <  splitrow; i++) {
-
 
 		if (i === 0) {
 			content = "<h2>" + contentArray[i] + "</h2>";
@@ -856,40 +825,33 @@ function write2lightbox (contentArray) {
 
 	contentHTML += "<div class='left'>" + content + "</div>";
 
-
-
 	if (splitrow !== contentArray.length) {
 	
-
-
 		for (i = splitrow+1; i <  contentArray.length; i++) {
-
-
 			if (i === splitrow+1) {
 				content = "<h2>" + contentArray[i] + "</h2>";
 			}
 			if (contentArray[i] !== ""  && i !== splitrow+1) {
 				content += "<p>" + contentArray[i] + "</p>";
 			}
-
 		}
 		contentHTML += "<div class='right'>" + content + "</div>";
-
 	}
 
-
+	// get all data of the selected country
 	var properties = {};
 	Object.keys(euLayer.getGeoJSON()).forEach(function(key) {
 		if (window.filterCountryName === euLayer.getGeoJSON()[key].properties.name) {
 			properties = euLayer.getGeoJSON()[key].properties;
 		}
 	});
+
+	// replace the placeholder with data;
 	contentHTML = replaceKeys(properties,contentHTML);
-
 	document.querySelector("#lightbox .container").innerHTML = contentHTML;
-
 }
 
+// reset button
 function resetAll () {
 	selectedVar = [];
 
@@ -950,21 +912,14 @@ function showAndHideSidebar () {
 	}
 
 	answerShowPointersWhenSidebarIsClosed ();
-	
-
-
-
 
 	isSidebarVisible = (isSidebarVisible ? false : true);
-
-
-	 
 }
 
 var showPointersWhenSidebarIsClosed = true;
 function answerShowPointersWhenSidebarIsClosed () {
 	windowwidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-
+	// for mobile view;
 
 	if (windowwidth < 570) {
 		if (isSidebarVisible) {
@@ -983,44 +938,30 @@ function answerShowPointersWhenSidebarIsClosed () {
 
 function hideLightbox (e) {
 
-	try {
-		if ( (e.target.parentNode.nodeName != "P") &&  (e.target.parentNode.className != "subject") &&  (e.target.parentNode.className != "left") && (e.target.parentNode.className != "right")  && (e.target.parentNode.className != "container")  ||  e.target.className === "close") {
-			document.querySelector("#lightbox").style.display = "none";
-			isHelpActive = false;
-			isCountyInfoActive = false;
-			constructURL();
-		}
-
+	if ( (e.target.parentNode.nodeName != "P") &&  (e.target.parentNode.className != "subject") &&  (e.target.parentNode.className != "left") && (e.target.parentNode.className != "right")  && (e.target.parentNode.className != "container")  ||  e.target.className === "close") {
+		document.querySelector("#lightbox").style.display = "none";
+		isHelpActive = false;
+		isCountyInfoActive = false;
+		constructURL();
 	}
-	catch(er) {
-		if (e) {
-			document.querySelector("#lightbox").style.display = "none";
-			isHelpActive = false;
-			isCountyInfoActive = false;
-			constructURL();
-		}
-	}
-
 
 }
 
 
-
-
+// direct api for use the url to go to one country
 function directFilterCountry() {
 	if (isFilterCountryActive) {
+
+		// making an object;
 		var e = {};
 		e.target = {};
 		e.target.feature = {};
 		e.target.feature.properties = {};
 	
 		euLayer.eachLayer(function(layer) {
-		
 			if(layer.feature.properties.name === window.filterCountryName)	{
 				e.target.feature.properties = layer.feature.properties;
 			}
-		
-
 		});
 		filterCountry(e);
 	}
@@ -1028,8 +969,7 @@ function directFilterCountry() {
 
 
 var isFilterCountryActive = false;
-
-function filterCountry(e) {
+function filterCountry(e) { // to use after an eventListerer;
 	isFilterCountryActive = true;
 
 
@@ -1053,20 +993,14 @@ function filterCountry(e) {
 
 				if (window.combinedScore[layer.feature.properties.name] > window.combinedScore[countryname]) {
 					// Countries who perform better! :D :D :D
-
 					cindex = mmap(window.combinedScore[layer.feature.properties.name],window.combinedScore[countryname],10,5,0);
 					color = fHues[Math.floor(cindex)];
 					borderwidth = 0.5;
-
-					//mmap(this,min,max,outmin,outmax)
-
-
 				}
 				else if (window.combinedScore[layer.feature.properties.name] === window.combinedScore[countryname]){
+					// equal countries;
 					color = fHues[Math.round(fHues.length/2)];
-					// console.log(Math.round(fHues.length/2));
 					borderwidth = 0.5;
-
 
 					// The selected country
 					if (layer.feature.properties.name === e.target.feature.properties.name) {
@@ -1075,10 +1009,10 @@ function filterCountry(e) {
 					}
 				}
 				else {
+					// bad countries;
 					cindex = mmap(window.combinedScore[layer.feature.properties.name],0,window.combinedScore[countryname],9,5);
 					color = fHues[Math.floor(cindex)];
 					borderwidth = 0.5;
-
 				}
 
 			}
@@ -1094,13 +1028,12 @@ function filterCountry(e) {
 
 		});
 
+		// and adjust all values again;
 		selectedCountry(e);
 		legenda(fHues);
 		selectedcountryLegenda(e);
 		constructURL();
 		updateMenuProgress ();
-
-
 	}
 
 }
@@ -1108,13 +1041,14 @@ function filterCountry(e) {
 function selectedcountryLegenda (e) {
 	answerShowPointersWhenSidebarIsClosed ();
 
+	// the static pointer in realative mode;
 	if (isFilterCountryActive && showPointersWhenSidebarIsClosed && (document.querySelectorAll("#sidebar #legenda #selectedcountry").length > 0) ) {
 
 		if (!isNaN(Number(e.target.feature.properties[selectedVar[0]])) ) {
 			document.querySelector("#sidebar #legenda #selectedcountry").style.display = "block";
 
 			var score = Math.ceil(window.combinedScore[e.target.feature.properties.name] * 10)/10;
-			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "cijfer: " + score.toLocaleString();
+			var content = "<b>" + e.target.feature.properties.nl_name + "</b> <br />" + "cijfer: " + score.toLocaleString('nl-NL');
 			document.querySelector("#sidebar #legenda #selectedcountry").innerHTML = content;
 		}
 
@@ -1122,85 +1056,23 @@ function selectedcountryLegenda (e) {
 	else {
 		console.error("~ legenda pointer not availble for: " + e.target.feature.properties.name );
 	}
-
-	// document.querySelector('#sidebar .close').addEventListener("click", function(e){ var those = this; showAndHideSidebar(); }, false);
-
-
 }
 
 
-function selectedCountry(e) { // the text
-
-
-
+function selectedCountry(e) { // the text in the sidebar
 	if (!isNaN(Number(e.target.feature.properties[selectedVar[0]])) ) {
-
 		var value = Math.ceil( window.combinedScore[e.target.feature.properties.name] * 10)/10;
-		value = value.toLocaleString();
-		document.querySelector("#sidebar #content").innerHTML = "<h2>" +  e.target.feature.properties.nl_name + " <span class='score'>" + value + " </span></h2>";
-
-
-		// var content;
-		// var index;
-		// var i;
-
-
-		// if (selectedVar.length === 1) {
-
-		// 	index = window.subject.indexOf(selectedVar[0]);
-		// 	content = window.subjectintro[index];
-		// 	content = replaceKeys(e.target.feature.properties,content);
-
-		// 	document.querySelector("#sidebar #content").innerHTML += "<p>" + content + "</p>";
-
-		// }
-		// else {
-
-
-		// 	if (selectedVar.length <= 4) {
-
-		// 		content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[0]);
-			
-		// 		document.querySelector("#sidebar #content").innerHTML += content; 
-
-		// 		for (i = 0; i < selectedVar.length; i++) {
-		// 			index = window.subject.indexOf(selectedVar[i]);
-					
-		// 			if (i === selectedVar.length-2) {
-		// 				document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + " en ";
-		// 			}
-		// 			else if(i === selectedVar.length-1) {
-		// 				document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index]+ " (" + e.target.feature.properties[window.subject[index]] + ")";
-		// 			}
-		// 			else {
-		// 				document.querySelector("#sidebar #content").innerHTML += " " + window.subjectui[index] + " (" + e.target.feature.properties[window.subject[index]] + ")" + ", ";
-		// 			}
-		// 		}
-
-		// 	}
-		// 	else {
-		// 		content = replaceKeys(e.target.feature.properties,window.subjectintro_selectie2ofmeer[1]);
-		// 		document.querySelector("#sidebar #content").innerHTML += content;
-		// 	}
-		// }
-
-		// var link = "\"" + e.target.feature.properties.name + "\",\"" + e.target.feature.properties.nl_name + "\"";
-		// document.querySelector("#sidebar #content").innerHTML += "<a class='button' href='javascript:country(" + link + ")'>Lees meer..</a>";
-
-
-
+		value = value.toLocaleString('nl-NL');
+		document.querySelector("#sidebar #content").innerHTML = "<h2>" +  e.target.feature.properties.nl_name + " <span class='score'>" + value + " </span></h2>" + "		<div class='readmore' onclick='country()'>Lees meer over " +  e.target.feature.properties.nl_name +"</div>";
 	}
 	else {
 		console.error("~ no data availble over country " + e.target.feature.properties.name );
 	}
-
-
-	
 }
 
 
 function replaceKeys (properties,content) {
-	// e.target.feature.properties
+	// You don't have to enter all values in the text, use the shortcuts for this: if you select {name} == NL {nl_name} will be: Nederland; 
 
 	// search and replace items in text
 	replaceKeysArray = [];
@@ -1216,23 +1088,22 @@ function replaceKeys (properties,content) {
 
 		if (!isNaN(value)) {
 			value = Math.ceil(value * 10)/10;
-			value = value.toLocaleString();
+			value = value.toLocaleString('nl-NL');
 
 		}
 		content = content.replace(re, value);
 	}
 
-	// score pointer feature
+	// score direct feature
 	var score = Math.ceil(window.combinedScore[properties.name] * 10)/10;
-	content = content.replace(/\{_score_\}/ig, score.toLocaleString());
-
+	content = content.replace(/\{_score_\}/ig, score.toLocaleString('nl-NL'));
 
 	return content;
-
 }
 
-var isCountyInfoActive = false; 
 
+// behind the readmore button
+var isCountyInfoActive = false; 
 function country () {
 
 	var listOfAllCounties = [];
@@ -1245,19 +1116,17 @@ function country () {
 	var name = window.filterCountryName;
 	var nl_name = listOfAllCounties_nl_name[listOfAllCounties.indexOf(name)];
 
-
-
 	isCountyInfoActive = true;
 	constructURL();
 
 	console.log("`! " + name + " " + nl_name);
-
 
 	var content = [];
 
 	var i = 0;
 	Object.keys(window.countrydescription).forEach(function(key) {
 		if ( i!== 0) {
+			// ignore the first row;
 			content.push(window.countrydescription[key][window.filterCountryName]);
 		}
 		i++;
@@ -1269,11 +1138,10 @@ function country () {
 
 	document.querySelector("#lightbox").addEventListener("click", function(e){ hideLightbox(e); }, false);
 
-
 	write2lightbox(content);
-
 }
 
+/// I dont going to explain this ;)
 function facepalm () {
 	// add facepalm css
 	var head  = document.getElementsByTagName('head')[0];
@@ -1287,6 +1155,7 @@ function facepalm () {
 	// end facepalm css
 }
 
+// If the site is fubar;
 setTimeout(function(){ 
 	if (window.subject.length < 1) {
 		document.getElementById("introdata").innerHTML = "<div class='container'><h2>Sorry er iets misgegaan met het laden van de inhoud</h2> <p>Wacht een klein momentje of herlaad de pagina om het opnieuw te proberen</p></div>";
@@ -1294,8 +1163,9 @@ setTimeout(function(){
 }, 5000);
 
 
+// ineedrick;
 var storeKeys = [],
-    easteregg = "73,78,69,69,68,82,73,67,75";
+	easteregg = "73,78,69,69,68,82,73,67,75";
 
 document.addEventListener("keydown", function(e){ keyboardHandler(e); }, false);
 function keyboardHandler (e) {
@@ -1305,24 +1175,26 @@ function keyboardHandler (e) {
 		hideLightbox (true);
 	}
 
-	// I Need Rick;
-    storeKeys.push(e.keyCode);
-    if (storeKeys.toString().indexOf(easteregg) >= 0) {
+	// I Need Rick; Thats it;
+	storeKeys.push(e.keyCode);
+	if (storeKeys.toString().indexOf(easteregg) >= 0) {
 
 		selectedVar = [window.subject[0]];
 		window.filterCountryName = "DO";
 		isFilterCountryActive = true;
 
 		facepalm();
-    	country();
+		country();
 
-	    	storeKeys = [];
-    }
-
-
+		storeKeys = [];
+	}
 }
 
 
+// The screensaver, who doen't save your screen;
+// Please wait 3,14 minutes to activate this;
+
+// All used variables
 // selectedVar
 // isFilterCountryActive
 // window.filterCountryName
@@ -1335,19 +1207,18 @@ var prevDocumentTitle;
 var isUserActive = true;
 function idle() {
 	var t;
-    window.onload = resetTimer;
-    window.onmousemove = resetTimer;
-    window.onmousedown = resetTimer; // catches touchscreen presses
-    window.onclick = resetTimer;     // catches touchpad clicks
-    window.onscroll = resetTimer;    // catches scrolling with arrow keys
-    window.onkeypress = resetTimer;
+	// Thanks: http://stackoverflow.com/questions/667555/detecting-idle-time-in-javascript-elegantly
 
-
-
+	// reset the screensaver if you do something;
+	window.onload = resetTimer;
+	window.onmousemove = resetTimer;
+	window.onmousedown = resetTimer; // catches touchscreen presses
+	window.onclick = resetTimer;     // catches touchpad clicks
+	window.onscroll = resetTimer;    // catches scrolling with arrow keys
+	window.onkeypress = resetTimer;
 	var screensaver;
 
 	function idleHelper() {
-
 		isUserActive = false;
 
 		prevSelectedVar = selectedVar;
@@ -1359,30 +1230,26 @@ function idle() {
 		idleMode = 0;
 
 		prevDocumentTitle = document.title;
-
 		document.querySelector("#lightbox").style.zIndex = "2";
-
 		document.querySelector("#lightbox").innerHTML = "<div class='rotating'><p>Beweeg je muis<br /> om verder te gaan</p><img src='images/history.svg' height='100px' width='100px'></div>";
 		document.querySelector("#lightbox").style.display = "block";
 
 		screensaver = setInterval(idleActive, 2000); // speed of slides
-	    console.log("~~~ U bent inactief");
-
-
+		console.log("~~~ Your inactive");
 	}
 
-    function resetTimer() {
-        clearTimeout(t);
-        t = setTimeout(idleHelper, 188400);  // time is in milliseconds 188400 == 3,14 minute
+	function resetTimer() {
+		clearTimeout(t);
+		t = setTimeout(idleHelper, 188400);  // time is in milliseconds 188400 == 3,14 minute
 
-        if (!isUserActive) {
-        	console.log("~!isUserActive");
-    		window.location.reload(false); // true - Reloads the current page from the server
+		if (!isUserActive) {
+			console.log("~!isUserActive");
+			window.location.reload(false); // true - Reloads the current page from the server
 
-    		// never excuted code:
-        	document.title = prevDocumentTitle;
-        	idleI = 0;
-	     	clearInterval(screensaver);
+			// never excuted code:
+			document.title = prevDocumentTitle;
+			idleI = 0;
+			clearInterval(screensaver);
 			selectedVar = prevSelectedVar;
 			document.querySelector("#lightbox").style.display = "none";
 
@@ -1392,16 +1259,22 @@ function idle() {
 			buildPage();
 		}
 
-    	isUserActive = true;
-
-
-    }
+		isUserActive = true;
+	}
 }
-idle();
+
+// no screensaver for mobile devices or very small screens;
+var	windowwidth = window.innerWidth  || document.documentElement.clientWidth 	|| document.body.clientWidth;
+if (windowwidth > 570) {
+	idle();
+}
 
 
+
+// The screensaver animation;
 var idleI = 0;
 var idleMode = 0;
+var index;
 function idleActive () {
 
 	switch(idleMode) {
@@ -1424,10 +1297,9 @@ function idleActive () {
 			}
 		break;
 		case 1: 
-			// console.log(selectedVar);
 
 			if (idleI > 0) {
-				var index = selectedVar.indexOf(selectedVar[idleI]);
+				index = selectedVar.indexOf(selectedVar[idleI]);
 				selectedVar.splice( index, 1 );
 
 				constructURL();
@@ -1445,7 +1317,7 @@ function idleActive () {
 		case 2: 
 
 			if (idleI > 0) {
-				var index = selectedVar.indexOf(selectedVar[idleI]);
+				index = selectedVar.indexOf(selectedVar[idleI]);
 				selectedVar.splice( index, 1 );
 
 				constructURL();

@@ -491,7 +491,7 @@ path {
 	background-position: left center;
 	display: inline-block;
 	cursor: pointer;
-	width: 35px;
+	width: 40%;
 	height: 25px;
 	background-size: contain;
 	background-image: url("../images/question-neg.svg");
@@ -510,11 +510,11 @@ path {
 
 
 #sidebar .readmore {
-	width: 67px;
+	width: 80%;
 }
 
 #sidebar .resetAll {
-	width: 70px;
+	width: 30%;
 	background-image: url("../images/close-neg.svg");
 }
 /*.leaflet-popup-content-wrapper,
