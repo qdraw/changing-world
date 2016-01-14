@@ -469,7 +469,10 @@ function updateMenuProgress () {
 				// line 464, col 18, Don't make functions within a loop.
 
 				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.width = mmap(value,0,10,0,76) + "%";
-				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.backgroundColor = window.subjectcolor[i];
+				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.backgroundColor = "hsl(192,100%," + mmap(value,0,10,80,15) + "%)";
+				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .p").style.opacity = "0.8";
+
+				// window.subjectcolor[2].replace("0.7",mmap(value,0,10,0.2,0.8));
 				// console.log(window.subjectcolor[i]);
 				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .i").style.background = "#CCC";
 				document.querySelector("#sidebar #menu #label_" + window.subject[i] + " .i").innerHTML = value.toLocaleString('nl-NL');
@@ -487,10 +490,10 @@ function updateMenuProgress () {
 function buildSidebarHeader () {
 	for (var i = 0; i <  window.sidebarheader.length; i++) {
 		if (i === 0) {
-			document.querySelector("#sidebar #header").innerHTML = "<h2>" + window.sidebarheader[i] + "</h2>";
+			document.querySelector("#sidebar #header").innerHTML = "<h1>" + window.sidebarheader[i] + "</h1>";
 		}
 		else if (window.sidebarheader[i] !== "") {
-			document.querySelector("#sidebar #header").innerHTML += "<p>" + window.sidebarheader[i] + "</p>";
+			document.querySelector("#sidebar #header").innerHTML += "<p><i>" + window.sidebarheader[i] + "</i></p>";
 		} 
 	}
 }
@@ -938,11 +941,22 @@ function answerShowPointersWhenSidebarIsClosed () {
 
 function hideLightbox (e) {
 
-	if ( (e.target.parentNode.nodeName != "P") &&  (e.target.parentNode.className != "subject") &&  (e.target.parentNode.className != "left") && (e.target.parentNode.className != "right")  && (e.target.parentNode.className != "container")  ||  e.target.className === "close") {
-		document.querySelector("#lightbox").style.display = "none";
-		isHelpActive = false;
-		isCountyInfoActive = false;
-		constructURL();
+	try {
+		if ( (e.target.parentNode.nodeName != "P") &&  (e.target.parentNode.className != "subject") &&  (e.target.parentNode.className != "left") && (e.target.parentNode.className != "right")  && (e.target.parentNode.className != "container")  ||  e.target.className === "close") {
+			document.querySelector("#lightbox").style.display = "none";
+			isHelpActive = false;
+			isCountyInfoActive = false;
+			constructURL();
+		}
+
+	}
+	catch(er) {
+		if (e) {
+			document.querySelector("#lightbox").style.display = "none";
+			isHelpActive = false;
+			isCountyInfoActive = false;
+			constructURL();
+		}
 	}
 
 }
@@ -1063,7 +1077,7 @@ function selectedCountry(e) { // the text in the sidebar
 	if (!isNaN(Number(e.target.feature.properties[selectedVar[0]])) ) {
 		var value = Math.ceil( window.combinedScore[e.target.feature.properties.name] * 10)/10;
 		value = value.toLocaleString('nl-NL');
-		document.querySelector("#sidebar #content").innerHTML = "<h2>" +  e.target.feature.properties.nl_name + " <span class='score'>" + value + " </span></h2>" + "		<div class='readmore' onclick='country()'>Lees meer over " +  e.target.feature.properties.nl_name +"</div>";
+		document.querySelector("#sidebar #content").innerHTML = "<h2>" + e.target.feature.properties.nl_name + "</h2><div class='readmore' onclick='country()'>Lees meer over " +  e.target.feature.properties.nl_name +" </div>" + " " + " <span class='score'>" + value + " </span>";
 	}
 	else {
 		console.error("~ no data availble over country " + e.target.feature.properties.name );

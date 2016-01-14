@@ -58,6 +58,10 @@ b {
 	font-weight: bold;
 }
 
+i {
+    font-style: italic;
+}
+
 h1{
 	font-size: 30px;
 }
@@ -255,23 +259,25 @@ path {
 }
 
 #sidebar #content {
-	margin-bottom: 50px;
+	margin-bottom: 25px;
 }
 
 #sidebar #content h2{
-	padding-top: 5px;
-	margin-top: 20px;
+	padding-top: 35px;
+	margin-top: 35px;
 	border-top: 1px solid rgb(214,214,214);
-
+	line-height: 25px;
 	font-size: 28px;
 
 }
 
-#sidebar #content h2 .score {
-	float: right;
-    letter-spacing: -2px;
+#sidebar #content .score {
+	margin-top: 3px;
+	font-size: 60px;
+    letter-spacing: -2.5px;
 	display: inline-block;
 	padding-right: 4px;
+	transition: all 1s ease;
 }
 
 @media (max-height: 677px) {
@@ -400,7 +406,7 @@ path {
 	list-style: none;
 	width: 100%;
 	display: inline-block;
-	height: 33px;
+	height: 30px;
 	background-color: #d6d6d6;
 	color: inherit;
 	background-color: rgba(214,214,214,0.3);
@@ -414,14 +420,14 @@ path {
 
 #sidebar #menu .txt {
 	display: inline-block;
-	line-height: 33px;
+	line-height: 30px;
 	float: left;
 }
 
 #sidebar #menu .checkbox {
 	float: left;
-	height: 33px;
-	width: 33px;
+	height: 30px;
+	width: 30px;
 	background-color: #ccc;
 	background-color: rgba(137,135,123,0.3);
 	/*background-image: url("../images/checkbox.svg");*/
@@ -439,8 +445,8 @@ path {
 
 
 #sidebar #menu label .i {
-	height: 33px;
-	width: 33px;
+	height: 30px;
+	width: 30px;
 	float: right;
 	background-image: url("../images/gemiddeld-ink_score.svg");
 	background-size: cover;
@@ -469,8 +475,8 @@ path {
 	z-index: 1;
 	position: absolute;
 	top: 0px;
-	left: 33px;
-	height: 33px;
+	left: 30px;
+	height: 30px;
 	width: 0%;
 	background-color: red;
 }
@@ -508,9 +514,32 @@ path {
 	opacity: 0.6;
 }
 
+/*#sidebar .readmore {
+
+	background-image: url("../images/info-neg.svg");
+	width: 46%;
+	margin-top: 25px;
+	line-height: 15px;
+	float: right;
+}
+*/
 
 #sidebar .readmore {
-	width: 80%;
+	margin-top: 20px;
+	float: right;
+	display: inline-block;
+	cursor: pointer;
+	background: #C9C9C4;
+	background: rgba(201,201,196,0.6);
+	opacity: 0.9;
+	width: 46%;
+	height: 100%;
+	line-height: 1.4;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+
 }
 
 #sidebar .resetAll {
