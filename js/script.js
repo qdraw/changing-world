@@ -131,7 +131,7 @@ window.introdata = [];
 window.countrydescription = {};
 
 // When this project is over, I will probly lose access to the Google Spreadsheet, when i place it to Archive mode load a local json file.
-var archiveMode = false;
+var archiveMode = true;
 function loadData () {
 	if (!archiveMode) {
 		// Tabletop loads here the spreadsheet data async.
@@ -172,6 +172,7 @@ window.ranges = {};
 // callback function from loadData
 function processData (data, tabletop) {
 	
+	// to create a backup
 	// backupDataJSON (data);
 	// return;
 
